@@ -656,3 +656,109 @@
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   .footer-legal__credit { margin-left: 0; }
 }
+
+/* --------------------------------------------------------------------------
+   Book detail spine (Sprint 1 step 14). Extends .book-detail from styles.css.
+   -------------------------------------------------------------------------- */
+.book-spine { padding-bottom: 0; }
+.book-detail--spine {
+  width: min(var(--wide), calc(100% - 10vw));
+  margin: 2.5rem auto 1rem;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 3rem;
+}
+.book-detail__cover .jacket { max-width: 280px; }
+.book-detail--spine .book-detail__cover .jacket { position: static; }
+.book-detail__head h1 { margin: 0.2rem 0 0.6rem; }
+.book-detail__tagline {
+  margin: 0 0 var(--space-4);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  max-width: 34rem;
+}
+.book-detail__pills { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-5); }
+.book-detail__cta { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.book-detail__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  margin: var(--space-6) 0 0;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.book-detail__facts div { display: grid; gap: 0.15rem; }
+.book-detail__facts dt {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.book-detail__facts dd { margin: 0; font-size: 0.95rem; color: var(--ink); }
+.book-section { margin-top: var(--space-6); }
+.book-section h2 { margin: 0 0 var(--space-3); font-size: var(--step-2); font-weight: 500; }
+.book-section .blurb { margin: 0; max-width: var(--measure); }
+.book-detail--spine .excerpt { margin-top: var(--space-6); }
+.book-detail--spine .excerpt .eyebrow { margin-bottom: var(--space-2); }
+.book-detail--spine blockquote { max-width: 34rem; }
+.book-detail--spine .where { margin-top: var(--space-6); scroll-margin-top: calc(var(--nav-h) + 1rem); }
+.book-detail--spine .where .dist { max-width: var(--measure); }
+#excerpt, #synopsis { scroll-margin-top: calc(var(--nav-h) + 1rem); }
+.praise { margin: 0 0 var(--space-4); }
+.praise cite { display: block; margin-top: var(--space-2); font-style: normal; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+.book-related { padding: var(--space-7) 0 var(--space-4); }
+.book-related .section-head { margin-bottom: var(--space-4); }
+.book-related .rail__item { width: clamp(150px, 42vw, 190px); }
+.book-spine .newsletter { padding-bottom: var(--space-8); }
+
+/* sticky mobile buy bar */
+.buy-bar {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 15;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.6rem 4vw calc(0.6rem + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line-firm);
+  box-shadow: 0 -6px 20px rgba(50, 30, 18, 0.10);
+}
+.buy-bar__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .book-detail--spine .book-detail__cover { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
+}
+@media (max-width: 1023px) {
+  .book-detail--spine { grid-template-columns: 240px minmax(0, 1fr); gap: 2.2rem; }
+}
+@media (max-width: 900px) {
+  .buy-bar { display: flex; }
+  .book-spine .newsletter { padding-bottom: 7rem; }
+}
+@media (max-width: 800px) {
+  .book-detail--spine { grid-template-columns: 1fr; margin-top: 1.5rem; }
+  .book-detail--spine .book-detail__cover .jacket { max-width: 220px; margin: 0 auto; }
+  .book-detail__head { text-align: left; }
+}
+
+/* Book cards in a grid/rail: reserve the tallest cover ratio so titles line up across cards. */
+.book-grid .book-card__cover,
+.rail .book-card__cover {
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 600 / 1213;
+}

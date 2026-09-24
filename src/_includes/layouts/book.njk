@@ -1,39 +1,118 @@
 ---
 bodyClass: book-page
 ogType: book
+needsRail: true
 ---
 {% extends "layouts/base.njk" %}
 {%- from "partials/cover.njk" import cover -%}
-{%- from "partials/retailers.njk" import retailers -%}
+{%- from "partials/retailers.njk" import retailerGroups -%}
+{%- from "partials/rail.njk" import rail -%}
+{%- from "partials/newsletter-form.njk" import newsletterForm -%}
 {% block headEnd %}
 {% include "partials/jsonld-book.njk" %}
 {%- endblock %}
 {% block main %}
-  <main id="main">
-    <article class="book-detail">
-      <figure class="jacket">
-        {{ cover(book, { eager: true }) }}
-      </figure>
-      <div>
-        <p class="eyebrow">{{ book.eyebrow }}</p>
-        <h1>{{ book.title }}</h1>
-        <p class="meta">{{ book.format }} · {{ book.year }} · ISBN {{ book.isbn }}{% if book.pages %} · {{ book.pages }} pages{% endif %}</p>
-        <p class="blurb">{{ book.blurb }}</p>
-        <div class="excerpt"><p class="eyebrow">From the pages</p><blockquote><p>{{ book.excerpt }}</p></blockquote></div>
-        <div class="where">
-          <h2>Where to buy</h2>
+{%- set siblings = [] %}
+{%- set others = [] %}
+{%- for b in books %}{% if b.slug != book.slug %}{% if book.series and b.series and b.series.name == book.series.name %}{% set siblings = (siblings.push(b), siblings) %}{% else %}{% set others = (others.push(b), others) %}{% endif %}{% endif %}{% endfor %}
+{%- set related = siblings.concat(others) %}
+{%- set seriesTotal = siblings.length + 1 if book.series else 0 %}
+  <main id="main" class="book-spine">
+    <article class="book-detail book-detail--spine">
+      <div class="book-detail__cover">
+        <figure class="jacket">
+          {{ cover(book, { eager: true }) }}
+        </figure>
+      </div>
+      <div class="book-detail__body">
+        <header class="book-detail__head">
+          <p class="eyebrow">{{ book.eyebrow }}</p>
+          <h1>{{ book.title }}</h1>
+          <p class="book-detail__tagline">{{ book.tagline }}</p>
+          <p class="book-detail__pills">
+{%- if book.series %}
+            <span class="pill pill--outline">Book {{ book.series.order }} of {{ seriesTotal }}</span>
+{%- endif %}
+            <span class="pill">{{ book.format }}</span>
+{%- if book.ebookIsbn %}
+            <span class="pill">eBook</span>
+{%- endif %}
+{%- if book.audiobook %}
+            <span class="pill">Audiobook</span>
+{%- endif %}
+          </p>
+          <div class="book-detail__cta">
+            <a class="btn btn--primary" href="#buy">Buy the book</a>
+            <a class="btn btn--quiet" href="#excerpt">Read an excerpt</a>
+          </div>
+        </header>
+
+        <dl class="book-detail__facts">
+          <div><dt>Published</dt><dd>{{ book.year }}</dd></div>
+          <div><dt>Format</dt><dd>{{ book.format }}</dd></div>
+          <div><dt>ISBN</dt><dd>{{ book.isbn }}</dd></div>
+{%- if book.pages %}
+          <div><dt>Pages</dt><dd>{{ book.pages }}</dd></div>
+{%- endif %}
+{%- if book.publishedAs %}
+          <div><dt>Published as</dt><dd>{{ book.publishedAs }}</dd></div>
+{%- endif %}
+        </dl>
+
+        <section class="book-section" id="synopsis" aria-labelledby="synopsis-h">
+          <h2 id="synopsis-h">Synopsis</h2>
+          <p class="blurb">{{ book.blurb }}</p>
+        </section>
+
+        <section class="book-section excerpt" id="excerpt" aria-labelledby="excerpt-h">
+          <p class="eyebrow" id="excerpt-h">From the pages</p>
+          <blockquote><p>{{ book.excerpt }}</p></blockquote>
+        </section>
+
+        <section class="book-section where" id="buy" aria-labelledby="buy-h">
+          <h2 id="buy-h">Where to buy</h2>
           <p class="dist">{{ site.distribution }}. Order it from any of these retailers, or ask your local bookstore to order the ISBN.</p>
-          {{ retailers(book) }}
-        </div>
+          <div class="retailer-groups">
+            {{ retailerGroups(book) }}
+          </div>
+        </section>
+{%- if book.discussionGuide %}
+
+        <section class="book-section" id="discussion-guide" aria-labelledby="guide-h">
+          <h2 id="guide-h">Discussion guide</h2>
+          <p>{{ book.discussionGuide.description }}</p>
+          <a class="btn btn--secondary" href="{{ book.discussionGuide.url }}">Download the guide</a>
+        </section>
+{%- endif %}
+{%- if book.praise and book.praise.length %}
+
+        <section class="book-section" id="praise" aria-labelledby="praise-h">
+          <h2 id="praise-h">Praise</h2>
+{%- for q in book.praise %}
+          <blockquote class="praise"><p>{{ q.text }}</p><cite>{{ q.source }}</cite></blockquote>
+{%- endfor %}
+        </section>
+{%- endif %}
       </div>
     </article>
-    <section class="more">
-      <p class="eyebrow">Also by {{ site.name }}</p>
-      <ul>
-{%- for b in books %}{% if b.slug != book.slug %}
-        <li><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></li>
-{%- endif %}{% endfor %}
-      </ul>
+
+    <section class="wrap book-related" aria-labelledby="related-h">
+      <div class="section-head section-head--compact section-head--rule">
+        <p class="eyebrow">{% if book.series %}More in {{ book.series.name }}{% else %}Also by {{ site.name }}{% endif %}</p>
+        <h2 id="related-h">{% if book.series %}Read the series in order, then keep going{% else %}Related titles{% endif %}</h2>
+      </div>
+      {{ rail("related-rail", "related titles", related, books) }}
+    </section>
+
+    <section class="wrap newsletter" id="newsletter">
+      <p class="eyebrow">{{ site.newsletter.eyebrow }}</p>
+      <h2>{{ site.newsletter.heading }}</h2>
+      <p class="lede">{{ site.newsletter.lede }}</p>
+      {{ newsletterForm(site, "-book") }}
     </section>
   </main>
+  <div class="buy-bar" aria-hidden="false">
+    <p class="buy-bar__title">{{ book.title }}</p>
+    <a class="btn btn--primary btn--small" href="#buy">Buy</a>
+  </div>
 {% endblock %}
