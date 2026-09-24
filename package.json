@@ -5,7 +5,12 @@
   "type": "module",
   "description": "Static author site for Courtney Thomas with privacy-friendly analytics on Netlify Functions.",
   "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve",
     "dev": "netlify dev",
+    "verify": "node scripts/check-urls.mjs",
+    "validate": "node scripts/validate-data.mjs",
+    "check-hero": "node scripts/check-hero.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -13,6 +18,8 @@
     "@netlify/functions": "^3.0.0"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@11ty/eleventy-plugin-rss": "^3.0.0",
     "@types/node": "^22.7.0",
     "typescript": "^5.6.0"
   }

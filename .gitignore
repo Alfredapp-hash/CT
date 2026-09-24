@@ -2,7 +2,11 @@
 .netlify
 
 # Dependencies
-node_modules
+**/node_modules/**
+
+# Eleventy output and caches
+_site/
+.cache/
 
 # Local secrets — ANALYTICS_KEY lives in Netlify env vars, never in the repo
 .env
