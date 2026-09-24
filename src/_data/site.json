@@ -1,0 +1,79 @@
+{
+  "name": "Courtney Thomas",
+  "title": "Courtney Thomas — Author",
+  "tagline": "Stories for the chapters we survive.",
+  "description": "Courtney Thomas writes about faith, healing, loss, purpose, and finding yourself again. Novels, devotionals, and stories for hard seasons, in print worldwide through IngramSpark.",
+  "ogDescription": "Stories for the chapters we survive. Novels, devotionals, and a journal on faith, healing, loss, and purpose.",
+  "url": "https://courtney-thomas-books.netlify.app",
+  "language": "en",
+  "locale": "en_US",
+  "distribution": "In print worldwide through IngramSpark",
+  "fontsHref": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap",
+  "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%235c1f2a' width='32' height='32'/%3E%3Cpath fill='%23f0ddb0' d='M8 6h12v20H8z'/%3E%3Cpath fill='%235c1f2a' d='M10 9h8v1H10zm0 3h8v1H10z'/%3E%3C/svg%3E",
+  "assetVersion": "2026-09-24",
+  "featuredSlug": "the-price-of-choosing-you",
+  "nav": [
+    { "label": "Books", "href": "/#books", "menu": "books" },
+    { "label": "The Price Series", "href": "/#books" },
+    { "label": "About", "href": "/#about" },
+    { "label": "Journal", "href": "/blog/" },
+    { "label": "Contact", "href": "/#contact" }
+  ],
+  "navCta": { "label": "Newsletter", "href": "/#newsletter" },
+  "footerNav": [
+    { "label": "Books", "href": "/#books" },
+    { "label": "Blog", "href": "/blog/" },
+    { "label": "About", "href": "/#about" },
+    { "label": "Contact", "href": "/#contact" },
+    { "label": "RSS", "href": "/blog/rss.xml" },
+    { "label": "Privacy", "href": "/privacy.html" }
+  ],
+  "footerGroups": {
+    "about": [
+      { "label": "About Courtney", "href": "/#about" },
+      { "label": "Journal", "href": "/blog/" },
+      { "label": "Contact", "href": "/#contact" }
+    ]
+  },
+  "bookGroups": [
+    { "key": "series", "label": "The Price Series", "shelf": "price-series" },
+    { "key": "nonfiction", "label": "Devotionals & Nonfiction", "categories": ["devotional", "nonfiction"] },
+    { "key": "children", "label": "Children’s", "categories": ["children"] }
+  ],
+  "retailerTemplates": [
+    { "name": "Amazon", "url": "https://www.amazon.com/s?k={isbn}&i=stripbooks" },
+    { "name": "Barnes & Noble", "url": "https://www.barnesandnoble.com/s/{isbn}" },
+    { "name": "Bookshop.org", "url": "https://bookshop.org/search?keywords={isbn}" },
+    { "name": "ChristianBook.com", "url": "https://www.christianbook.com/apps/search?Ntt={isbn}" },
+    { "name": "Walmart", "url": "https://www.walmart.com/search?q={isbn}" },
+    { "name": "Books-A-Million", "url": "https://www.booksamillion.com/search?query={isbn}" }
+  ],
+  "social": {
+    "instagram": null,
+    "facebook": null,
+    "goodreads": null,
+    "amazonAuthor": null
+  },
+  "affiliateDisclosure": null,
+  "siteCredit": null,
+  "newsletter": {
+    "formName": "newsletter",
+    "eyebrow": "Stay close",
+    "heading": "Reader notes",
+    "lede": "Occasional letters about new books, journal posts, and quiet encouragement for hard seasons. No spam."
+  },
+  "contact": {
+    "formName": "notes",
+    "eyebrow": "Contact",
+    "heading": "Write to Courtney",
+    "lede": "For book clubs, readings, and notes from readers."
+  },
+  "blog": {
+    "title": "Courtney Thomas — Journal",
+    "pageTitle": "Journal",
+    "heading": "Notes from the page",
+    "lede": "Short essays about the work behind the books — faith, healing, loss, purpose, and the slow business of surviving a hard season and writing it down.",
+    "description": "Notes from the page: Courtney Thomas on faith, healing, loss, purpose, and the books that came out of hard seasons."
+  },
+  "_todo": "Brian to supply: real social profile URLs (social.*), affiliate disclosure copy if any retailer links become affiliate links, and the site-credit line text (siteCredit) if one is wanted."
+}
