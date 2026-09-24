@@ -19,6 +19,7 @@ export default function (eleventyConfig) {
     "src/css": "css",
     "src/js": "js",
     "src/media": "media",
+    "src/fonts": "fonts",
     "src/admin": "admin",
     "src/robots.txt": "robots.txt",
   });
