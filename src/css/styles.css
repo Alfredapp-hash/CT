@@ -91,6 +91,7 @@ textarea:focus-visible {
 .site-footer,
 .panel--leather {
   --focus-color: var(--gold-warm);
+  --focus: 3px solid var(--focus-color); /* re-declared here: var() inside a custom property resolves where it is declared */
 }
 
 .skip-link {

@@ -446,7 +446,7 @@
   width: var(--target); /* 44px hit area; the glyph sits in the left 24px so the visual gap to "Books" is unchanged */
   margin-left: -0.2rem;
   margin-right: calc(24px - var(--target));
-  padding: 0 0 0 0;
+  padding: 0 0 0 8px; /* keeps the glyph centred in that left 24px */
   text-align: left;
   min-height: var(--target);
   border: 0;
