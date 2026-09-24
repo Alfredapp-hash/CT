@@ -1,0 +1,11 @@
+{%- set featured = books | bookBySlug(site.featuredSlug) -%}
+{%- set ogImg = ogImage or ("/media/covers/" + featured.cover.base + "@2x.jpg") -%}
+{%- if not noindex %}
+  <meta property="og:title" content="{% if title %}{{ title }} — {{ site.name }}{% else %}{{ site.title }}{% endif %}" />
+  <meta property="og:description" content="{{ ogDescription or description or site.ogDescription }}" />
+  <meta property="og:type" content="{{ ogType or 'website' }}" />
+  <meta property="og:url" content="{{ page.url | absoluteUrl(site.url) }}" />
+  <meta property="og:image" content="{{ ogImg | absoluteUrl(site.url) }}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="{{ page.url | absoluteUrl(site.url) }}" />
+{%- endif %}

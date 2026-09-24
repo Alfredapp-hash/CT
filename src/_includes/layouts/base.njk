@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ site.language }}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% if title %}{{ title }} — {{ site.name }}{% else %}{{ site.title }}{% endif %}</title>
+{%- if description %}
+  <meta name="description" content="{{ description }}" />
+{%- endif %}
+{%- if noindex %}
+  <meta name="robots" content="noindex" />
+{%- endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="{{ site.fontsHref | safe }}" rel="stylesheet" />
+{%- include "partials/head-meta.njk" %}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.blog.title }}" href="/blog/rss.xml" />
+{%- block headPre %}{% endblock %}
+  <link rel="stylesheet" href="/css/styles.css?v={{ site.assetVersion }}" />
+  <link rel="stylesheet" href="/css/components.css?v={{ site.assetVersion }}" />
+{%- block head %}{% endblock %}
+  <link rel="icon" href="{{ site.favicon | safe }}" />
+{%- block headEnd %}{% endblock %}
+</head>
+<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
+  <a class="skip-link" href="#{{ skipTarget or 'main' }}">{{ skipLabel or 'Skip to content' }}</a>
+{% include "partials/nav.njk" %}
+{% block main %}{{ content | safe }}{% endblock %}
+{% include "partials/footer.njk" %}
+{%- block scripts %}{% endblock %}
+{%- if not noAnalytics %}
+  <script src="/js/analytics.js?v={{ site.assetVersion }}" defer></script>
+{%- endif %}
+  <script src="/js/nav.js?v={{ site.assetVersion }}" defer></script>
+</body>
+</html>

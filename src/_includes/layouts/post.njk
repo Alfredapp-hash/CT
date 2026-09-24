@@ -1,0 +1,21 @@
+{% extends "layouts/base.njk" %}
+{% block main %}
+  <main id="main">
+    <article class="post-body">
+      <p class="post-meta"><time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time></p>
+      <h1>{{ title }}</h1>
+{{ content | safe }}
+    </article>
+{%- set related = books | bySlugs(relatedBooks) %}
+{%- if related.length %}
+    <section class="related-books">
+      <p class="eyebrow">Books in this post</p>
+      <ul>
+{%- for b in related %}
+        <li><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></li>
+{%- endfor %}
+      </ul>
+    </section>
+{%- endif %}
+  </main>
+{% endblock %}

@@ -1,0 +1,23 @@
+---
+layout: layouts/page.njk
+permalink: /blog/index.html
+title: Journal
+bodyClass: blog-page
+description: "Notes from the page: Courtney Thomas on faith, healing, loss, purpose, and the books that came out of hard seasons."
+---
+    <section class="wrap blog-head">
+      <p class="eyebrow">{{ site.blog.pageTitle }}</p>
+      <h1>{{ site.blog.heading }}</h1>
+      <p class="lede">{{ site.blog.lede }}</p>
+    </section>
+
+    <ul class="post-list">
+{%- for post in collections.postsNewest %}
+      <li class="post-card">
+        <p class="post-meta"><time datetime="{{ post.date | isoDate }}">{{ post.date | readableDate }}</time></p>
+        <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+        <p>{{ (post.data.summaryHtml or post.data.description) | safe }}</p>
+        <a class="card-cta" href="{{ post.url }}">Read <span aria-hidden="true">&rarr;</span></a>
+      </li>
+{%- endfor %}
+    </ul>

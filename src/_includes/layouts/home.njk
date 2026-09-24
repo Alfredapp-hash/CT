@@ -1,0 +1,13 @@
+{% extends "layouts/base.njk" %}
+{#- Head order preserved from today: preload cover → styles.css → (components.css) → hero.css → inline bk-pre script → favicon. -#}
+{% block headPre %}
+  <link rel="preload" as="image" href="/media/book/cover.jpg" imagesrcset="/media/book/cover-1x.jpg 1x, /media/book/cover.jpg 2x" />
+{%- endblock %}
+{% block head %}
+  <link rel="stylesheet" href="/css/hero.css?v={{ site.assetVersion }}" />
+  <script>(function(){try{var d=document.documentElement;if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.getItem("ct-hero-opened")&&window.CSS&&CSS.supports("transform-style","preserve-3d")&&"animate" in d)d.classList.add("bk-pre")}catch(e){}})();</script>
+{%- endblock %}
+{#- opening.js stays a blocking (non-deferred) script at the end of body, before analytics, on the home page only. -#}
+{% block scripts %}
+  <script src="/js/opening.js?v={{ site.assetVersion }}"></script>
+{%- endblock %}

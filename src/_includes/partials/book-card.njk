@@ -1,0 +1,14 @@
+{%- from "partials/cover.njk" import cover -%}
+{#- card(book) → article.card exactly as on the home page today. -#}
+{%- macro card(book) -%}
+<article class="card">
+      <a class="card-link" href="/books/{{ book.slug }}.html">
+        <figure class="jacket">
+          {{ cover(book, { alt: "" }) }}
+        </figure>
+        <h3>{{ book.title }}</h3>
+        <p>{{ book.tagline }}</p>
+      </a>
+      <a class="card-cta" href="/books/{{ book.slug }}.html">View &amp; order <span aria-hidden="true">→</span></a>
+    </article>
+{%- endmacro -%}

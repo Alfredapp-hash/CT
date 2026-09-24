@@ -1,0 +1,12 @@
+{#- Simple port for Sprint 1 step 5; upgraded to the full nav in step 12. -#}
+  <header class="site-nav">
+    <a class="brand" href="{% if isHome %}#top{% else %}/{% endif %}">{{ site.name }}</a>
+    <nav aria-label="Primary">
+{%- for item in site.footerNav %}{% if item.label != "RSS" and item.label != "Privacy" %}
+      <a href="{{ item.href }}"{% if item.href == page.url %} aria-current="page"{% endif %}>{{ item.label }}</a>
+{%- endif %}{% endfor %}
+{%- if isHome %}
+      <button class="nav-skip" type="button" id="skip" hidden>Skip</button>
+{%- endif %}
+    </nav>
+  </header>

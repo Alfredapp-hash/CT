@@ -1,0 +1,39 @@
+---
+bodyClass: book-page
+ogType: book
+---
+{% extends "layouts/base.njk" %}
+{%- from "partials/cover.njk" import cover -%}
+{%- from "partials/retailers.njk" import retailers -%}
+{% block headEnd %}
+{% include "partials/jsonld-book.njk" %}
+{%- endblock %}
+{% block main %}
+  <main id="main">
+    <article class="book-detail">
+      <figure class="jacket">
+        {{ cover(book, { eager: true }) }}
+      </figure>
+      <div>
+        <p class="eyebrow">{{ book.eyebrow }}</p>
+        <h1>{{ book.title }}</h1>
+        <p class="meta">{{ book.format }} · {{ book.year }} · ISBN {{ book.isbn }}{% if book.pages %} · {{ book.pages }} pages{% endif %}</p>
+        <p class="blurb">{{ book.blurb }}</p>
+        <div class="excerpt"><p class="eyebrow">From the pages</p><blockquote><p>{{ book.excerpt }}</p></blockquote></div>
+        <div class="where">
+          <h2>Where to buy</h2>
+          <p class="dist">{{ site.distribution }}. Order it from any of these retailers, or ask your local bookstore to order the ISBN.</p>
+          {{ retailers(book) }}
+        </div>
+      </div>
+    </article>
+    <section class="more">
+      <p class="eyebrow">Also by {{ site.name }}</p>
+      <ul>
+{%- for b in books %}{% if b.slug != book.slug %}
+        <li><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></li>
+{%- endif %}{% endfor %}
+      </ul>
+    </section>
+  </main>
+{% endblock %}

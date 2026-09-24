@@ -1,0 +1,13 @@
+{%- from "partials/book-card.njk" import card -%}
+{#- shelf(id, heading, lede, books) → section.shelf with the card grid. -#}
+{%- macro shelf(id, heading, lede, books) -%}
+<section class="wrap shelf" id="{{ id }}">
+      <div class="shelf-head">
+        <h2>{{ heading | safe }}</h2>
+        <p>{{ lede | safe }}</p>
+      </div>
+      <div class="grid">
+{% for book in books %}{{ card(book) }}
+{% endfor %}</div>
+    </section>
+{%- endmacro -%}

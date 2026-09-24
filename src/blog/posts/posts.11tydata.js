@@ -3,4 +3,6 @@ export default {
   layout: "layouts/post.njk",
   tags: ["posts"],
   permalink: "/blog/posts/{{ page.fileSlug }}.html",
+  bodyClass: "blog-page",
+  ogType: "article",
 };

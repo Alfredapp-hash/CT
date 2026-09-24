@@ -1,0 +1,12 @@
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <a class="brand" href="/">{{ site.name }}</a>
+      <p>{{ site.tagline }}</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+{%- for item in site.footerNav %}
+      <a href="{{ item.href }}">{{ item.label }}</a>
+{%- endfor %}
+    </nav>
+    <p class="footer-note">{{ site.distribution }}</p>
+  </footer>

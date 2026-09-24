@@ -1,0 +1,10 @@
+{#- Netlify Forms markup, byte-for-byte the home page form. id must be unique per page: pass a suffix for the footer copy. -#}
+{%- macro newsletterForm(site, idSuffix = "") -%}
+<form name="{{ site.newsletter.formName }}" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
+        <input type="hidden" name="form-name" value="{{ site.newsletter.formName }}" />
+        <p hidden><label>Leave this empty <input name="bot-field" /></label></p>
+        <label class="visually-hidden" for="newsletter-email{{ idSuffix }}">Email</label>
+        <input id="newsletter-email{{ idSuffix }}" type="email" name="email" required autocomplete="email" placeholder="Your email" />
+        <button type="submit">Subscribe</button>
+      </form>
+{%- endmacro -%}

@@ -1,0 +1,6 @@
+{% extends "layouts/base.njk" %}
+{% block main %}
+  <main id="main"{% if mainClass %} class="{{ mainClass }}"{% endif %}>
+{{ content | safe }}
+  </main>
+{% endblock %}
