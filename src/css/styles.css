@@ -25,6 +25,36 @@
   --step-3: clamp(1.95rem, 1.74rem + 1.05vw, 2.65rem);
   --step-4: clamp(2.44rem, 2.05rem + 1.95vw, 3.60rem);
   --step-5: clamp(3.05rem, 2.30rem + 3.75vw, 5.40rem);
+
+  /* ——— Sprint 1 additions (existing tokens above are never renamed or recoloured) ———
+     Type scale usage (--step-*):
+       --step-5  page h1 on the home intro (.intro h1)
+       --step-4  section h2 on About / Journal, blog h1, post h1
+       --step-3  shelf h2, newsletter / contact h2, series-path h2
+       --step-2  post-card h2, .section-head h2 (compact)
+       --step-1  card h3, ledes, .book-card h3
+       --step-0  body copy, retailer chips, related-title links
+       --step--1 eyebrows, meta lines, pills, small CTAs                                   */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --radius-s: 2px;
+  --radius-m: 6px;
+  --radius-l: 14px;
+  --radius-pill: 999px;
+  --focus: 3px solid var(--gold-warm);
+  --focus-offset: 2px;
+  --measure: 65ch;
+  --wide: 72rem;
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 500ms;
+  --target: 44px;
 }
 
 * { box-sizing: border-box; }
