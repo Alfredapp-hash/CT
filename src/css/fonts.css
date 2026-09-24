@@ -1,6 +1,7 @@
 /* Self-hosted fonts (Sprint 2): the same latin subsets and weights Google Fonts served, via @fontsource.
    unicode-range matches Google's latin subset exactly, so glyph fallback (arrows, etc.) is unchanged.
-   Loaded first, before styles.css; the two display weights (Cormorant 500, Outfit 400) are preloaded in <head>. */
+   Loaded first, before styles.css. The two display weights are preloaded in <head>: Cormorant 500 (brand, H1/H2)
+   and Cormorant 500 italic (the hero page text) — measured: preloading the italic removes the hero font-swap CLS (0.085 → 0.001). */
 @font-face {
   font-family: "Cormorant Garamond";
   font-style: normal;

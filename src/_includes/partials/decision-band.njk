@@ -23,7 +23,7 @@
         <p class="hero-band__hook">{{ fx.hook }}</p>
 {%- endif %}
         <div class="hero-band__actions">
-          <a class="btn btn--primary" href="/books/{{ featuredBook.slug }}.html#buy" aria-label="{{ homeCopy.hero.ctaPrimaryAria }}">{{ fx.ctaPrimary }}</a>
+          <a class="btn btn--primary" href="/books/{{ featuredBook.slug }}.html#buy">{{ fx.ctaPrimary }}<span class="visually-hidden">: {{ featuredBook.title }}</span></a>
           <a class="btn btn--secondary" href="/#books">{{ fx.ctaSecondary }}</a>
         </div>
 {%- else %}
