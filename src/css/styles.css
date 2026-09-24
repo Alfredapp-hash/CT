@@ -47,7 +47,12 @@
   --radius-m: 6px;
   --radius-l: 14px;
   --radius-pill: 999px;
-  --focus: 3px solid var(--gold-warm);
+  /* Focus ring: --gold-deep (#755526, same value as components.css --gold-deep) = 5.8:1 on paper,
+     5.4:1 on paper-sunk — WCAG 1.4.11 needs 3:1; --gold-warm was 2.0:1 on paper. Leather surfaces
+     (.site-footer, .panel--leather) re-set --focus-color to --gold-warm (5.4:1 on leather). Leather buttons on
+     paper keep the deep ring: the 2px offset puts paper, not leather, next to the ring. */
+  --focus-color: #755526;
+  --focus: 3px solid var(--focus-color);
   --focus-offset: 2px;
   --measure: 65ch;
   --wide: 72rem;
@@ -79,8 +84,13 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--gold-warm);
-  outline-offset: 3px;
+  outline: var(--focus);
+  outline-offset: var(--focus-offset);
+}
+/* Leather surfaces: the warm gold ring reads 5.4:1 against leather; the deep gold would not. */
+.site-footer,
+.panel--leather {
+  --focus-color: var(--gold-warm);
 }
 
 .skip-link {
@@ -162,8 +172,9 @@ textarea:focus-visible {
 .nav-skip {
   background: transparent;
   border: 0;
-  padding: 0.45rem 0;
+  padding: 0.45rem 0.35rem;
   min-height: 44px;
+  min-width: 44px;
   cursor: pointer;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -667,7 +678,7 @@ button[type="submit"]:hover, .button:hover { background: var(--leather-lo); }
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-size: var(--step--1);
-  color: var(--ink-faint);
+  color: var(--ink-soft); /* 7.1:1 on paper; --ink-faint was 3.7:1 at this size (WCAG 1.4.3) */
 }
 
 .post-body {

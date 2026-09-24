@@ -1,7 +1,7 @@
 {% extends "layouts/base.njk" %}
 {#- Head order preserved from today: preload cover → styles.css → (components.css) → hero.css → inline bk-pre script → favicon. -#}
 {% block headPre %}
-  <link rel="preload" as="image" href="/media/book/cover.jpg" imagesrcset="/media/book/cover-1x.jpg 1x, /media/book/cover.jpg 2x" />
+  <link rel="preload" as="image" fetchpriority="high" href="/media/book/cover.jpg" imagesrcset="/media/book/cover-1x.jpg 1x, /media/book/cover.jpg 2x" />
 {%- endblock %}
 {% block head %}
   <link rel="stylesheet" href="/css/hero.css?v={{ site.assetVersion }}" />

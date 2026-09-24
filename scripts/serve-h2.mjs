@@ -6,6 +6,7 @@ import { readFileSync, existsSync, statSync, writeFileSync, mkdirSync } from "no
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
+import { brotliCompressSync, constants as zc } from "node:zlib";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const site = join(root, "_site");
@@ -30,7 +31,14 @@ server.on("request", (req, res) => {
   const ext = p.split(".").pop();
   const headers = { "content-type": p.endsWith("rss.xml") ? "application/rss+xml" : TYPES[ext] || "application/octet-stream" };
   if (/^\/(media|fonts)\//.test(p)) headers["cache-control"] = "public, max-age=31536000, immutable";
+  let body = readFileSync(file);
+  // Netlify serves text assets brotli-compressed; model that too (HTTP/1.1 python server sends them raw, ~4× larger).
+  if (/^(html|xml|css|js|txt|svg|json)$/.test(ext) && /\bbr\b/.test(req.headers["accept-encoding"] || "")) {
+    body = brotliCompressSync(body, { params: { [zc.BROTLI_PARAM_QUALITY]: 5 } });
+    headers["content-encoding"] = "br";
+    headers.vary = "accept-encoding";
+  }
   res.writeHead(200, headers);
-  res.end(readFileSync(file));
+  res.end(body);
 });
 server.listen(PORT, () => console.log(`serving _site over HTTP/2 on https://localhost:${PORT}`));

@@ -1,5 +1,7 @@
 {#- cover(book, opts) → the exact <picture> markup used today.
     opts.eager: true on the book detail page (fetchpriority=high); otherwise lazy.
+    opts.priority: overrides the eager fetchpriority — the home band passes "low" so the cover never
+      competes with the hero's LCP image (the band always sits below the 100dvh hero).
     opts.alt: override alt text (cards pass "" because the title follows the image).
     opts.small: thumbnails (rails / book cards) — only the 600px 1x files, fetchpriority=low. -#}
 {%- macro cover(book, opts = {}) -%}
@@ -14,7 +16,7 @@
               alt="{{ alt }}"
               loading="{{ 'eager' if opts.eager else 'lazy' }}"
 {%- if opts.eager %}
-              fetchpriority="high"
+              fetchpriority="{{ opts.priority or 'high' }}"
 {%- elif opts.small %}
               fetchpriority="low"
 {%- endif %}

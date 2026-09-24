@@ -8,7 +8,7 @@
 {%- if featuredBook %}
       <a class="hero-band__cover" href="/books/{{ featuredBook.slug }}.html">
         <figure class="jacket">
-          {{ cover(featuredBook, { eager: true }) }}
+          {{ cover(featuredBook, { eager: true, priority: "low" }) }}
         </figure>
       </a>
 {%- endif %}

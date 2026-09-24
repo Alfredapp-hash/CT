@@ -72,5 +72,11 @@
     document.addEventListener("click", function (e) {
       if (!mq.matches && header.classList.contains("drop-open") && !e.target.closest(".nav-item--books")) setDrop(false, false);
     });
+    /* CSS still opens the panel on hover; mirror that in aria-expanded so the state never lies. */
+    var item = dropBtn.closest(".nav-item--books");
+    if (item) {
+      item.addEventListener("mouseenter", function () { if (!mq.matches) dropBtn.setAttribute("aria-expanded", "true"); });
+      item.addEventListener("mouseleave", function () { if (!mq.matches && !header.classList.contains("drop-open")) dropBtn.setAttribute("aria-expanded", "false"); });
+    }
   }
 })();
