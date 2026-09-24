@@ -1,0 +1,9 @@
+# Local Netlify folder
+.netlify
+
+# Dependencies
+node_modules
+
+# Local secrets — ANALYTICS_KEY lives in Netlify env vars, never in the repo
+.env
+.env.*

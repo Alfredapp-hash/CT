@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://courtney-thomas-books.netlify.app/sitemap.xml

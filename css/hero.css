@@ -1,0 +1,212 @@
+/* Book hero — replaces the photo-frame .opening hero */
+.bk-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) 4vw 6.5rem;
+  background:
+    radial-gradient(70% 60% at 50% 48%, #fbf5e6 0%, rgba(251, 245, 230, 0) 72%),
+    linear-gradient(180deg, #f6edd7 0%, #f1e5ca 100%);
+  overflow-x: clip;
+}
+.bk-stage {
+  position: relative;
+  width: min(1100px, 100%, calc((100dvh - 11rem) * 1.445));
+  perspective: 2400px;
+  perspective-origin: 50% 35%;
+}
+.bk-shadow {
+  position: absolute;
+  inset: 3% 1% 0 1%;
+  border-radius: 6px;
+  transform-origin: 0 50%;
+  box-shadow: 0 26px 36px -6px rgba(60, 32, 16, 0.30), 0 6px 10px rgba(60, 32, 16, 0.16);
+  pointer-events: none;
+}
+.bk-ground {
+  position: absolute;
+  left: 8%; right: 8%; bottom: -5%; height: 10%;
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(60, 30, 15, 0.22), rgba(60, 30, 15, 0) 100%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+.bk-book {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 888fr) minmax(0, 899fr);
+  transform-style: preserve-3d;
+}
+.bk-right { position: relative; transform-style: preserve-3d; }
+.bk-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  container-type: inline-size;
+  outline: none;
+}
+.bk-page--left {
+  aspect-ratio: 888 / 1237;
+  padding: 15.5% 9.5% 17% 13%;
+  background: url(../media/book/open-left-1x.jpg) 0 0 / 100% 100% no-repeat, #efe4cc;
+  border-radius: 3px 0 0 3px;
+}
+.bk-page--right {
+  height: 100%;
+  aspect-ratio: 899 / 1237;
+  padding: 15.5% 14% 17% 9%;
+  background: url(../media/book/open-right-1x.jpg) 100% 0 / 100% 100% no-repeat, #efe4cc;
+  border-radius: 0 3px 3px 0;
+}
+.bk-text {
+  font-family: "Cormorant Garamond", Palatino, "Palatino Linotype", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1rem, 4.6cqw, 1.45rem);
+  line-height: 1.72;
+  letter-spacing: 0.004em;
+  color: #000000;
+  text-wrap: pretty;
+}
+.bk-text p { margin: 0 0 0.95em; color: #000000; }
+.bk-text p:last-child { margin-bottom: 0; }
+.bk-dup { display: none; }
+.bk-shade {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(40, 20, 10, 0.55) 0%, rgba(40, 20, 10, 0.28) 40%, rgba(40, 20, 10, 0.08) 100%);
+}
+
+.bk-cover {
+  position: absolute;
+  top: -0.4%; bottom: -0.4%; left: 0; right: -0.6%;
+  transform-origin: 0 50%;
+  transform: rotateY(-180deg);
+  transform-style: preserve-3d;
+  visibility: hidden;
+  pointer-events: none;
+}
+.bk-cover-edge {
+  position: absolute;
+  top: 0.6%; bottom: 0.6%; right: 0;
+  width: 9px;
+  transform-origin: 100% 50%;
+  transform: rotateY(90deg);
+  background: linear-gradient(180deg, #3d1219, #5e2029 50%, #3d1219);
+  box-shadow: inset 0 0 0 1px rgba(15, 3, 6, 0.55);
+}
+.bk-cover-front,
+.bk-cover-back {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.bk-cover-front {
+  container-type: inline-size;
+  background: url(../media/book/cover-1x.jpg) 0 0 / 100% 100% no-repeat, #5a1d27;
+  border-radius: 2px 6px 6px 2px;
+}
+.bk-cover-back {
+  transform: rotateY(180deg);
+  background: url(../media/book/open-left-1x.jpg) 0 0 / 100% 100% no-repeat, #efe4cc;
+  border-radius: 3px 0 0 3px;
+}
+@media (min-resolution: 1.5dppx), (min-width: 1200px) {
+  .bk-page--left { background-image: url(../media/book/open-left.jpg); }
+  .bk-page--right { background-image: url(../media/book/open-right.jpg); }
+  .bk-cover-front { background-image: url(../media/book/cover.jpg); }
+  .bk-cover-back { background-image: url(../media/book/open-left.jpg); }
+}
+.bk-title {
+  position: absolute;
+  left: 6%; right: 9%; top: 32.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+  font-size: 10cqw;
+  filter: drop-shadow(0 0.08em 0 rgba(25, 5, 9, 0.75)) drop-shadow(0 -0.03em 0 rgba(255, 228, 190, 0.22)) drop-shadow(0 0.12em 0.14em rgba(15, 3, 6, 0.35));
+}
+.bk-title-by,
+.bk-title-name {
+  display: block;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bk-title-by {
+  font-weight: 500;
+  font-size: 0.55em;
+  letter-spacing: 0.035em;
+  line-height: 1.15;
+  margin-bottom: 0.28em;
+  background-image: linear-gradient(180deg, #f4e2b0 0%, #d9b777 45%, #b28a4a 70%, #e3c68b 100%);
+}
+.bk-title-name {
+  font-weight: 600;
+  font-size: 1em;
+  letter-spacing: 0.004em;
+  line-height: 1.05;
+  padding: 0 0.15em;
+  white-space: nowrap;
+  background-image: linear-gradient(180deg, #f6e5b4 0%, #dbba7b 42%, #b08746 68%, #e6ca90 100%);
+}
+.bk-cover-shade {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(15, 3, 6, 0.15), rgba(15, 3, 6, 0.55));
+}
+.bk-cover-shade--back { background: linear-gradient(270deg, rgba(40, 20, 10, 0.35), rgba(40, 20, 10, 0.6)); }
+
+.bk-controls {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bk-skip {
+  background: transparent;
+  border: 1px solid var(--line-firm);
+  border-radius: 2px;
+  color: var(--ink);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  padding: 0.6rem 1rem;
+  min-height: 44px;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease);
+}
+.bk-skip:hover { border-color: var(--ink); }
+.bk-skip[hidden] { display: none; }
+
+/* Closed pose, set before first paint by the inline head script */
+.bk-pre .bk-cover { visibility: visible; transform: rotateY(0deg); }
+.bk-pre .bk-page--left { opacity: 0; }
+.bk-writing .bk-ch { opacity: 0; }
+
+@media (max-width: 719px) {
+  .bk-stage { width: min(460px, 100%); }
+  .bk-book { grid-template-columns: minmax(0, 1fr); }
+  .bk-page--left { display: none; }
+  .bk-dup { display: block; }
+  .bk-page--right { padding: 17% 14% 19% 11%; }
+  .bk-text { font-size: clamp(0.92rem, 4.35cqw, 1.12rem); line-height: 1.58; }
+  .bk-text p { margin-bottom: 0.7em; }
+}
+@media (min-width: 720px) {
+  .bk-pre .bk-book { transform: translateX(-25%); }
+  .bk-pre .bk-shadow { transform: translateX(-25%) scaleX(0.5); }
+}

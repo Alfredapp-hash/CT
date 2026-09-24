@@ -1,0 +1,33 @@
+[build]
+  publish = "."
+  command = "echo 'Static author site — no build step'"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/analytics.html"
+  status = 200
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/media/covers/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

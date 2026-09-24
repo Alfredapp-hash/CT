@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Courtney Thomas — Journal</title>
+    <link>https://courtney-thomas-books.netlify.app/blog/</link>
+    <atom:link href="https://courtney-thomas-books.netlify.app/blog/rss.xml" rel="self" type="application/rss+xml" />
+    <description>Notes from the page: Courtney Thomas on faith, healing, loss, purpose, and the books that came out of hard seasons.</description>
+    <language>en-us</language>
+    <copyright>Courtney Thomas</copyright>
+    <lastBuildDate>Thu, 03 Sep 2026 09:00:00 +0000</lastBuildDate>
+
+    <item>
+      <title>Keeping what love leaves behind</title>
+      <link>https://courtney-thomas-books.netlify.app/blog/posts/keeping-what-love-leaves.html</link>
+      <guid isPermaLink="true">https://courtney-thomas-books.netlify.app/blog/posts/keeping-what-love-leaves.html</guid>
+      <pubDate>Thu, 03 Sep 2026 09:00:00 +0000</pubDate>
+      <description>Children grieve in the middle of playing. On Finding Drake's Feather, and why a kept feather is a real answer to an impossible question.</description>
+    </item>
+
+    <item>
+      <title>Grace for ordinary days</title>
+      <link>https://courtney-thomas-books.netlify.app/blog/posts/grace-for-ordinary-days.html</link>
+      <guid isPermaLink="true">https://courtney-thomas-books.netlify.app/blog/posts/grace-for-ordinary-days.html</guid>
+      <pubDate>Thu, 16 Jul 2026 09:00:00 +0000</pubDate>
+      <description>Early alarms, the commute, the guilt that arrives after the children are asleep. What 365 Days of Grace offers a working mother who is out of proof.</description>
+    </item>
+
+    <item>
+      <title>A garden still growing</title>
+      <link>https://courtney-thomas-books.netlify.app/blog/posts/a-garden-still-growing.html</link>
+      <guid isPermaLink="true">https://courtney-thomas-books.netlify.app/blog/posts/a-garden-still-growing.html</guid>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0000</pubDate>
+      <description>Seeds, storms, waiting, pruning. The four movements of Rooted in Purpose, and why a garden is an honest way to think about a life.</description>
+    </item>
+
+    <item>
+      <title>How to read The Price Series</title>
+      <link>https://courtney-thomas-books.netlify.app/blog/posts/reading-the-price-series.html</link>
+      <guid isPermaLink="true">https://courtney-thomas-books.netlify.app/blog/posts/reading-the-price-series.html</guid>
+      <pubDate>Thu, 23 Apr 2026 09:00:00 +0000</pubDate>
+      <description>Choosing You, then Letting Go, then What We Keep — why the order matters, and what each book is actually asking of Kathryn.</description>
+    </item>
+
+    <item>
+      <title>Surviving into story</title>
+      <link>https://courtney-thomas-books.netlify.app/blog/posts/surviving-into-story.html</link>
+      <guid isPermaLink="true">https://courtney-thomas-books.netlify.app/blog/posts/surviving-into-story.html</guid>
+      <pubDate>Thu, 12 Mar 2026 09:00:00 +0000</pubDate>
+      <description>Some of the most powerful stories are born from the things we never thought we would survive. On the long distance between living through a chapter and being able to write it.</description>
+    </item>
+  </channel>
+</rss>

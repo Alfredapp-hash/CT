@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Analytics — Courtney Thomas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css?v=enterprise" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%235c1f2a' width='32' height='32'/%3E%3Cpath fill='%23f0ddb0' d='M8 6h12v20H8z'/%3E%3Cpath fill='%235c1f2a' d='M10 9h8v1H10zm0 3h8v1H10z'/%3E%3C/svg%3E" />
+  <style>
+    .dash { padding-top: calc(var(--nav-h) + 2.5rem); padding-bottom: 4rem; }
+    .dash-head { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; justify-content: space-between; }
+    .dash-head h1 { margin: 0; font-size: var(--step-3); font-weight: 500; }
+    .dash-controls { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+    .dash-controls label { margin: 0; }
+    .dash-controls select { padding: 0.55rem 0.7rem; border: 1px solid var(--line); background: var(--paper-sunk); color: var(--ink); border-radius: 2px; }
+    .ghost-button {
+      background: transparent; border: 1px solid var(--line-firm); color: var(--ink);
+      padding: 0.6rem 1rem; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.7rem;
+      cursor: pointer; min-height: 44px; transition: background 0.3s var(--ease), color 0.3s var(--ease);
+    }
+    .ghost-button:hover { background: var(--ink); color: var(--paper); }
+    .gate { max-width: 26rem; margin: 0 auto; }
+    .gate form { display: grid; gap: 0.9rem; }
+    .stat-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); margin: 2rem 0; }
+    .stat {
+      background: var(--paper-lift); border: 1px solid var(--line); border-radius: 3px;
+      padding: 1.1rem 1.2rem; box-shadow: var(--lift-1);
+    }
+    .stat dt { margin: 0 0 0.35rem; letter-spacing: 0.16em; text-transform: uppercase; font-size: 0.66rem; color: var(--gold); }
+    .stat dd { margin: 0; font-family: var(--serif); font-size: var(--step-3); line-height: 1; }
+    .panel { margin: 2.5rem 0 0; }
+    .panel h2 { margin: 0 0 0.9rem; font-size: var(--step-1); font-weight: 600; }
+    .chart { display: flex; align-items: flex-end; gap: 3px; height: 9rem; padding: 0.6rem 0.2rem 0; border-bottom: 1px solid var(--line-firm); }
+    .chart-bar { flex: 1 1 0; min-width: 4px; background: linear-gradient(180deg, var(--gold-warm), var(--leather)); border-radius: 2px 2px 0 0; min-height: 2px; }
+    .chart-axis { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--ink-faint); padding-top: 0.5rem; }
+    table.data { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    table.data th, table.data td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--line); }
+    table.data th { letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.66rem; color: var(--ink-faint); font-weight: 500; }
+    table.data td:last-child, table.data th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+    .two-col { display: grid; gap: 2.5rem; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); }
+    .muted { color: var(--ink-faint); font-size: 0.85rem; }
+    .error { color: var(--leather); font-size: 0.9rem; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="site-nav">
+    <a class="brand" href="/">Courtney Thomas</a>
+    <nav aria-label="Primary">
+      <a href="/">Back to site</a>
+      <button class="nav-skip" type="button" id="sign-out" hidden>Sign out</button>
+    </nav>
+  </header>
+
+  <main class="wrap dash">
+    <section class="gate" id="gate">
+      <p class="eyebrow">Private</p>
+      <h1>Analytics access</h1>
+      <p class="muted">Enter the analytics key. It is kept in this browser tab only, and is cleared when the tab closes.</p>
+      <form id="gate-form">
+        <label>Analytics key <input type="password" id="key-input" autocomplete="current-password" required /></label>
+        <button type="submit">View dashboard</button>
+        <p class="error" id="gate-error" hidden aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="dashboard" hidden>
+      <div class="dash-head">
+        <div>
+          <p class="eyebrow">Private dashboard</p>
+          <h1>Site analytics</h1>
+        </div>
+        <div class="dash-controls">
+          <label for="days-select">Range
+            <select id="days-select">
+              <option value="7">Last 7 days</option>
+              <option value="14" selected>Last 14 days</option>
+              <option value="30">Last 30 days</option>
+              <option value="90">Last 90 days</option>
+            </select>
+          </label>
+          <button type="button" class="ghost-button" id="refresh">Refresh</button>
+        </div>
+      </div>
+
+      <p class="error" id="dash-error" hidden aria-live="polite"></p>
+
+      <dl class="stat-grid">
+        <div class="stat"><dt>Pageviews</dt><dd id="stat-pageviews">—</dd></div>
+        <div class="stat"><dt>Unique paths</dt><dd id="stat-paths">—</dd></div>
+        <div class="stat"><dt>Referrer hosts</dt><dd id="stat-referrers">—</dd></div>
+        <div class="stat"><dt>Events</dt><dd id="stat-events">—</dd></div>
+      </dl>
+
+      <section class="panel">
+        <h2>Daily pageviews</h2>
+        <div class="chart" id="chart" role="img" aria-label="Daily pageviews bar chart"></div>
+        <div class="chart-axis"><span id="chart-from">—</span><span id="chart-peak">—</span><span id="chart-to">—</span></div>
+      </section>
+
+      <div class="panel two-col">
+        <section>
+          <h2>Top pages</h2>
+          <table class="data">
+            <thead><tr><th scope="col">Path</th><th scope="col">Views</th></tr></thead>
+            <tbody id="pages-body"><tr><td colspan="2" class="muted">Loading…</td></tr></tbody>
+          </table>
+        </section>
+        <section>
+          <h2>Top referrers</h2>
+          <table class="data">
+            <thead><tr><th scope="col">Host</th><th scope="col">Views</th></tr></thead>
+            <tbody id="referrers-body"><tr><td colspan="2" class="muted">Loading…</td></tr></tbody>
+          </table>
+        </section>
+      </div>
+
+      <section class="panel" id="events-panel" hidden>
+        <h2>Events</h2>
+        <table class="data">
+          <thead><tr><th scope="col">Event</th><th scope="col">Count</th></tr></thead>
+          <tbody id="events-body"></tbody>
+        </table>
+      </section>
+
+      <p class="muted" id="last-refreshed" style="margin-top:2rem;">—</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Courtney Thomas</span>
+    <span>No cookies, no personal data collected</span>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "ct-analytics-key";
+      var gate = document.getElementById("gate");
+      var gateForm = document.getElementById("gate-form");
+      var gateError = document.getElementById("gate-error");
+      var keyInput = document.getElementById("key-input");
+      var dashboard = document.getElementById("dashboard");
+      var dashError = document.getElementById("dash-error");
+      var signOut = document.getElementById("sign-out");
+      var daysSelect = document.getElementById("days-select");
+      var refresh = document.getElementById("refresh");
+      var chart = document.getElementById("chart");
+
+      function readKey() {
+        try { return sessionStorage.getItem(STORAGE_KEY) || ""; } catch (e) { return ""; }
+      }
+      function writeKey(value) {
+        try { sessionStorage.setItem(STORAGE_KEY, value); } catch (e) { /* private mode */ }
+      }
+      function clearKey() {
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* private mode */ }
+      }
+
+      function showMessage(element, message) {
+        if (!message) { element.hidden = true; element.textContent = ""; return; }
+        element.textContent = message;
+        element.hidden = false;
+      }
+
+      function showGate(message) {
+        dashboard.hidden = true;
+        gate.hidden = false;
+        signOut.hidden = true;
+        showMessage(gateError, message || "");
+      }
+
+      function showDashboard() {
+        gate.hidden = true;
+        dashboard.hidden = false;
+        signOut.hidden = false;
+      }
+
+      function number(value) {
+        return (value || 0).toLocaleString();
+      }
+
+      function fillTable(tbody, rows, labelKey, emptyText) {
+        tbody.textContent = "";
+        if (!rows || rows.length === 0) {
+          var empty = document.createElement("tr");
+          var cell = document.createElement("td");
+          cell.colSpan = 2;
+          cell.className = "muted";
+          cell.textContent = emptyText;
+          empty.appendChild(cell);
+          tbody.appendChild(empty);
+          return;
+        }
+        rows.slice(0, 20).forEach(function (row) {
+          var tr = document.createElement("tr");
+          var label = document.createElement("td");
+          label.textContent = row[labelKey];
+          var count = document.createElement("td");
+          count.textContent = number(row.count);
+          tr.appendChild(label);
+          tr.appendChild(count);
+          tbody.appendChild(tr);
+        });
+      }
+
+      function drawChart(daily) {
+        chart.textContent = "";
+        var peak = daily.reduce(function (max, day) { return Math.max(max, day.pageviews); }, 0);
+        daily.forEach(function (day) {
+          var bar = document.createElement("div");
+          bar.className = "chart-bar";
+          bar.style.height = peak > 0 ? Math.max(2, Math.round((day.pageviews / peak) * 100)) + "%" : "2px";
+          bar.title = day.date + ": " + number(day.pageviews) + " pageviews";
+          chart.appendChild(bar);
+        });
+        document.getElementById("chart-from").textContent = daily.length ? daily[0].date : "—";
+        document.getElementById("chart-to").textContent = daily.length ? daily[daily.length - 1].date : "—";
+        document.getElementById("chart-peak").textContent = "Peak " + number(peak);
+      }
+
+      function render(data) {
+        document.getElementById("stat-pageviews").textContent = number(data.totals.pageviews);
+        document.getElementById("stat-paths").textContent = number(data.totals.unique_paths);
+        document.getElementById("stat-referrers").textContent = number(data.totals.referrer_hosts);
+        document.getElementById("stat-events").textContent = number(data.totals.events);
+
+        drawChart(data.daily || []);
+        fillTable(document.getElementById("pages-body"), data.pages, "path", "No pageviews yet.");
+        fillTable(document.getElementById("referrers-body"), data.referrers, "host", "No external referrers yet.");
+
+        var eventsPanel = document.getElementById("events-panel");
+        if (data.events && data.events.length) {
+          eventsPanel.hidden = false;
+          fillTable(document.getElementById("events-body"), data.events, "event", "No events yet.");
+        } else {
+          eventsPanel.hidden = true;
+        }
+
+        document.getElementById("last-refreshed").textContent =
+          "Last refreshed " + new Date(data.generated_at).toLocaleString() +
+          " · " + data.range.from + " to " + data.range.to;
+      }
+
+      function load() {
+        var key = readKey();
+        if (!key) { showGate(); return; }
+        showMessage(dashError, "");
+        refresh.disabled = true;
+
+        fetch("/api/analytics/summary?days=" + encodeURIComponent(daysSelect.value), {
+          headers: { "X-Analytics-Key": key },
+          cache: "no-store",
+        })
+          .then(function (response) {
+            if (response.status === 401) {
+              clearKey();
+              showGate("That key was not accepted. Try again.");
+              return null;
+            }
+            if (!response.ok) throw new Error("Request failed with status " + response.status);
+            return response.json();
+          })
+          .then(function (data) {
+            if (!data) return;
+            showDashboard();
+            render(data);
+          })
+          .catch(function (error) {
+            showDashboard();
+            showMessage(dashError, "Could not load analytics: " + error.message);
+          })
+          .then(function () {
+            refresh.disabled = false;
+          });
+      }
+
+      gateForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var value = keyInput.value.trim();
+        if (!value) return;
+        writeKey(value);
+        keyInput.value = "";
+        load();
+      });
+
+      signOut.addEventListener("click", function () {
+        clearKey();
+        showGate("Signed out.");
+      });
+
+      refresh.addEventListener("click", load);
+      daysSelect.addEventListener("change", load);
+
+      if (readKey()) { showDashboard(); load(); } else { showGate(); }
+    })();
+  </script>
+</body>
+</html>
