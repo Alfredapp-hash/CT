@@ -60,6 +60,26 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("where", (arr, key, value) => (arr || []).filter((x) => x && x[key] === value));
   eleventyConfig.addFilter("year", () => new Date().getUTCFullYear());
 
+  // Sitemap helpers: keep today's ordering (home, blog, posts oldest→newest, books in catalogue order).
+  const SITEMAP_EXCLUDE = new Set(["/404.html", "/thank-you.html"]);
+  eleventyConfig.addFilter("sitemapPages", (pages) => {
+    const books = JSON.parse(readFileSync(new URL("./src/_data/books.json", import.meta.url), "utf8"));
+    const bookRank = new Map(books.map((b, i) => [`/books/${b.slug}.html`, i]));
+    const rank = (p) => {
+      if (p.url === "/") return [0, 0, ""];
+      if (p.url === "/blog/") return [1, 0, ""];
+      if (p.url.startsWith("/blog/posts/")) return [2, p.date ? p.date.getTime() : 0, p.url];
+      if (bookRank.has(p.url)) return [3, bookRank.get(p.url), p.url];
+      return [4, 0, p.url];
+    };
+    return (pages || [])
+      .filter((p) => p.url && !p.url.startsWith("/admin") && !SITEMAP_EXCLUDE.has(p.url) && !(p.data && p.data.excludeFromSitemap) && !p.url.endsWith(".xml"))
+      .map((p) => ({ p, r: rank(p) }))
+      .sort((a, b) => a.r[0] - b.r[0] || a.r[1] - b.r[1] || (a.r[2] < b.r[2] ? -1 : a.r[2] > b.r[2] ? 1 : 0))
+      .map((x) => x.p);
+  });
+  eleventyConfig.addFilter("sitemapUrl", (url, base) => base + url);
+
   eleventyConfig.setServerOptions({ port: 8080 });
 
   return {
