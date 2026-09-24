@@ -1,0 +1,16 @@
+{%- from "partials/book-card-new.njk" import bookCard -%}
+{#- rail(id, label, books, allBooks) → horizontal scroll-snap strip of book cards with prev/next buttons. -#}
+{%- macro rail(id, label, items, books) -%}
+<div class="rail" id="{{ id }}">
+  <div class="rail__controls">
+    <button class="rail__btn rail__btn--prev" type="button" aria-controls="{{ id }}-track" aria-label="Scroll {{ label }} backwards"><span aria-hidden="true">←</span></button>
+    <button class="rail__btn rail__btn--next" type="button" aria-controls="{{ id }}-track" aria-label="Scroll {{ label }} forwards"><span aria-hidden="true">→</span></button>
+  </div>
+  <ul class="rail__track" id="{{ id }}-track" tabindex="0" role="region" aria-label="{{ label }}">
+{%- for b in items %}
+    <li class="rail__item">{{ bookCard(b, books) }}</li>
+{%- endfor %}
+  </ul>
+  <p class="rail__status" aria-live="polite"></p>
+</div>
+{%- endmacro -%}

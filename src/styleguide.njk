@@ -1,0 +1,141 @@
+---
+layout: layouts/page.njk
+permalink: /styleguide.html
+title: Styleguide
+bodyClass: book-page styleguide
+mainClass: wrap styleguide-main
+noindex: true
+noAnalytics: true
+excludeFromSitemap: true
+eleventyExcludeFromCollections: true
+needsRail: true
+---
+{%- from "partials/book-card-new.njk" import bookCard -%}
+{%- from "partials/rail.njk" import rail -%}
+{%- from "partials/retailers.njk" import retailerGroups -%}
+{%- from "partials/newsletter-form.njk" import newsletterForm -%}
+{%- set series = books | where("shelf", "price-series") -%}
+{%- set sample = books | bookBySlug("the-price-of-choosing-you") -%}
+    <div class="section-head section-head--rule">
+      <p class="eyebrow">Internal</p>
+      <h1>Component styleguide</h1>
+      <p class="lede">Every Sprint 1 component in every state. This page is noindex and excluded from the sitemap and collections.</p>
+    </div>
+
+    <section class="sg-block" id="sg-tokens">
+      <h2>Tokens</h2>
+      <ul class="sg-swatches">
+        <li><span style="background: var(--paper)"></span>--paper</li>
+        <li><span style="background: var(--paper-sunk)"></span>--paper-sunk</li>
+        <li><span style="background: var(--paper-lift)"></span>--paper-lift</li>
+        <li><span style="background: var(--leather)"></span>--leather</li>
+        <li><span style="background: var(--leather-lo)"></span>--leather-lo</li>
+        <li><span style="background: var(--gold)"></span>--gold</li>
+        <li><span style="background: var(--gold-warm)"></span>--gold-warm</li>
+        <li><span style="background: var(--gold-deep)"></span>--gold-deep (new, small text)</li>
+        <li><span style="background: var(--ink)"></span>--ink</li>
+        <li><span style="background: var(--ink-soft)"></span>--ink-soft</li>
+      </ul>
+      <p class="sg-type" style="font-size: var(--step-5); font-family: var(--serif)">step-5 Cormorant</p>
+      <p class="sg-type" style="font-size: var(--step-4); font-family: var(--serif)">step-4 Cormorant</p>
+      <p class="sg-type" style="font-size: var(--step-3); font-family: var(--serif)">step-3 Cormorant</p>
+      <p class="sg-type" style="font-size: var(--step-2); font-family: var(--serif)">step-2 Cormorant</p>
+      <p class="sg-type" style="font-size: var(--step-1)">step-1 Outfit</p>
+      <p class="sg-type" style="font-size: var(--step-0)">step-0 Outfit</p>
+      <p class="sg-type" style="font-size: var(--step--1)">step--1 Outfit</p>
+      <p class="sg-spaces"><span style="width: var(--space-1)"></span><span style="width: var(--space-2)"></span><span style="width: var(--space-3)"></span><span style="width: var(--space-4)"></span><span style="width: var(--space-5)"></span><span style="width: var(--space-6)"></span><span style="width: var(--space-7)"></span><span style="width: var(--space-8)"></span> space-1 … space-8</p>
+    </section>
+
+    <section class="sg-block" id="sg-buttons">
+      <h2>Buttons</h2>
+      <p class="sg-row">
+        <a class="btn btn--primary" href="#sg-buttons">Primary link</a>
+        <button class="btn btn--primary" type="button">Primary button</button>
+        <a class="btn btn--secondary" href="#sg-buttons">Secondary</a>
+        <a class="btn btn--quiet" href="#sg-buttons">Quiet</a>
+        <button class="btn btn--primary" type="button" disabled>Disabled</button>
+        <a class="btn btn--primary btn--small" href="#sg-buttons">Small</a>
+        <a class="btn btn--secondary btn--small" href="#sg-buttons">Small secondary</a>
+      </p>
+      <div class="panel panel--leather">
+        <p class="eyebrow">On leather</p>
+        <p class="sg-row">
+          <a class="btn btn--primary" href="#sg-buttons">Primary</a>
+          <a class="btn btn--secondary" href="#sg-buttons">Secondary</a>
+          <a class="btn btn--quiet" href="#sg-buttons">Quiet</a>
+          <span class="pill">Pill</span>
+          <span class="pill pill--gold">Gold pill</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="sg-block" id="sg-pills">
+      <h2>Pills</h2>
+      <p class="sg-row">
+        <span class="pill">Default</span>
+        <span class="pill pill--gold">Gold</span>
+        <span class="pill pill--leather">Leather</span>
+        <span class="pill pill--outline">Outline</span>
+        <span class="pill pill--outline">Book 1 of 3</span>
+      </p>
+    </section>
+
+    <section class="sg-block" id="sg-section-head">
+      <h2>Section header</h2>
+      <div class="section-head section-head--rule">
+        <p class="eyebrow">Eyebrow</p>
+        <h2>A section heading in Cormorant</h2>
+        <p class="lede">A lede in Outfit at step-1 that explains the section in one or two lines and stops.</p>
+        <div class="section-head__actions"><a class="btn btn--secondary btn--small" href="#sg-section-head">Optional action</a></div>
+      </div>
+      <div class="section-head section-head--compact">
+        <p class="eyebrow">Compact</p>
+        <h2>Compact variant at step-2</h2>
+      </div>
+    </section>
+
+    <section class="sg-block" id="sg-panels">
+      <h2>Panels</h2>
+      <div class="sg-grid">
+        <div class="panel"><p class="eyebrow">.panel</p><p>Lifted paper panel with a soft shadow.</p></div>
+        <div class="panel panel--sunk"><p class="eyebrow">.panel--sunk</p><p>Sunk paper for form wells and quiet notes.</p></div>
+        <div class="panel panel--spine"><p class="eyebrow">.panel--spine</p><p>Leather spine on the left edge.</p></div>
+      </div>
+      <div class="panel panel--leather panel--quote panel--spine" style="margin-top: var(--space-5)">
+        <blockquote>“{{ author.quotes[0].text }}”<cite><a href="/books/{{ author.quotes[0].bookSlug }}.html">{{ author.quotes[0].source }}</a></cite></blockquote>
+      </div>
+    </section>
+
+    <section class="sg-block" id="sg-book-card">
+      <h2>Book card</h2>
+      <ul class="book-grid">
+{%- for b in series %}
+        <li>{{ bookCard(b, books) }}</li>
+{%- endfor %}
+        <li>{{ bookCard(books | bookBySlug("finding-your-self-worth"), books) }}</li>
+        <li>{{ bookCard(books | bookBySlug("finding-drakes-feather"), books, { label: "For children" }) }}</li>
+      </ul>
+    </section>
+
+    <section class="sg-block" id="sg-retailers">
+      <h2>Retailers, grouped by format</h2>
+      <div class="retailer-groups">
+        {{ retailerGroups(sample) }}
+      </div>
+      <p class="sg-note">eBook and audiobook rows appear only when a book record carries <code>ebookIsbn</code> or <code>audiobook.retailers</code>; none do yet.</p>
+    </section>
+
+    <section class="sg-block" id="sg-rail">
+      <h2>Rail</h2>
+      {{ rail("sg-rail-demo", "all seven books", books, books) }}
+    </section>
+
+    <section class="sg-block" id="sg-forms">
+      <h2>Newsletter form (Netlify)</h2>
+      {{ newsletterForm(site, "-sg") }}
+    </section>
+
+    <section class="sg-block" id="sg-nav">
+      <h2>Navigation</h2>
+      <p>The header above is the live component: Books dropdown (grouped from books.json), hamburger at ≤ 900px with focus trap, Escape to close, focus returned to the trigger, <code>aria-current="page"</code> on the current item. Resize the window to see the mobile menu.</p>
+    </section>

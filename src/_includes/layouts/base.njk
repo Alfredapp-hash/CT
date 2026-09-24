@@ -32,5 +32,8 @@
   <script src="/js/analytics.js?v={{ site.assetVersion }}" defer></script>
 {%- endif %}
   <script src="/js/nav.js?v={{ site.assetVersion }}" defer></script>
+{%- if needsRail %}
+  <script src="/js/rail.js?v={{ site.assetVersion }}" defer></script>
+{%- endif %}
 </body>
 </html>

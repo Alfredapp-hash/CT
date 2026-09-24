@@ -1,0 +1,27 @@
+{%- from "partials/cover.njk" import cover -%}
+{#- bookCard(book, books, site) → the Sprint 1 .book-card component (series label, meta, tagline, Read more + Buy). -#}
+{%- macro bookCard(book, books, opts = {}) -%}
+{%- set seriesTotal = 0 -%}
+{%- if book.series %}{% for b in books %}{% if b.series and b.series.name == book.series.name %}{% set seriesTotal = seriesTotal + 1 %}{% endif %}{% endfor %}{% endif -%}
+<article class="book-card">
+  <a class="book-card__cover" href="/books/{{ book.slug }}.html" tabindex="-1" aria-hidden="true">
+    <figure class="jacket">
+      {{ cover(book, { alt: "" }) }}
+    </figure>
+  </a>
+  {%- if book.series %}
+  <p class="book-card__label">Book {{ book.series.order }} of {{ seriesTotal }} · {{ book.series.name }}</p>
+  {%- elif book.publishedAs %}
+  <p class="book-card__label">Published as {{ book.publishedAs }}</p>
+  {%- elif opts.label %}
+  <p class="book-card__label">{{ opts.label }}</p>
+  {%- endif %}
+  <h3><a href="/books/{{ book.slug }}.html">{{ book.title }}</a></h3>
+  <p class="book-card__meta">{{ book.year }} · {{ book.format }}</p>
+  <p class="book-card__tagline">{{ book.tagline }}</p>
+  <div class="book-card__actions">
+    <a class="btn btn--quiet btn--small" href="/books/{{ book.slug }}.html">Read more</a>
+    <a class="btn btn--secondary btn--small" href="/books/{{ book.slug }}.html#buy">Buy</a>
+  </div>
+</article>
+{%- endmacro -%}
