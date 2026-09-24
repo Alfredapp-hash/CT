@@ -105,12 +105,29 @@ for (const f of forms) {
 }
 const botFields = (html.match(/<input name="bot-field" \/>/g) || []).length;
 if (botFields < 2) fail(`expected at least 2 honeypot bot-field inputs on the home page, found ${botFields}`);
-// The footer's mini-form duplicates the newsletter form; the first (main) one must be byte-equivalent to the original.
-const ORIGINAL_NEWSLETTER = `<form name="newsletter" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
+// Sprint 2: the home newsletter form gained a visible label and an optional "name" field, so it is asserted at
+// attribute level (every Netlify-relevant attribute exactly as the original). The footer mini-form (id suffix
+// "-footer") and the notes form stay byte-equivalent to the original.
+const NEWSLETTER_OPEN = '<form name="newsletter" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form';
+const newsletterForms = html.split(NEWSLETTER_OPEN).slice(1).map((chunk) => chunk.slice(0, chunk.indexOf("</form>")));
+if (newsletterForms.length < 2) fail(`expected the home newsletter form + the footer mini-form, found ${newsletterForms.length}`);
+for (const [i, f] of newsletterForms.entries()) {
+  const must = [
+    '<input type="hidden" name="form-name" value="newsletter" />',
+    '<p hidden><label>Leave this empty <input name="bot-field" /></label></p>',
+    /<input id="newsletter-email[^"]*" type="email" name="email" required autocomplete="email"/,
+    /<button type="submit"[^>]*>Subscribe<\/button>/,
+  ];
+  for (const m of must) {
+    const ok = typeof m === "string" ? f.includes(m) : m.test(f);
+    if (!ok) fail(`newsletter form #${i + 1}: missing ${m}`);
+  }
+}
+const ORIGINAL_NEWSLETTER_FOOTER = `<form name="newsletter" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
         <input type="hidden" name="form-name" value="newsletter" />
         <p hidden><label>Leave this empty <input name="bot-field" /></label></p>
-        <label class="visually-hidden" for="newsletter-email">Email</label>
-        <input id="newsletter-email" type="email" name="email" required autocomplete="email" placeholder="Your email" />
+        <label class="visually-hidden" for="newsletter-email-footer">Email</label>
+        <input id="newsletter-email-footer" type="email" name="email" required autocomplete="email" placeholder="Your email" />
         <button type="submit">Subscribe</button>
       </form>`;
 const ORIGINAL_NOTES = `<form name="notes" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field">
@@ -124,8 +141,16 @@ const ORIGINAL_NOTES = `<form name="notes" method="POST" action="/thank-you" dat
         <button type="submit">Send</button>
         <p class="form-note" id="form-note" hidden aria-live="polite"></p>
       </form>`;
-if (!html.includes(ORIGINAL_NEWSLETTER)) fail("newsletter form is not byte-equivalent to the original");
+if (!html.includes(ORIGINAL_NEWSLETTER_FOOTER)) fail("footer newsletter mini-form is not byte-equivalent to the original (id suffix aside)");
 if (!html.includes(ORIGINAL_NOTES)) fail("notes form is not byte-equivalent to the original");
+// Home anchors that nav / footer / opening.js depend on
+for (const id of ["top", "library", "books", "reading-order", "faith", "journal", "about", "newsletter", "contact", "enter", "skip"]) {
+  if (!new RegExp(`\\sid="${id}"`).test(html)) fail(`home page: missing id="${id}"`);
+}
+// Exactly one primary CTA in the hero + decision band region
+const bandEnd = html.indexOf("</section>", html.indexOf('class="hero-band'));
+const primaries = (html.slice(html.indexOf('<main id="library">'), bandEnd).match(/btn--primary/g) || []).length;
+if (primaries !== 1) fail(`expected exactly one .btn--primary in the decision band, found ${primaries}`);
 
 // 4. File inventory: nothing from the baseline may be missing
 const walk = (dir) => readdirSync(dir).flatMap((n) => {
