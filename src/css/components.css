@@ -155,6 +155,7 @@
   border-radius: var(--radius-s) var(--radius-m) var(--radius-m) var(--radius-s);
   box-shadow: var(--lift-1);
 }
+.panel .eyebrow { color: var(--gold-deep); }
 .panel > :first-child { margin-top: 0; }
 .panel > :last-child { margin-bottom: 0; }
 .panel--sunk {
@@ -312,17 +313,21 @@
   --rail-gap: var(--space-5);
 }
 .rail__track {
-  display: flex;
-  gap: var(--rail-gap);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: var(--space-4);
   padding: var(--space-2) var(--space-4) var(--space-4);
   margin: 0 calc(-1 * var(--space-4));
-  list-style: none;
   scrollbar-width: thin;
   scrollbar-color: var(--line-firm) transparent;
+}
+.rail__list {
+  display: flex;
+  gap: var(--rail-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .rail__item {
   flex: 0 0 auto;
@@ -373,22 +378,6 @@
   .book-card__cover:hover .jacket,
   .book-card__cover:focus-visible .jacket { transform: none; }
 }
-
-/* --------------------------------------------------------------------------
-   Styleguide-only scaffolding
-   -------------------------------------------------------------------------- */
-.styleguide-main { padding: 3rem 0 5rem; }
-.sg-block { padding: var(--space-6) 0; border-top: 1px solid var(--line); }
-.sg-block > h2 { font-size: var(--step-2); margin: 0 0 var(--space-4); }
-.sg-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 0 var(--space-4); }
-.sg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); }
-.sg-swatches { list-style: none; margin: 0 0 var(--space-5); padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-3); font-size: 0.8rem; }
-.sg-swatches li { display: flex; align-items: center; gap: var(--space-2); }
-.sg-swatches span { width: 2rem; height: 2rem; border-radius: var(--radius-s); border: 1px solid var(--line-firm); display: inline-block; }
-.sg-type { margin: 0 0 var(--space-2); line-height: 1.1; }
-.sg-spaces { display: flex; align-items: center; gap: var(--space-2); }
-.sg-spaces span { display: inline-block; height: 1rem; background: var(--gold-warm); }
-.sg-note { color: var(--ink-soft); font-size: 0.9rem; }
 
 /* --------------------------------------------------------------------------
    Global navigation (Sprint 1 step 12). Base .site-nav / .brand / .site-nav nav a
@@ -509,6 +498,8 @@
   .site-nav { padding: 0.65rem 4vw; }
   .nav-toggle { display: inline-flex; margin-left: auto; }
   .nav-toggle[hidden] { display: none; }
+  /* JS present (class set inline in <head>, before first paint): show the toggle at once so the header never reflows */
+  .has-nav-js .nav-toggle[hidden] { display: inline-flex; }
   /* No JS: links stay visible and wrap. With JS: collapsed behind the toggle. */
   .has-nav-js .nav-menu { display: none; }
   .has-nav-js .is-open .nav-menu {

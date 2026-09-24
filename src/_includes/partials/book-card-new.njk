@@ -6,7 +6,7 @@
 <article class="book-card">
   <a class="book-card__cover" href="/books/{{ book.slug }}.html" tabindex="-1" aria-hidden="true">
     <figure class="jacket">
-      {{ cover(book, { alt: "" }) }}
+      {{ cover(book, { alt: "", small: true }) }}
     </figure>
   </a>
   {%- if book.series %}
@@ -20,8 +20,8 @@
   <p class="book-card__meta">{{ book.year }} · {{ book.format }}</p>
   <p class="book-card__tagline">{{ book.tagline }}</p>
   <div class="book-card__actions">
-    <a class="btn btn--quiet btn--small" href="/books/{{ book.slug }}.html">Read more</a>
-    <a class="btn btn--secondary btn--small" href="/books/{{ book.slug }}.html#buy">Buy</a>
+    <a class="btn btn--quiet btn--small" href="/books/{{ book.slug }}.html">Read more<span class="visually-hidden"> about {{ book.title }}</span></a>
+    <a class="btn btn--secondary btn--small" href="/books/{{ book.slug }}.html#buy">Buy<span class="visually-hidden"> {{ book.title }}</span></a>
   </div>
 </article>
 {%- endmacro -%}

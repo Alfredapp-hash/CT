@@ -1,19 +1,22 @@
 {#- cover(book, opts) → the exact <picture> markup used today.
     opts.eager: true on the book detail page (fetchpriority=high); otherwise lazy.
-    opts.alt: override alt text (cards pass "" because the title follows the image). -#}
+    opts.alt: override alt text (cards pass "" because the title follows the image).
+    opts.small: thumbnails (rails / book cards) — only the 600px 1x files, fetchpriority=low. -#}
 {%- macro cover(book, opts = {}) -%}
 {%- set base = "/media/covers/" + book.cover.base -%}
 {%- set alt = opts.alt if opts.alt is defined else book.cover.alt -%}
 <picture>
-            <source type="image/webp" srcset="{{ base }}.webp 1x, {{ base }}@2x.webp 2x">
+            <source type="image/webp" srcset="{{ base }}.webp 1x{% if not opts.small %}, {{ base }}@2x.webp 2x{% endif %}">
             <img
               src="{{ base }}.jpg"
-              srcset="{{ base }}.jpg 1x, {{ base }}@2x.jpg 2x"
+              srcset="{{ base }}.jpg 1x{% if not opts.small %}, {{ base }}@2x.jpg 2x{% endif %}"
               width="{{ book.cover.width }}" height="{{ book.cover.height }}"
               alt="{{ alt }}"
               loading="{{ 'eager' if opts.eager else 'lazy' }}"
 {%- if opts.eager %}
               fetchpriority="high"
+{%- elif opts.small %}
+              fetchpriority="low"
 {%- endif %}
               decoding="async"
             >

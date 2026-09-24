@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>document.documentElement.classList.add("has-nav-js")</script>
   <title>{% if title %}{{ title }} — {{ site.name }}{% else %}{{ site.title }}{% endif %}</title>
 {%- if description %}
   <meta name="description" content="{{ description }}" />
@@ -18,6 +19,9 @@
 {%- block headPre %}{% endblock %}
   <link rel="stylesheet" href="/css/styles.css?v={{ site.assetVersion }}" />
   <link rel="stylesheet" href="/css/components.css?v={{ site.assetVersion }}" />
+{%- if extraCss %}
+  <link rel="stylesheet" href="/css/{{ extraCss }}?v={{ site.assetVersion }}" />
+{%- endif %}
 {%- block head %}{% endblock %}
   <link rel="icon" href="{{ site.favicon | safe }}" />
 {%- block headEnd %}{% endblock %}
