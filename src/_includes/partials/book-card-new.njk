@@ -9,13 +9,12 @@
       {{ cover(book, { alt: "", small: true }) }}
     </figure>
   </a>
-  {%- if book.series %}
-  <p class="book-card__label">Book {{ book.series.order }} of {{ seriesTotal }} · {{ book.series.name }}</p>
-  {%- elif book.publishedAs %}
-  <p class="book-card__label">Published as {{ book.publishedAs }}</p>
-  {%- elif opts.label %}
-  <p class="book-card__label">{{ opts.label }}</p>
-  {%- endif %}
+  {#- the label line is always rendered (empty when there is nothing to say) so titles align across a row -#}
+  <p class="book-card__label">
+  {%- if book.series %}Book {{ book.series.order }} of {{ seriesTotal }} · {{ book.series.name }}
+  {%- elif book.publishedAs %}Published as {{ book.publishedAs }}
+  {%- elif opts.label %}{{ opts.label }}
+  {%- endif %}</p>
   <h3><a href="/books/{{ book.slug }}.html">{{ book.title }}</a></h3>
   <p class="book-card__meta">{{ book.year }} · {{ book.format }}</p>
   <p class="book-card__tagline">{{ book.tagline }}</p>

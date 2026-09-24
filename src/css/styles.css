@@ -197,7 +197,7 @@ textarea:focus-visible {
   transition: color 0.3s var(--ease);
 }
 .site-nav nav a:hover { color: var(--ink); }
-#books, #about, #contact, #library, #faith { scroll-margin-top: calc(var(--nav-h) + 1rem); }
+#books, #about, #contact, #library, #faith, #reading-order, #journal, #newsletter { scroll-margin-top: calc(var(--nav-h) + 1rem); }
 
 .wrap {
   width: min(1120px, calc(100% - 10vw));
@@ -465,7 +465,7 @@ input:focus, textarea:focus {
 textarea { min-height: 8rem; resize: vertical; }
 button[type="submit"], .button {
   justify-self: start;
-  background: var(--ink);
+  background: var(--leather);
   color: var(--paper);
   border: 0;
   padding: 0.95rem 1.35rem;

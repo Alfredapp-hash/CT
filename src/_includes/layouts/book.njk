@@ -41,7 +41,7 @@ needsRail: true
             <span class="pill">Audiobook</span>
 {%- endif %}
           </p>
-          <div class="book-detail__cta">
+          <div class="book-detail__cta" id="book-cta">
             <a class="btn btn--primary" href="#buy">Buy the book</a>
             <a class="btn btn--quiet" href="#excerpt">Read an excerpt</a>
           </div>
@@ -101,7 +101,7 @@ needsRail: true
         <p class="eyebrow">{% if book.series %}More in {{ book.series.name }}{% else %}Also by {{ site.name }}{% endif %}</p>
         <h2 id="related-h">{% if book.series %}Read the series in order, then keep going{% else %}Related titles{% endif %}</h2>
       </div>
-      {{ rail("related-rail", "related titles", related, books) }}
+      {{ rail("related-rail", "related titles list", related, books) }}
     </section>
 
     <section class="wrap newsletter" id="newsletter">
@@ -113,6 +113,9 @@ needsRail: true
   </main>
   <div class="buy-bar" role="region" aria-label="Buy this book">
     <p class="buy-bar__title">{{ book.title }}</p>
-    <a class="btn btn--primary btn--small" href="#buy">Buy</a>
+    <a class="btn btn--primary btn--small" href="#buy">Buy the book</a>
   </div>
 {% endblock %}
+{% block scripts %}
+  <script src="/js/buy-bar.js?v={{ site.assetVersion }}" defer></script>
+{%- endblock %}

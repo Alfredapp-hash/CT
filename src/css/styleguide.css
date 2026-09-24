@@ -2,7 +2,7 @@
    Styleguide-only scaffolding
    -------------------------------------------------------------------------- */
 .styleguide-main { padding: 3rem 0 5rem; }
-.sg-block { padding: var(--space-6) 0; border-top: 1px solid var(--line); }
+.sg-block { padding: var(--space-6) 0; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h) + 1rem); }
 .sg-block > h2 { font-size: var(--step-2); margin: 0 0 var(--space-4); }
 .sg-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: 0 0 var(--space-4); }
 .sg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); }

@@ -10,7 +10,23 @@
 :root {
   /* one added colour: a darker gold for SMALL text on paper (5.6:1). --gold itself is unchanged. */
   --gold-deep: #755526;
+  /* alpha tokens: paper / ink at the opacities the components use (no new hues) */
+  --paper-a10: rgba(246, 237, 215, 0.10);
+  --paper-a16: rgba(246, 237, 215, 0.16);
+  --paper-a18: rgba(246, 237, 215, 0.18);
+  --paper-a35: rgba(246, 237, 215, 0.35);
+  --paper-a40: rgba(246, 237, 215, 0.40);
+  --paper-a60: rgba(246, 237, 215, 0.60);
+  --paper-a70: rgba(246, 237, 215, 0.70);
+  --paper-a78: rgba(246, 237, 215, 0.78);
+  --paper-a86: rgba(246, 237, 215, 0.86);
+  --ink-a06: rgba(28, 20, 16, 0.06);
+  --ink-a08: rgba(28, 20, 16, 0.08);
+  --ink-a10: rgba(28, 20, 16, 0.10);
 }
+
+/* Small letter-spaced caps never use --gold on paper (4.2:1); every eyebrow uses --gold-deep (5.8:1). */
+.eyebrow { color: var(--gold-deep); }
 
 /* --------------------------------------------------------------------------
    Focus ring — one visible ring for every new control
@@ -54,25 +70,30 @@
   cursor: pointer;
   transition: background var(--dur-base) var(--ease), color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease), transform var(--dur-fast) var(--ease);
 }
-.btn:active { transform: translateY(1px); }
+.btn:active, .btn.is-active { transform: translateY(1px); }
+.btn.is-focus { outline: var(--focus); outline-offset: var(--focus-offset); }
 .btn[aria-disabled="true"],
-.btn:disabled {
-  opacity: 0.55;
+.btn:disabled,
+.btn.is-disabled {
+  background: var(--paper-sunk);
+  color: var(--ink-soft); /* 6.5:1 on paper-sunk: readable even when the disabled state is shown to everyone */
+  border-color: var(--line-firm);
   cursor: not-allowed;
   pointer-events: none;
+  box-shadow: inset 0 1px 2px var(--ink-a08);
 }
 .btn--primary {
   background: var(--leather);
   color: var(--paper);
   border-color: var(--leather);
 }
-.btn--primary:hover { background: var(--leather-lo); border-color: var(--leather-lo); }
+.btn--primary:hover, .btn--primary.is-hover { background: var(--leather-lo); border-color: var(--leather-lo); }
 .btn--secondary {
   background: transparent;
   color: var(--leather);
   border-color: var(--gold);
 }
-.btn--secondary:hover { background: var(--paper-lift); border-color: var(--leather); }
+.btn--secondary:hover, .btn--secondary.is-hover { background: var(--paper-lift); border-color: var(--leather); }
 .btn--quiet {
   background: transparent;
   color: var(--ink-soft);
@@ -80,15 +101,15 @@
   border-radius: 0;
   border-bottom: 1px solid var(--line-firm);
 }
-.btn--quiet:hover { color: var(--leather); border-bottom-color: var(--leather); }
+.btn--quiet:hover, .btn--quiet.is-hover { color: var(--leather); border-bottom-color: var(--leather); }
 .btn--small { padding: 0.6rem 0.95rem; font-size: 0.68rem; }
 .btn--block { display: flex; width: 100%; }
 /* on leather backgrounds */
 .panel--leather .btn--primary { background: var(--gold-warm); color: var(--ink); border-color: var(--gold-warm); }
 .panel--leather .btn--primary:hover { background: var(--paper); border-color: var(--paper); }
 .panel--leather .btn--secondary { color: var(--paper); border-color: var(--gold-warm); }
-.panel--leather .btn--secondary:hover { background: rgba(246, 237, 215, 0.10); border-color: var(--paper); }
-.panel--leather .btn--quiet { color: var(--paper); border-bottom-color: rgba(246, 237, 215, 0.4); }
+.panel--leather .btn--secondary:hover { background: var(--paper-a10); border-color: var(--paper); }
+.panel--leather .btn--quiet { color: var(--paper); border-bottom-color: var(--paper-a40); }
 .panel--leather .btn--quiet:hover { color: var(--gold-warm); border-bottom-color: var(--gold-warm); }
 
 /* --------------------------------------------------------------------------
@@ -114,7 +135,7 @@
 .pill--gold { background: var(--gold-warm); border-color: var(--gold-warm); color: var(--ink); }
 .pill--leather { background: var(--leather); border-color: var(--leather); color: var(--paper); }
 .pill--outline { background: transparent; border-color: var(--gold); color: var(--gold-deep); }
-.panel--leather .pill { background: rgba(246, 237, 215, 0.10); border-color: rgba(246, 237, 215, 0.35); color: var(--paper); }
+.panel--leather .pill { background: var(--paper-a10); border-color: var(--paper-a35); color: var(--paper); }
 .panel--leather .pill--gold { background: var(--gold-warm); border-color: var(--gold-warm); color: var(--ink); }
 
 /* --------------------------------------------------------------------------
@@ -151,7 +172,7 @@
   position: relative;
   padding: clamp(1.4rem, 3vw, 2.4rem) clamp(1.2rem, 3.5vw, 2.8rem);
   background: var(--paper-lift);
-  border: 1px solid rgba(28, 20, 16, 0.08);
+  border: 1px solid var(--ink-a08);
   border-radius: var(--radius-s) var(--radius-m) var(--radius-m) var(--radius-s);
   box-shadow: var(--lift-1);
 }
@@ -160,8 +181,8 @@
 .panel > :last-child { margin-bottom: 0; }
 .panel--sunk {
   background: var(--paper-sunk);
-  box-shadow: inset 0 1px 3px rgba(28, 20, 16, 0.08);
-  border-color: rgba(28, 20, 16, 0.06);
+  box-shadow: inset 0 1px 3px var(--ink-a08);
+  border-color: var(--ink-a06);
 }
 .panel--leather {
   background: linear-gradient(160deg, var(--leather) 0%, var(--leather-lo) 100%);
@@ -208,15 +229,19 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--space-7) var(--space-6);
-  align-items: start;
+  align-items: stretch;
   list-style: none;
   margin: 0;
   padding: 0;
 }
+.book-grid > li { display: flex; }
 .book-card {
+  position: relative; /* containing block for the visually-hidden spans in its links (keeps them inside the rail's scroll clip) */
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   gap: var(--space-3);
+  width: 100%;
   max-width: 260px;
 }
 .book-card .jacket { max-width: 100%; margin-bottom: var(--space-2); }
@@ -228,6 +253,7 @@
 }
 .book-card__label {
   margin: 0;
+  min-height: 1.4em; /* always rendered (empty when no series/label) so titles and action rows align across cards */
   font-size: var(--step--1);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -313,6 +339,7 @@
   --rail-gap: var(--space-5);
 }
 .rail__track {
+  position: relative; /* absolute descendants resolve here, inside the scroll clip, never against .rail */
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -330,6 +357,7 @@
   padding: 0;
 }
 .rail__item {
+  display: flex;
   flex: 0 0 auto;
   width: clamp(150px, 42vw, 210px);
   scroll-snap-align: start;
@@ -370,7 +398,7 @@
 @media (prefers-reduced-motion: reduce) {
   .btn, .chips a, .chip, .rail__btn, .book-card h3 a,
   .nav-menu, .nav-menu a, .nav-toggle, .nav-toggle span,
-  .site-footer a, .buy-bar {
+  .site-footer a, .buy-bar, .buy-bar.is-visible {
     transition-duration: 0ms !important;
     animation-duration: 0ms !important;
   }
@@ -392,7 +420,7 @@
   margin: 0;
   padding: 0;
 }
-.nav-item { position: relative; display: flex; align-items: center; gap: 0.15rem; }
+.nav-item { position: relative; display: flex; align-items: center; gap: 0; }
 .site-nav nav a[aria-current="page"],
 .site-nav nav a[aria-current="true"] {
   color: var(--ink);
@@ -403,11 +431,13 @@
   letter-spacing: 0.14em;
   color: var(--paper);
   padding: 0.6rem 0.95rem;
-  min-height: 40px;
+  min-height: var(--target);
 }
 .site-nav nav .nav-item--cta a:hover { color: var(--paper); }
 .nav-drop__btn {
-  width: 32px;
+  width: 24px;
+  margin-left: -0.2rem;
+  padding: 0;
   min-height: var(--target);
   border: 0;
   background: transparent;
@@ -449,11 +479,11 @@
   min-width: 40rem;
   padding: 1.4rem 1.6rem 1.5rem;
   background: var(--paper-lift);
-  border: 1px solid rgba(28, 20, 16, 0.10);
+  border: 1px solid var(--ink-a10);
   border-radius: var(--radius-s) var(--radius-m) var(--radius-m) var(--radius-s);
   box-shadow: var(--lift-2);
-  grid-template-columns: 1.2fr 1fr 0.9fr;
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, max-content);
+  gap: 1.5rem 2.25rem;
 }
 .nav-drop::before { content: ""; position: absolute; inset: -0.5rem 0 auto 0; height: 0.5rem; }
 .drop-open .nav-drop,
@@ -467,6 +497,7 @@
   text-transform: uppercase;
   font-weight: 500;
   color: var(--gold-deep);
+  white-space: nowrap;
 }
 .site-nav nav .nav-drop a {
   text-transform: none;
@@ -475,7 +506,7 @@
   font-size: 1.1rem;
   color: var(--ink);
   padding: 0.35rem 0;
-  min-height: 40px;
+  min-height: var(--target);
   box-shadow: none;
   white-space: nowrap;
 }
@@ -531,7 +562,7 @@
     flex: 1 1 auto;
   }
   .is-open .nav-item--cta { border-bottom: 0; padding-top: 1.2rem; }
-  .site-nav.is-open nav .nav-item--cta a { flex: 0 0 auto; min-height: var(--target); padding: 0.85rem 1.35rem; }
+  .site-nav.is-open nav .nav-item--cta a { flex: 1 1 100%; width: 100%; min-height: var(--target); padding: 0.85rem 1.35rem; }
   .is-open .nav-drop__btn { display: none; }
   .is-open .nav-drop,
   .is-open .nav-item--books:hover .nav-drop {
@@ -550,6 +581,8 @@
   .site-nav.is-open nav .nav-drop a { font-size: 1.15rem; letter-spacing: 0; text-transform: none; min-height: var(--target); padding: 0.45rem 0; }
   .nav-skip { margin-left: 0.5rem; }
 }
+/* Home only: keep the Skip slot in the flow while it is hidden so the header never reflows when the hero ends. */
+.site-nav .nav-skip[hidden] { display: inline-block; visibility: hidden; pointer-events: none; }
 @media (max-width: 480px) {
   .brand { font-size: 1.1rem; }
 }
@@ -589,39 +622,40 @@
 .footer-list a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: var(--target);
   padding: 0.3rem 0;
   font-size: 0.92rem;
   text-decoration: none;
-  color: rgba(246, 237, 215, 0.86);
+  color: var(--paper-a86);
   border-bottom: 1px solid transparent;
   transition: color var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
 }
 .footer-list a:hover { color: var(--gold-warm); border-bottom-color: var(--gold-warm); }
 .footer-list--inline { display: flex; flex-wrap: wrap; gap: 0 1.2rem; margin-top: var(--space-4); }
-.footer-col__lede { margin: 0 0 var(--space-3); font-size: 0.92rem; color: rgba(246, 237, 215, 0.78); }
-.site-footer .newsletter-form { margin-top: 0; max-width: 24rem; }
+.footer-col__lede { margin: 0 0 var(--space-3); font-size: 0.92rem; color: var(--paper-a78); }
+.site-footer .newsletter-form { margin-top: 0; max-width: 24rem; flex-wrap: nowrap; }
+.site-footer .newsletter-form input[type="email"] { flex: 1 1 8rem; min-width: 0; }
 .site-footer .newsletter-form input[type="email"] {
-  background: rgba(246, 237, 215, 0.10);
-  border-color: rgba(246, 237, 215, 0.35);
+  background: var(--paper-a10);
+  border-color: var(--paper-a35);
   color: var(--paper);
   box-shadow: none;
 }
-.site-footer .newsletter-form input[type="email"]::placeholder { color: rgba(246, 237, 215, 0.6); }
-.site-footer .newsletter-form input[type="email"]:focus { background: rgba(246, 237, 215, 0.16); border-color: var(--gold-warm); }
+.site-footer .newsletter-form input[type="email"]::placeholder { color: var(--paper-a60); }
+.site-footer .newsletter-form input[type="email"]:focus { background: var(--paper-a16); border-color: var(--gold-warm); }
 .site-footer .newsletter-form button[type="submit"] { background: var(--gold-warm); color: var(--ink); }
 .site-footer .newsletter-form button[type="submit"]:hover { background: var(--paper); }
 .footer-legal {
   max-width: var(--wide);
   margin: 2.6rem auto 0;
   padding-top: 1.2rem;
-  border-top: 1px solid rgba(246, 237, 215, 0.18);
+  border-top: 1px solid var(--paper-a18);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.6rem 1.6rem;
   font-size: 0.8rem;
-  color: rgba(246, 237, 215, 0.7);
+  color: var(--paper-a70);
 }
 .footer-legal p { margin: 0; }
 .footer-legal__nav { display: flex; flex-wrap: wrap; gap: 0 1.2rem; }
@@ -633,7 +667,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.72rem;
-  color: rgba(246, 237, 215, 0.78);
+  color: var(--paper-a78);
 }
 .footer-legal__nav a:hover { color: var(--gold-warm); }
 .footer-legal__disclosure { flex-basis: 100%; }
@@ -691,12 +725,12 @@
 .book-detail__facts dd { margin: 0; font-size: 0.95rem; color: var(--ink); }
 .book-section { margin-top: var(--space-6); }
 .book-section h2 { margin: 0 0 var(--space-3); font-size: var(--step-2); font-weight: 500; }
-.book-section .blurb { margin: 0; max-width: var(--measure); }
+.book-detail--spine .blurb { margin: 0; max-width: 34rem; } /* ≈ 65–70 characters of 1.08rem Cormorant */
 .book-detail--spine .excerpt { margin-top: var(--space-6); }
 .book-detail--spine .excerpt .eyebrow { margin-bottom: var(--space-2); }
 .book-detail--spine blockquote { max-width: 34rem; }
 .book-detail--spine .where { margin-top: var(--space-6); scroll-margin-top: calc(var(--nav-h) + 1rem); }
-.book-detail--spine .where .dist { max-width: var(--measure); }
+.book-detail--spine .where .dist { max-width: 34rem; }
 #excerpt, #synopsis { scroll-margin-top: calc(var(--nav-h) + 1rem); }
 .praise { margin: 0 0 var(--space-4); }
 .praise cite { display: block; margin-top: var(--space-2); font-style: normal; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
@@ -711,6 +745,7 @@
   position: fixed;
   left: 0; right: 0; bottom: 0;
   z-index: 15;
+  transition: transform var(--dur-base) var(--ease), visibility 0s linear var(--dur-base);
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
@@ -721,6 +756,10 @@
   border-top: 1px solid var(--line-firm);
   box-shadow: 0 -6px 20px rgba(50, 30, 18, 0.10);
 }
+.buy-bar .btn { flex: 0 0 auto; min-width: 8.5rem; }
+/* With JS: slid away until the in-page "Buy the book" button has scrolled out of view (buy-bar.js) */
+.has-nav-js .buy-bar:not(.is-visible) { transform: translateY(110%); visibility: hidden; }
+.buy-bar.is-visible { transition: transform var(--dur-base) var(--ease), visibility 0s; }
 .buy-bar__title {
   margin: 0;
   font-family: var(--serif);
@@ -733,12 +772,17 @@
 @media (min-width: 1024px) {
   .book-detail--spine .book-detail__cover { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
 }
+@media (min-width: 1200px) {
+  .book-detail--spine { grid-template-columns: 340px minmax(0, 1fr); gap: 3.5rem; }
+  .book-detail--spine .book-detail__cover .jacket { max-width: 340px; }
+}
 @media (max-width: 1023px) {
   .book-detail--spine { grid-template-columns: 240px minmax(0, 1fr); gap: 2.2rem; }
 }
 @media (max-width: 900px) {
   .buy-bar { display: flex; }
   .book-spine .newsletter { padding-bottom: 7rem; }
+  .book-page .site-footer { padding-bottom: calc(2rem + 5rem + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 800px) {
   .book-detail--spine { grid-template-columns: 1fr; margin-top: 1.5rem; }

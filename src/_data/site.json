@@ -14,7 +14,7 @@
   "featuredSlug": "the-price-of-choosing-you",
   "nav": [
     { "label": "Books", "href": "/#books", "menu": "books" },
-    { "label": "The Price Series", "href": "/#books" },
+    { "label": "The Price Series", "href": "/#reading-order" },
     { "label": "About", "href": "/#about" },
     { "label": "Journal", "href": "/blog/" },
     { "label": "Contact", "href": "/#contact" }
