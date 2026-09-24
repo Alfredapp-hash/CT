@@ -12,41 +12,130 @@
   "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%235c1f2a' width='32' height='32'/%3E%3Cpath fill='%23f0ddb0' d='M8 6h12v20H8z'/%3E%3Cpath fill='%235c1f2a' d='M10 9h8v1H10zm0 3h8v1H10z'/%3E%3C/svg%3E",
   "assetVersion": "2026-09-24",
   "featuredSlug": "the-price-of-choosing-you",
+  "featured": {
+    "slug": "the-price-of-choosing-you",
+    "statusPill": "Available now",
+    "hook": "Kathryn wakes in the dark, wrists bound, and learns the man holding the key is not the worst thing looking for her.",
+    "ctaPrimary": "Buy the book",
+    "ctaSecondary": "Explore the Price Series",
+    "_note": "Defaults copied from homeCopy.hero. Templates read status/hook only from here; change these when the featured title or its status changes."
+  },
   "nav": [
-    { "label": "Books", "href": "/#books", "menu": "books" },
-    { "label": "The Price Series", "href": "/#reading-order" },
-    { "label": "About", "href": "/#about" },
-    { "label": "Journal", "href": "/blog/" },
-    { "label": "Contact", "href": "/#contact" }
+    {
+      "label": "Books",
+      "href": "/#books",
+      "menu": "books"
+    },
+    {
+      "label": "The Price Series",
+      "href": "/#reading-order"
+    },
+    {
+      "label": "About",
+      "href": "/#about"
+    },
+    {
+      "label": "Journal",
+      "href": "/blog/"
+    },
+    {
+      "label": "Contact",
+      "href": "/#contact"
+    }
   ],
-  "navCta": { "label": "Newsletter", "href": "/#newsletter" },
+  "navCta": {
+    "label": "Newsletter",
+    "href": "/#newsletter"
+  },
   "footerNav": [
-    { "label": "Books", "href": "/#books" },
-    { "label": "Blog", "href": "/blog/" },
-    { "label": "About", "href": "/#about" },
-    { "label": "Contact", "href": "/#contact" },
-    { "label": "RSS", "href": "/blog/rss.xml" },
-    { "label": "Privacy", "href": "/privacy.html" }
+    {
+      "label": "Books",
+      "href": "/#books"
+    },
+    {
+      "label": "Blog",
+      "href": "/blog/"
+    },
+    {
+      "label": "About",
+      "href": "/#about"
+    },
+    {
+      "label": "Contact",
+      "href": "/#contact"
+    },
+    {
+      "label": "RSS",
+      "href": "/blog/rss.xml"
+    },
+    {
+      "label": "Privacy",
+      "href": "/privacy.html"
+    }
   ],
   "footerGroups": {
     "about": [
-      { "label": "About Courtney", "href": "/#about" },
-      { "label": "Journal", "href": "/blog/" },
-      { "label": "Contact", "href": "/#contact" }
+      {
+        "label": "About Courtney",
+        "href": "/#about"
+      },
+      {
+        "label": "Journal",
+        "href": "/blog/"
+      },
+      {
+        "label": "Contact",
+        "href": "/#contact"
+      }
     ]
   },
   "bookGroups": [
-    { "key": "series", "label": "The Price Series", "shelf": "price-series" },
-    { "key": "nonfiction", "label": "Devotionals & Nonfiction", "categories": ["devotional", "nonfiction"] },
-    { "key": "children", "label": "Children’s", "categories": ["children"] }
+    {
+      "key": "series",
+      "label": "The Price Series",
+      "shelf": "price-series"
+    },
+    {
+      "key": "nonfiction",
+      "label": "Devotionals & Nonfiction",
+      "categories": [
+        "devotional",
+        "nonfiction"
+      ]
+    },
+    {
+      "key": "children",
+      "label": "Children’s",
+      "categories": [
+        "children"
+      ]
+    }
   ],
   "retailerTemplates": [
-    { "name": "Amazon", "url": "https://www.amazon.com/s?k={isbn}&i=stripbooks" },
-    { "name": "Barnes & Noble", "url": "https://www.barnesandnoble.com/s/{isbn}" },
-    { "name": "Bookshop.org", "url": "https://bookshop.org/search?keywords={isbn}" },
-    { "name": "ChristianBook.com", "url": "https://www.christianbook.com/apps/search?Ntt={isbn}" },
-    { "name": "Walmart", "url": "https://www.walmart.com/search?q={isbn}" },
-    { "name": "Books-A-Million", "url": "https://www.booksamillion.com/search?query={isbn}" }
+    {
+      "name": "Amazon",
+      "url": "https://www.amazon.com/s?k={isbn}&i=stripbooks"
+    },
+    {
+      "name": "Barnes & Noble",
+      "url": "https://www.barnesandnoble.com/s/{isbn}"
+    },
+    {
+      "name": "Bookshop.org",
+      "url": "https://bookshop.org/search?keywords={isbn}"
+    },
+    {
+      "name": "ChristianBook.com",
+      "url": "https://www.christianbook.com/apps/search?Ntt={isbn}"
+    },
+    {
+      "name": "Walmart",
+      "url": "https://www.walmart.com/search?q={isbn}"
+    },
+    {
+      "name": "Books-A-Million",
+      "url": "https://www.booksamillion.com/search?query={isbn}"
+    }
   ],
   "social": {
     "instagram": null,
@@ -58,6 +147,7 @@
   "siteCredit": null,
   "newsletter": {
     "formName": "newsletter",
+    "leadMagnet": null,
     "eyebrow": "Stay close",
     "heading": "Reader notes",
     "lede": "Occasional letters about new books, journal posts, and quiet encouragement for hard seasons. No spam."
