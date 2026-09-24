@@ -1,0 +1,36 @@
+{#- Decision band: first child of <main id="library">, directly after the preserved hero.
+    Status / hook / CTAs come only from site.featured (defaults copied from homeCopy.hero);
+    copy for eyebrow, name, positioning, aria labels from homeCopy.hero; facts from books.json. -#}
+{%- from "partials/cover.njk" import cover -%}
+{%- set fx = site.featured -%}
+{%- set featuredBook = books | bookBySlug(fx.slug) -%}
+    <section class="hero-band container" aria-labelledby="hero-band-title">
+{%- if featuredBook %}
+      <a class="hero-band__cover" href="/books/{{ featuredBook.slug }}.html">
+        <figure class="jacket">
+          {{ cover(featuredBook, { eager: true }) }}
+        </figure>
+      </a>
+{%- endif %}
+      <div class="hero-band__text">
+        <p class="eyebrow hero-band__eyebrow">{{ homeCopy.hero.eyebrow }}</p>
+        <h1 class="hero-band__title" id="hero-band-title"><span class="visually-hidden">{{ homeCopy.hero.name }}. </span>{{ homeCopy.hero.positioning }}</h1>
+{%- if featuredBook %}
+{%- if fx.statusPill %}
+        <p class="hero-band__pill"><span class="pill pill--outline">{{ fx.statusPill }}</span></p>
+{%- endif %}
+{%- if fx.hook %}
+        <p class="hero-band__hook">{{ fx.hook }}</p>
+{%- endif %}
+        <div class="hero-band__actions">
+          <a class="btn btn--primary" href="/books/{{ featuredBook.slug }}.html#buy" aria-label="{{ homeCopy.hero.ctaPrimaryAria }}">{{ fx.ctaPrimary }}</a>
+          <a class="btn btn--secondary" href="/#books">{{ fx.ctaSecondary }}</a>
+        </div>
+{%- else %}
+        <div class="hero-band__actions">
+          <a class="btn btn--secondary" href="/#books">{{ fx.ctaSecondary }}</a>
+        </div>
+{%- endif %}
+        <p class="hero-band__trust">{{ site.distribution }}</p>
+      </div>
+    </section>

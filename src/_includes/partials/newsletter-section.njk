@@ -1,0 +1,20 @@
+{#- Newsletter (#newsletter): inline Netlify form (first name + email), promise + privacy note from homeCopy.
+    Lead-magnet line only when site.newsletter.leadMagnet is set. -#}
+{%- from "partials/newsletter-form.njk" import newsletterForm -%}
+{%- set nc = homeCopy.newsletter -%}
+    <section class="home-section container newsletter-home" id="newsletter" aria-labelledby="newsletter-title">
+      <div class="panel panel--sunk newsletter-home__panel">
+        <div class="newsletter-home__intro">
+          <p class="eyebrow">{{ nc.eyebrow }}</p>
+          <h2 id="newsletter-title">{{ nc.heading }}</h2>
+          <p class="newsletter-home__promise">{{ nc.promise }}</p>
+{%- if site.newsletter.leadMagnet and nc.leadMagnetLine %}
+          <p class="newsletter-home__lead">{{ nc.leadMagnetLine }}</p>
+{%- endif %}
+        </div>
+        <div class="newsletter-home__form">
+          {{ newsletterForm(site, "", { full: true, copy: nc }) }}
+          <p class="newsletter-home__privacy">{{ nc.privacyNote | safe }}</p>
+        </div>
+      </div>
+    </section>

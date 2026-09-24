@@ -1,0 +1,33 @@
+{#- Start here: two routing cards from homeCopy.startHere; bodies are the books.json taglines. -#}
+{%- from "partials/cover.njk" import cover -%}
+{%- set sh = homeCopy.startHere -%}
+{%- set shCards = [] -%}
+{%- for c in sh.cards %}{% set b = books | bookBySlug(c.slug) %}{% if b %}{% set shCards = (shCards.push({ copy: c, book: b }), shCards) %}{% endif %}{% endfor -%}
+{%- if shCards.length %}
+    <section class="start-here home-section container" aria-labelledby="start-here-title">
+      <div class="panel panel--sunk start-here__panel">
+        <div class="start-here__head">
+          <p class="eyebrow">{{ sh.eyebrow }}</p>
+          <h2 id="start-here-title">{{ sh.heading }}</h2>
+          <p class="start-here__lede">{{ sh.lede }}</p>
+        </div>
+        <div class="start-here__grid{% if shCards.length == 1 %} start-here__grid--one{% endif %}">
+{%- for item in shCards %}
+          <article class="start-card reveal">
+            <a class="start-card__cover" href="/books/{{ item.book.slug }}.html" tabindex="-1" aria-hidden="true">
+              <figure class="jacket jacket--small">
+                {{ cover(item.book, { alt: "", small: true }) }}
+              </figure>
+            </a>
+            <div class="start-card__body">
+              <p class="start-card__eyebrow">{{ item.copy.eyebrow }}</p>
+              <h3><a href="/books/{{ item.book.slug }}.html">{{ item.copy.title }}</a></h3>
+              <p class="start-card__tagline">{{ item.book.tagline }}</p>
+              <a class="btn btn--quiet btn--small" href="/books/{{ item.book.slug }}.html">{{ item.copy.cta }}<span class="visually-hidden">: {{ item.book.title }}</span> <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+{%- endfor %}
+        </div>
+      </div>
+    </section>
+{%- endif %}

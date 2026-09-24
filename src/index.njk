@@ -4,80 +4,21 @@ permalink: /index.html
 isHome: true
 skipTarget: library
 skipLabel: Skip to the books
+extraCss: home.css
+needsRail: true
+needsReveal: true
 description: "Courtney Thomas writes about faith, healing, loss, purpose, and finding yourself again. Novels, devotionals, and stories for hard seasons, in print worldwide through IngramSpark."
 ogDescription: "Stories for the chapters we survive. Novels, devotionals, and a journal on faith, healing, loss, and purpose."
 ---
-{%- from "partials/shelf.njk" import shelf -%}
-{%- from "partials/newsletter-form.njk" import newsletterForm -%}
-{%- from "partials/contact-form.njk" import contactForm -%}
-{%- set series = books | where("shelf", "price-series") -%}
-{%- set faith = books | where("shelf", "faith-home") -%}
 {% include "partials/hero.njk" %}
   <main id="library">
-    <section class="intro wrap">
-      <p class="eyebrow">Faith, healing, loss, and purpose</p>
-      <h1>{{ site.tagline }}</h1>
-      <p class="lede">Novels of survival and choice. Devotionals for working mothers. A garden of purpose, a guide back to self-worth, and a gentle story for children learning what it means to miss someone.</p>
-    </section>
-
-    {{ shelf("books", "The Price Series", "Three novels about Kathryn and Kalem: survival, the cost of freedom, and what is worth keeping after the truth is told.", series) }}
-
-
-    <section class="wrap series-path" id="reading-order">
-      <p class="eyebrow">Start here</p>
-      <h2>The Price Series reading order</h2>
-      <ol class="series-steps">
-        <li><a href="/books/the-price-of-choosing-you.html"><strong>Book One</strong> — The Price of Choosing You</a><span>Survival and the first choice.</span></li>
-        <li><a href="/books/the-price-of-letting-go.html"><strong>Book Two</strong> — The Price of Letting Go</a><span>Freedom, and what it still costs.</span></li>
-        <li><a href="/books/what-we-keep.html"><strong>Book Three</strong> — What We Keep</a><span>Legacy after the fire.</span></li>
-      </ol>
-      <p class="series-note">Prefer shorter reads first? Begin with <a href="/blog/posts/reading-the-price-series.html">the journal guide</a> or <a href="/books/rooted-in-purpose.html">Rooted in Purpose</a>.</p>
-    </section>
-
-    {{ shelf("faith", "Faith &amp; home", "Books written from lived seasons — purpose, self-worth, working motherhood, and a child’s grief.", faith) }}
-{% for q in author.quotes | eleventyFeedHead(1) %}
-    <section class="wrap quote-band">
-      <blockquote>
-        “{{ q.text }}”
-        <cite>{{ q.source }}</cite>
-      </blockquote>
-    </section>
-{%- endfor %}
-
-
-    <section class="wrap journal-teaser" id="journal">
-      <div>
-        <p class="eyebrow">Journal</p>
-        <h2>{{ site.blog.heading }}</h2>
-        <p class="lede">Essays on surviving into story, reading the series, gardens of purpose, ordinary grace, and what love leaves behind.</p>
-        <a class="card-cta" href="/blog/">Visit the blog <span aria-hidden="true">→</span></a>
-      </div>
-    </section>
-
-    <section class="wrap about" id="about">
-      <div>
-        <p class="eyebrow">About</p>
-        <h2>{{ author.name }}</h2>
-      </div>
-      <div>
-{%- for p in author.bioLong %}
-        <p>{{ p | safe }}</p>
-{%- endfor %}
-      </div>
-    </section>
-
-
-    <section class="wrap newsletter" id="newsletter">
-      <p class="eyebrow">{{ site.newsletter.eyebrow }}</p>
-      <h2>{{ site.newsletter.heading }}</h2>
-      <p class="lede">{{ site.newsletter.lede }}</p>
-      {{ newsletterForm(site) }}
-    </section>
-
-    <section class="wrap contact" id="contact">
-      <p class="eyebrow">{{ site.contact.eyebrow }}</p>
-      <h2>{{ site.contact.heading }}</h2>
-      <p class="lede">{{ site.contact.lede }}</p>
-      {{ contactForm(site) }}
-    </section>
+{% include "partials/decision-band.njk" %}
+{% include "partials/start-here.njk" %}
+{% include "partials/series-shelf.njk" %}
+{% include "partials/standalone-shelf.njk" %}
+{% include "partials/quote-band.njk" %}
+{% include "partials/author-intro.njk" %}
+{% include "partials/journal-teaser.njk" %}
+{% include "partials/newsletter-section.njk" %}
+{% include "partials/contact-section.njk" %}
   </main>

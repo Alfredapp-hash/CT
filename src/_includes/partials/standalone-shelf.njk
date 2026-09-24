@@ -1,0 +1,49 @@
+{#- Essays & devotionals shelf (#faith) + "For children" row. Data: books where shelf == faith-home, split on category. -#}
+{%- from "partials/rail.njk" import rail -%}
+{%- from "partials/cover.njk" import cover -%}
+{%- set st = homeCopy.standalone -%}
+{%- set faithBooks = books | where("shelf", "faith-home") -%}
+{%- set standaloneBooks = [] -%}
+{%- set childrenBooks = [] -%}
+{%- for b in faithBooks %}{% if b.category == "children" %}{% set childrenBooks = (childrenBooks.push(b), childrenBooks) %}{% else %}{% set standaloneBooks = (standaloneBooks.push(b), standaloneBooks) %}{% endif %}{% endfor -%}
+{%- if standaloneBooks.length or childrenBooks.length %}
+    <section class="home-section container shelf-home" id="faith" aria-labelledby="faith-title">
+{%- if standaloneBooks.length %}
+      <div class="section-head section-head--rule section-head--row">
+        <div>
+          <p class="eyebrow">{{ st.eyebrow }}</p>
+          <h2 id="faith-title">{{ st.heading }}</h2>
+        </div>
+        <p class="section-head__lede">{{ st.lede }}</p>
+      </div>
+      {{ rail("faith-rail", st.heading, standaloneBooks, books, { shelf: true, reveal: true, prevLabel: homeCopy.a11y.railPrev, nextLabel: homeCopy.a11y.railNext, card: { labelMode: "category" } }) }}
+{%- endif %}
+{%- if childrenBooks.length %}
+      <div class="children-row">
+        <p class="eyebrow">{{ st.childrenEyebrow }}</p>
+{%- if st.childrenLede %}
+        <p class="children-row__lede">{{ st.childrenLede }}</p>
+{%- endif %}
+{%- for b in childrenBooks %}
+        <article class="panel panel--spine children-card reveal" aria-labelledby="children-{{ b.slug }}">
+          <a class="book-card__cover children-card__cover" href="/books/{{ b.slug }}.html" tabindex="-1" aria-hidden="true">
+            <figure class="jacket">
+              {{ cover(b, { alt: "", small: true }) }}
+            </figure>
+          </a>
+          <div class="children-card__body book-card">
+            <p class="book-card__label">Children’s{% if b.year %} · {{ b.year }}{% endif %}</p>
+            <h3 id="children-{{ b.slug }}"><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></h3>
+            <p class="book-card__meta">{{ b.format }}</p>
+            <p class="book-card__tagline">{{ b.tagline }}</p>
+            <div class="book-card__actions">
+              <a class="btn btn--quiet btn--small" href="/books/{{ b.slug }}.html">Read more<span class="visually-hidden"> about {{ b.title }}</span></a>
+              <a class="btn btn--secondary btn--small" href="/books/{{ b.slug }}.html#buy">Buy<span class="visually-hidden"> {{ b.title }}</span></a>
+            </div>
+          </div>
+        </article>
+{%- endfor %}
+      </div>
+{%- endif %}
+    </section>
+{%- endif %}

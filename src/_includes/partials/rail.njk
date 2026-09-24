@@ -1,15 +1,18 @@
 {%- from "partials/book-card-new.njk" import bookCard -%}
-{#- rail(id, label, books, allBooks) → horizontal scroll-snap strip of book cards with prev/next buttons. -#}
-{%- macro rail(id, label, items, books) -%}
-<div class="rail" id="{{ id }}">
+{#- rail(id, label, items, books, opts) → horizontal scroll-snap strip of book cards with prev/next buttons.
+    opts.prevLabel / opts.nextLabel: button aria-labels (home passes homeCopy.a11y.railPrev/railNext).
+    opts.shelf: true → .rail--shelf: a 3-column grid at ≥ 900px, the rail below (one markup, no duplicate content).
+    opts.card: options forwarded to bookCard (labelMode etc.). -#}
+{%- macro rail(id, label, items, books, opts = {}) -%}
+<div class="rail{% if opts.shelf %} rail--shelf{% endif %}" id="{{ id }}">
   <div class="rail__controls">
-    <button class="rail__btn rail__btn--prev" type="button" aria-controls="{{ id }}-track" aria-label="Scroll {{ label }} backwards"><span aria-hidden="true">←</span></button>
-    <button class="rail__btn rail__btn--next" type="button" aria-controls="{{ id }}-track" aria-label="Scroll {{ label }} forwards"><span aria-hidden="true">→</span></button>
+    <button class="rail__btn rail__btn--prev" type="button" aria-controls="{{ id }}-track" aria-label="{{ opts.prevLabel or ('Scroll ' + label + ' backwards') }}"><span aria-hidden="true">←</span></button>
+    <button class="rail__btn rail__btn--next" type="button" aria-controls="{{ id }}-track" aria-label="{{ opts.nextLabel or ('Scroll ' + label + ' forwards') }}"><span aria-hidden="true">→</span></button>
   </div>
   <div class="rail__track" id="{{ id }}-track" tabindex="0" role="region" aria-label="{{ label }}">
     <ul class="rail__list">
 {%- for b in items %}
-      <li class="rail__item">{{ bookCard(b, books) }}</li>
+      <li class="rail__item{% if opts.reveal %} reveal{% endif %}">{{ bookCard(b, books, opts.card or {}) }}</li>
 {%- endfor %}
     </ul>
   </div>

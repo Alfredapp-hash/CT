@@ -1,0 +1,16 @@
+{#- Contact (#contact): the notes form markup is byte-identical to Sprint 1 (opening.js owns its submit handler and #form-note). -#}
+{%- from "partials/contact-form.njk" import contactForm -%}
+{%- set cc = homeCopy.contact -%}
+    <section class="home-section container contact-home" id="contact" aria-labelledby="contact-title">
+      <div class="section-head section-head--rule contact-home__rule"></div>
+      <div class="contact-home__grid">
+        <div class="contact-home__intro">
+          <p class="eyebrow">{{ cc.eyebrow }}</p>
+          <h2 id="contact-title">{{ cc.heading }}</h2>
+          <p class="contact-home__lede">{{ cc.lede }}</p>
+        </div>
+        <div class="contact-home__form">
+          {{ contactForm(site) }}
+        </div>
+      </div>
+    </section>

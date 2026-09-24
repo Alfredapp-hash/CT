@@ -62,6 +62,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("bySlugs", (books, slugs) =>
     (slugs || []).map((s) => (books || []).find((b) => b.slug === s)).filter(Boolean)
   );
+  eleventyConfig.addFilter("head", (arr, n) => (arr || []).slice(0, n));
   eleventyConfig.addFilter("where", (arr, key, value) => (arr || []).filter((x) => x && x[key] === value));
   eleventyConfig.addFilter("year", () => new Date().getUTCFullYear());
   // Retailer links: book.retailers overrides win; otherwise site.retailerTemplates × isbn in fixed order.

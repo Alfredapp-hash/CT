@@ -1,0 +1,40 @@
+{#- Journal teaser (#journal): three newest posts with date, description and up to two related-book chips. -#}
+{%- set jc = homeCopy.journal -%}
+{%- set latest = collections.postsNewest | head(3) -%}
+{%- if latest.length %}
+    <section class="home-section container journal-home" id="journal" aria-labelledby="journal-title">
+      <div class="section-head section-head--rule section-head--row">
+        <div>
+          <p class="eyebrow">{{ jc.eyebrow }}</p>
+          <h2 id="journal-title">{{ jc.heading }}</h2>
+          <p class="section-head__lede section-head__lede--left">{{ jc.lede }}</p>
+        </div>
+        <div class="section-head__actions">
+          <a class="btn btn--secondary btn--small" href="/blog/">{{ jc.cta }}</a>
+          <a class="btn btn--quiet btn--small" href="/blog/rss.xml" type="application/rss+xml">{{ jc.rss }}</a>
+        </div>
+      </div>
+      <div class="journal-home__grid">
+{%- for post in latest %}
+{%- set related = books | bySlugs(post.data.relatedBooks) %}
+        <article class="panel post-tile reveal">
+          <p class="post-tile__date"><time datetime="{{ post.date | isoDate }}">{{ post.date | readableDate }}</time></p>
+          <h3 class="post-tile__title"><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
+{%- if post.data.description %}
+          <p class="post-tile__desc">{{ post.data.description }}</p>
+{%- endif %}
+{%- if related.length %}
+          <div class="post-tile__chips">
+            <p class="visually-hidden" id="chips-{{ post.fileSlug }}">{{ jc.relatedLabel }}</p>
+            <ul class="chips" aria-labelledby="chips-{{ post.fileSlug }}">
+{%- for b in related | head(2) %}
+              <li><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></li>
+{%- endfor %}
+            </ul>
+          </div>
+{%- endif %}
+        </article>
+{%- endfor %}
+      </div>
+    </section>
+{%- endif %}

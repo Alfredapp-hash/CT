@@ -1,0 +1,35 @@
+{#- The Price Series shelf (#books) + reading-order strip (#reading-order). Data: books where shelf == price-series. -#}
+{%- from "partials/rail.njk" import rail -%}
+{%- from "partials/cover.njk" import cover -%}
+{%- set sc = homeCopy.series -%}
+{%- set seriesBooks = books | where("shelf", "price-series") -%}
+{%- if seriesBooks.length %}
+    <section class="home-section container shelf-home" id="books" aria-labelledby="books-title">
+      <div class="section-head section-head--rule section-head--row">
+        <div>
+          <p class="eyebrow">{{ sc.eyebrow }}</p>
+          <h2 id="books-title">{{ sc.heading }}</h2>
+        </div>
+        <p class="section-head__lede">{{ sc.lede }}</p>
+      </div>
+      {{ rail("series-rail", sc.heading, seriesBooks, books, { shelf: true, reveal: true, prevLabel: homeCopy.a11y.railPrev, nextLabel: homeCopy.a11y.railNext, card: { labelMode: "short" } }) }}
+      <nav class="reading-order" id="reading-order" aria-labelledby="reading-order-title">
+        <p class="eyebrow" id="reading-order-title">{{ sc.orderLabel }}</p>
+        <div class="reading-order__row">
+          <ol class="reading-order__list">
+{%- for b in seriesBooks %}
+            <li class="reading-order__step">
+              <a href="/books/{{ b.slug }}.html">
+                <span class="reading-order__num" aria-hidden="true">{{ b.series.order }}</span>
+                <span class="jacket jacket--mini">{{ cover(b, { alt: "", small: true }) }}</span>
+                <span class="reading-order__title">{{ b.title }}</span>
+              </a>
+            </li>
+{%- endfor %}
+          </ol>
+          <a class="btn btn--quiet btn--small reading-order__link" href="/#books">{{ sc.seriesLink }} <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="reading-order__note">{{ sc.orderNote }}</p>
+      </nav>
+    </section>
+{%- endif %}

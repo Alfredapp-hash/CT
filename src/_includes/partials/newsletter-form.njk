@@ -1,5 +1,23 @@
-{#- Netlify Forms markup, byte-for-byte the home page form. id must be unique per page: pass a suffix for the footer copy. -#}
-{%- macro newsletterForm(site, idSuffix = "") -%}
+{#- Netlify Forms markup. Form name / method / action / data-netlify / netlify-honeypot / hidden form-name / bot-field are
+    identical in both variants and to the original site. id must be unique per page: pass a suffix for the footer copy.
+    opts.full (home #newsletter): visible labels + a "First name" field (homeCopy.newsletter labels). Default: the compact
+    email-only form, byte-for-byte the original (used in the footer). -#}
+{%- macro newsletterForm(site, idSuffix = "", opts = {}) -%}
+{%- if opts.full -%}
+<form name="{{ site.newsletter.formName }}" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form newsletter-form--full">
+        <input type="hidden" name="form-name" value="{{ site.newsletter.formName }}" />
+        <p hidden><label>Leave this empty <input name="bot-field" /></label></p>
+        <div class="field">
+          <label for="newsletter-name{{ idSuffix }}">{{ opts.copy.nameLabel }}</label>
+          <input id="newsletter-name{{ idSuffix }}" type="text" name="name" autocomplete="given-name" />
+        </div>
+        <div class="field">
+          <label for="newsletter-email{{ idSuffix }}">{{ opts.copy.emailLabel }}</label>
+          <input id="newsletter-email{{ idSuffix }}" type="email" name="email" required autocomplete="email" />
+        </div>
+        <button type="submit" class="btn btn--primary">{{ opts.copy.button }}</button>
+      </form>
+{%- else -%}
 <form name="{{ site.newsletter.formName }}" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
         <input type="hidden" name="form-name" value="{{ site.newsletter.formName }}" />
         <p hidden><label>Leave this empty <input name="bot-field" /></label></p>
@@ -7,4 +25,5 @@
         <input id="newsletter-email{{ idSuffix }}" type="email" name="email" required autocomplete="email" placeholder="Your email" />
         <button type="submit">Subscribe</button>
       </form>
+{%- endif -%}
 {%- endmacro -%}

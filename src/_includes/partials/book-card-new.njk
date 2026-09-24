@@ -1,8 +1,13 @@
 {%- from "partials/cover.njk" import cover -%}
-{#- bookCard(book, books, site) → the Sprint 1 .book-card component (series label, meta, tagline, Read more + Buy). -#}
+{#- bookCard(book, books, opts) → the Sprint 1 .book-card component (series label, meta, tagline, Read more + Buy).
+    opts.labelMode: "short" → "Book N of T" (no series name; the shelf heading already says it),
+                    "category" → "Published as X" or the category noun ("Nonfiction", "Devotional", "Children’s").
+    opts.label: explicit label text (used when no series / publishedAs applies).
+    opts.eager: pass through to the cover macro (home page never uses it). -#}
 {%- macro bookCard(book, books, opts = {}) -%}
 {%- set seriesTotal = 0 -%}
 {%- if book.series %}{% for b in books %}{% if b.series and b.series.name == book.series.name %}{% set seriesTotal = seriesTotal + 1 %}{% endif %}{% endfor %}{% endif -%}
+{%- set nouns = { novel: "Novel", nonfiction: "Nonfiction", devotional: "Devotional", children: "Children’s" } -%}
 <article class="book-card">
   <a class="book-card__cover" href="/books/{{ book.slug }}.html" tabindex="-1" aria-hidden="true">
     <figure class="jacket">
@@ -11,12 +16,14 @@
   </a>
   {#- the label line is always rendered (empty when there is nothing to say) so titles align across a row -#}
   <p class="book-card__label">
-  {%- if book.series %}Book {{ book.series.order }} of {{ seriesTotal }} · {{ book.series.name }}
+  {%- if opts.labelMode == "short" and book.series %}Book {{ book.series.order }} of {{ seriesTotal }}
+  {%- elif opts.labelMode == "category" %}{% if book.publishedAs %}Published as {{ book.publishedAs }}{% else %}{{ nouns[book.category] or opts.label or "" }}{% endif %}
+  {%- elif book.series %}Book {{ book.series.order }} of {{ seriesTotal }} · {{ book.series.name }}
   {%- elif book.publishedAs %}Published as {{ book.publishedAs }}
   {%- elif opts.label %}{{ opts.label }}
   {%- endif %}</p>
   <h3><a href="/books/{{ book.slug }}.html">{{ book.title }}</a></h3>
-  <p class="book-card__meta">{{ book.year }} · {{ book.format }}</p>
+  <p class="book-card__meta">{% if book.year %}{{ book.year }} · {% endif %}{{ book.format }}</p>
   <p class="book-card__tagline">{{ book.tagline }}</p>
   <div class="book-card__actions">
     <a class="btn btn--quiet btn--small" href="/books/{{ book.slug }}.html">Read more<span class="visually-hidden"> about {{ book.title }}</span></a>

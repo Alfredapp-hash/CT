@@ -1,0 +1,14 @@
+{#- Quote band: author.quotes[0] only; cite links to the book page. Absent when there are no quotes. -#}
+{%- if author.quotes and author.quotes.length %}
+{%- set q = author.quotes[0] %}
+{%- set qBook = books | bookBySlug(q.bookSlug) %}
+    <section class="home-section container quote-home" aria-label="A line from {{ q.source }}">
+      <div class="panel panel--leather panel--quote quote-home__panel reveal">
+        <p class="eyebrow">{{ homeCopy.quote.eyebrow }}</p>
+        <blockquote{% if qBook %} cite="/books/{{ qBook.slug }}.html"{% endif %}>
+          <p>“{{ q.text }}”</p>
+          <cite>{% if qBook %}<a href="/books/{{ qBook.slug }}.html">{{ q.source }}</a>{% else %}{{ q.source }}{% endif %}</cite>
+        </blockquote>
+      </div>
+    </section>
+{%- endif %}

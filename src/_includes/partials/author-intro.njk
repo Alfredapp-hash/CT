@@ -1,0 +1,29 @@
+{#- Author intro (#about): author.bioLong verbatim; monogram until author.headshot is set (never a stock photo). -#}
+{%- set ab = homeCopy.about -%}
+{%- if author.bioLong and author.bioLong.length %}
+    <section class="home-section container about-home" id="about" aria-labelledby="about-title">
+      <div class="section-head section-head--rule about-home__rule"></div>
+      <div class="about-home__grid">
+        <div class="about-home__media reveal">
+{%- if author.headshot and author.headshot.src %}
+          <figure class="headshot">
+            <img src="{{ author.headshot.src }}" alt="{{ author.headshot.alt }}" width="{{ author.headshot.width }}" height="{{ author.headshot.height }}" loading="lazy" decoding="async" />
+{%- if author.headshot.credit %}
+            <figcaption class="headshot__credit">{{ author.headshot.credit }}</figcaption>
+{%- endif %}
+          </figure>
+{%- else %}
+          <div class="monogram" aria-hidden="true">CT</div>
+{%- endif %}
+        </div>
+        <div class="about-home__text reveal">
+          <p class="eyebrow">{{ ab.eyebrow }}</p>
+          <h2 id="about-title">{{ ab.heading }}</h2>
+{%- for p in author.bioLong %}
+          <p>{{ p | safe }}</p>
+{%- endfor %}
+          <a class="btn btn--quiet btn--small" href="/#about">{{ ab.moreLink }} <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+{%- endif %}
