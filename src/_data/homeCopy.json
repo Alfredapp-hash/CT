@@ -1,0 +1,101 @@
+{
+  "hero": {
+    "eyebrow": "The Price Series · Book One",
+    "name": "Courtney Thomas",
+    "positioning": "Stories for the chapters we survive.",
+    "featuredSlug": "the-price-of-choosing-you",
+    "statusPill": "Available now",
+    "hook": "Kathryn wakes in the dark, wrists bound, and learns the man holding the key is not the worst thing looking for her.",
+    "ctaPrimary": "Buy the book",
+    "ctaSecondary": "Explore the Price Series",
+    "ctaPrimaryAria": "Buy The Price of Choosing You",
+    "scrollCue": "Scroll to the books"
+  },
+  "startHere": {
+    "eyebrow": "Start here",
+    "heading": "Two ways in",
+    "lede": "Some readers come for the novels. Some come for a short page to read before the day begins. Start wherever you are.",
+    "cards": [
+      {
+        "eyebrow": "New to the novels?",
+        "title": "The Price of Choosing You",
+        "body": "Survival and sacrifice. Kathryn wakes in chains and learns she is being held against something worse.",
+        "cta": "Start with Book One",
+        "slug": "the-price-of-choosing-you"
+      },
+      {
+        "eyebrow": "Need a daily word?",
+        "title": "365 Days of Grace",
+        "body": "Early alarms, bedtime guilt, and the grace that meets a working mother in the middle of an ordinary day.",
+        "cta": "Open the devotional",
+        "slug": "365-days-of-grace"
+      }
+    ]
+  },
+  "series": {
+    "eyebrow": "Three novels",
+    "heading": "The Price Series",
+    "lede": "Three novels about Kathryn and Kalem: survival, the cost of freedom, and what is worth keeping after the truth is told.",
+    "orderLabel": "Read in this order",
+    "orderNote": "Start with Book One, because each book asks a question that only becomes real once the one before it has been answered.",
+    "seriesLink": "About the series"
+  },
+  "standalone": {
+    "eyebrow": "Faith & home",
+    "heading": "Essays and devotionals",
+    "lede": "Purpose, self-worth, and working motherhood, written from seasons Courtney has lived through herself.",
+    "childrenEyebrow": "For children",
+    "childrenLede": "A story for children who have experienced loss, and for the families who support them."
+  },
+  "quote": {
+    "eyebrow": "From Rooted in Purpose"
+  },
+  "about": {
+    "eyebrow": "About",
+    "heading": "Courtney Thomas",
+    "moreLink": "More about Courtney"
+  },
+  "journal": {
+    "eyebrow": "Journal",
+    "heading": "Notes from the page",
+    "lede": "Short essays on the work behind the books: surviving into story, gardens of purpose, ordinary grace, and what love leaves behind.",
+    "cta": "Read the Journal",
+    "rss": "Subscribe by RSS",
+    "relatedLabel": "Read alongside"
+  },
+  "newsletter": {
+    "eyebrow": "Stay close",
+    "heading": "Reader notes",
+    "promise": "A letter when there is something to say: a new book, a journal post, a word for a hard week. A few times a year, not more. Leave whenever you like.",
+    "nameLabel": "First name",
+    "emailLabel": "Email",
+    "button": "Subscribe",
+    "privacyNote": "Your name and email stay with Courtney. See the <a href=\"/privacy.html\">privacy page</a>.",
+    "leadMagnetLine": "A short sample from the books comes with your first letter."
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "heading": "Write to Courtney",
+    "lede": "For book clubs, readings, and notes from readers.",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "messageLabel": "Note",
+    "button": "Send",
+    "successNote": "Thank you. Your note is on its way to Courtney.",
+    "errorNote": "That didn't send. Please try again or email later."
+  },
+  "footer": {
+    "tagline": "Stories for the chapters we survive.",
+    "newsletterMini": "Occasional letters. No spam.",
+    "credit": "",
+    "accessibility": "Accessibility",
+    "privacy": "Privacy"
+  },
+  "a11y": {
+    "railPrev": "Scroll covers left",
+    "railNext": "Scroll covers right",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "skipLink": "Skip to the books"
+  }
+}
