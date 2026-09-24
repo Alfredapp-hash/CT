@@ -1,0 +1,14 @@
+---
+layout: layouts/book.njk
+pagination:
+  data: books
+  size: 1
+  alias: book
+  addAllPagesToCollections: true
+permalink: "/books/{{ book.slug }}.html"
+tags: [book]
+eleventyComputed:
+  title: "{{ book.title }}"
+  description: "{{ book.tagline }}"
+  ogImage: "/media/covers/{{ book.cover.base }}@2x.jpg"
+---
