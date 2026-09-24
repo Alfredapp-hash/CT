@@ -75,12 +75,16 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "content-type": ct + (ct.startsWith("text/") ? "; charset=utf-8" : "") });
   res.end(readFileSync(file));
 });
-await new Promise((r) => server.listen(PORT, r));
+const port = PORT;
+await new Promise((resolve, reject) => {
+  server.once("error", (e) => reject(new Error(`check-urls: cannot listen on :${PORT} (${e.code}). Stop the other server first.`)));
+  server.listen(PORT, resolve);
+});
 
 // 2. Request everything
 let ok = 0;
 for (const [url, expected] of urls) {
-  const res = await fetch(`http://localhost:${PORT}${url}`).catch((e) => ({ status: 0, headers: new Map(), error: e }));
+  const res = await fetch(`http://localhost:${port}${url}`).catch((e) => ({ status: 0, headers: new Map(), error: e }));
   const ct = res.headers.get ? res.headers.get("content-type") || "" : "";
   if (res.status !== 200) fail(`${url} → ${res.status}`);
   else if (expected && !ct.startsWith(expected)) fail(`${url} content-type ${ct}, expected ${expected}`);

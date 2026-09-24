@@ -1,12 +1,57 @@
-  <footer class="site-footer">
-    <div class="footer-brand">
-      <a class="brand" href="/">{{ site.name }}</a>
-      <p>{{ site.tagline }}</p>
-    </div>
-    <nav class="footer-nav" aria-label="Footer">
-{%- for item in site.footerNav %}
-      <a href="{{ item.href }}">{{ item.label }}</a>
+{%- from "partials/newsletter-form.njk" import newsletterForm -%}
+{#- Site footer: Books / About / Connect groups, newsletter mini-form (same Netlify form),
+    socials only when non-null, RSS, legal row. Empty data slots render nothing. -#}
+  <footer class="site-footer" id="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/">{{ site.name }}</a>
+        <p>{{ site.tagline }}</p>
+        <p class="footer-note">{{ site.distribution }}</p>
+      </div>
+      <nav class="footer-col" aria-labelledby="footer-books-h">
+        <h2 class="footer-col__h" id="footer-books-h">Books</h2>
+        <ul class="footer-list">
+{%- for b in books %}
+          <li><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></li>
 {%- endfor %}
-    </nav>
-    <p class="footer-note">{{ site.distribution }}</p>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-labelledby="footer-about-h">
+        <h2 class="footer-col__h" id="footer-about-h">About</h2>
+        <ul class="footer-list">
+{%- for item in site.footerGroups.about %}
+          <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+{%- endfor %}
+        </ul>
+      </nav>
+      <div class="footer-col footer-col--connect">
+        <h2 class="footer-col__h" id="footer-connect-h">Connect</h2>
+        <p class="footer-col__lede">{{ site.newsletter.lede }}</p>
+        {{ newsletterForm(site, "-footer") }}
+{%- set socials = [] %}
+{%- if site.social.instagram %}{% set socials = (socials.push({ label: "Instagram", href: site.social.instagram }), socials) %}{% endif %}
+{%- if site.social.facebook %}{% set socials = (socials.push({ label: "Facebook", href: site.social.facebook }), socials) %}{% endif %}
+{%- if site.social.goodreads %}{% set socials = (socials.push({ label: "Goodreads", href: site.social.goodreads }), socials) %}{% endif %}
+{%- if site.social.amazonAuthor %}{% set socials = (socials.push({ label: "Amazon author page", href: site.social.amazonAuthor }), socials) %}{% endif %}
+        <ul class="footer-list footer-list--inline" aria-label="Elsewhere">
+{%- for s in socials %}
+          <li><a href="{{ s.href }}" rel="me noopener">{{ s.label }}</a></li>
+{%- endfor %}
+          <li><a href="/blog/rss.xml" type="application/rss+xml">RSS feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p class="footer-legal__copy">© {{ "" | year }} {{ site.name }}</p>
+      <nav class="footer-legal__nav" aria-label="Legal">
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+      </nav>
+{%- if site.affiliateDisclosure %}
+      <p class="footer-legal__disclosure">{{ site.affiliateDisclosure }}</p>
+{%- endif %}
+{%- if site.siteCredit %}
+      <p class="footer-legal__credit">{{ site.siteCredit }}</p>
+{%- endif %}
+    </div>
   </footer>
