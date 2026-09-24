@@ -1,12 +1,37 @@
-{#- Simple port for Sprint 1 step 5; upgraded to the full nav in step 12. -#}
-  <header class="site-nav">
+{#- Global navigation. Works without JS: every link is in the DOM and visible; the hamburger and
+    the Books disclosure button are `hidden` until nav.js unhides them. -#}
+{%- set seriesBooks = books | where("shelf", "price-series") -%}
+  <header class="site-nav" data-nav>
     <a class="brand" href="{% if isHome %}#top{% else %}/{% endif %}">{{ site.name }}</a>
-    <nav aria-label="Primary">
-{%- for item in site.footerNav %}{% if item.label != "RSS" and item.label != "Privacy" %}
-      <a href="{{ item.href }}"{% if item.href == page.url %} aria-current="page"{% endif %}>{{ item.label }}</a>
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" hidden>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="nav-menu" id="nav-menu" aria-label="Primary">
+      <ul class="nav-list">
+        <li class="nav-item nav-item--books">
+          <a href="/#books"{% if page.url.startsWith("/books/") %} aria-current="true"{% endif %}>Books</a>
+          <button class="nav-drop__btn" type="button" aria-expanded="false" aria-controls="nav-books" hidden><span class="visually-hidden">Open the books menu</span><span aria-hidden="true">▾</span></button>
+          <div class="nav-drop" id="nav-books">
+{%- for group in site.bookGroups %}
+            <div class="nav-drop__group">
+              <p class="nav-drop__label">{{ group.label }}</p>
+              <ul>
+{%- for b in books %}{% if (group.shelf and b.shelf == group.shelf) or (group.categories and group.categories.includes(b.category)) %}
+                <li><a href="/books/{{ b.slug }}.html"{% if page.url == "/books/" + b.slug + ".html" %} aria-current="page"{% endif %}>{% if b.series %}<span class="nav-drop__num">{{ b.series.order }}</span> {% endif %}{{ b.title }}</a></li>
 {%- endif %}{% endfor %}
-{%- if isHome %}
-      <button class="nav-skip" type="button" id="skip" hidden>Skip</button>
-{%- endif %}
+              </ul>
+            </div>
+{%- endfor %}
+          </div>
+        </li>
+{%- for item in site.nav %}{% if not item.menu %}
+        <li class="nav-item"><a href="{{ item.href }}"{% if item.href == page.url %} aria-current="page"{% endif %}>{{ item.label }}</a></li>
+{%- endif %}{% endfor %}
+        <li class="nav-item nav-item--cta"><a class="btn btn--primary btn--small" href="{{ site.navCta.href }}">{{ site.navCta.label }}</a></li>
+      </ul>
     </nav>
+{%- if isHome %}
+    <button class="nav-skip" type="button" id="skip" hidden>Skip</button>
+{%- endif %}
   </header>
