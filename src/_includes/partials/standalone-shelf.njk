@@ -16,7 +16,7 @@
         </div>
         <p class="section-head__lede">{{ st.lede }}</p>
       </div>
-      {{ rail("faith-rail", st.heading, standaloneBooks, books, { shelf: true, reveal: true, prevLabel: homeCopy.a11y.railPrev, nextLabel: homeCopy.a11y.railNext, card: { labelMode: "category" } }) }}
+      {{ rail("faith-rail", st.heading + " covers", standaloneBooks, books, { shelf: true, prevLabel: homeCopy.a11y.railPrev, nextLabel: homeCopy.a11y.railNext, card: { labelMode: "category" } }) }}
 {%- endif %}
 {%- if childrenBooks.length %}
       <div class="children-row">

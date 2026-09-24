@@ -412,6 +412,8 @@
    rules live in styles.css; these extend them.
    -------------------------------------------------------------------------- */
 .site-nav { flex-wrap: nowrap; }
+/* brand link: 44px hit area without changing the header's height */
+.site-nav .brand { display: inline-block; padding-block: 0.35em; margin-block: -0.35em; }
 .nav-list {
   display: flex;
   align-items: center;
@@ -592,7 +594,7 @@
    -------------------------------------------------------------------------- */
 .site-footer {
   display: block;
-  padding: 3.4rem 6vw 2rem;
+  padding: var(--space-8) 6vw 2rem; /* Sprint 2: footer rhythm on the section scale (was 3.4rem) */
 }
 .footer-grid {
   display: grid;
@@ -603,6 +605,7 @@
   margin: 0 auto;
 }
 .footer-brand .footer-note { text-align: left; margin-top: var(--space-4); }
+.site-footer .footer-brand .brand { display: inline-flex; align-items: center; min-height: var(--target); }
 .footer-col__h {
   margin: 0 0 var(--space-3);
   font-family: var(--sans);
@@ -647,7 +650,7 @@
 .site-footer .newsletter-form button[type="submit"]:hover { background: var(--paper); }
 .footer-legal {
   max-width: var(--wide);
-  margin: 2.6rem auto 0;
+  margin: var(--space-7) auto 0;
   padding-top: 1.2rem;
   border-top: 1px solid var(--paper-a18);
   display: flex;
@@ -797,3 +800,9 @@
   align-items: flex-end;
   aspect-ratio: 600 / 1213;
 }
+/* The jacket's bottom margin lives on the slot, not inside it, so the tallest jacket cannot overflow the
+   aspect-ratio box and push its label down (Sprint 2 fix: What We Keep sat 8px lower than its neighbours). */
+.book-grid .book-card__cover .jacket,
+.rail .book-card__cover .jacket { margin-bottom: 0; }
+.book-grid .book-card__cover,
+.rail .book-card__cover { margin-bottom: var(--space-2); }

@@ -12,7 +12,7 @@
         </div>
         <p class="section-head__lede">{{ sc.lede }}</p>
       </div>
-      {{ rail("series-rail", sc.heading, seriesBooks, books, { shelf: true, reveal: true, prevLabel: homeCopy.a11y.railPrev, nextLabel: homeCopy.a11y.railNext, card: { labelMode: "short" } }) }}
+      {{ rail("series-rail", sc.heading + " covers", seriesBooks, books, { shelf: true, prevLabel: homeCopy.a11y.railPrev, nextLabel: homeCopy.a11y.railNext, card: { labelMode: "short" } }) }}
       <nav class="reading-order" id="reading-order" aria-labelledby="reading-order-title">
         <p class="eyebrow" id="reading-order-title">{{ sc.orderLabel }}</p>
         <div class="reading-order__row">

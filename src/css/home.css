@@ -190,6 +190,7 @@
 .shelf-home .book-card__tagline { font-size: 0.93rem; }
 .shelf-home .btn--quiet, .start-card .btn--quiet, .about-home .btn--quiet, .reading-order__link { gap: 0.4em; }
 @media (min-width: 900px) {
+  .shelf-home .section-head { margin-bottom: var(--space-7); } /* room for the tallest jacket under a right-aligned lede */
   .rail--shelf .rail__controls,
   .rail--shelf .rail__status { display: none; }
   .rail--shelf .rail__track {
@@ -580,4 +581,21 @@
   .start-card__cover:hover .jacket, .start-card__cover:focus-visible .jacket { transform: none; transition: none; }
   .start-card h3 a, .post-tile__title a, .reading-order__title, .quote-home__panel cite a,
   .contact-home button[type="submit"], .home-section input, .home-section textarea { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Target size: inline title / prose links keep their layout but get a 44px hit area
+   (padding-block with an equal negative margin, so nothing moves).
+   -------------------------------------------------------------------------- */
+.book-card h3 a,
+.start-card h3 a,
+.post-tile__title a {
+  display: inline-block;
+  padding-block: 0.55em;
+  margin-block: -0.55em;
+}
+.newsletter-home__privacy a {
+  display: inline-block;
+  padding-block: 1.1em;
+  margin-block: -1.1em;
 }
