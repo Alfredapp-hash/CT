@@ -1,11 +1,23 @@
-{%- set featured = books | bookBySlug(site.featuredSlug) -%}
-{%- set ogImg = ogImage or ("/media/covers/" + featured.cover.base + "@2x.jpg") -%}
+{#- Open Graph / Twitter / canonical. og:image is the @2x cover jpg (absolute); width/height are the measured
+    @2x pixel sizes from books.json (cover.width2x/height2x — validated against the files), alt from cover.alt.
+    Book pages pass `book`; every other page falls back to the featured title. -#}
+{%- set ogBook = book if (book and book.cover) else (books | bookBySlug(site.featured.slug)) -%}
+{%- set ogImg = ogImage or ("/media/covers/" + ogBook.cover.base + "@2x.jpg") -%}
 {%- if not noindex %}
+  <meta property="og:site_name" content="{{ site.name }}" />
+  <meta property="og:locale" content="{{ site.locale }}" />
   <meta property="og:title" content="{% if title %}{{ title }} — {{ site.name }}{% else %}{{ site.title }}{% endif %}" />
   <meta property="og:description" content="{{ ogDescription or description or site.ogDescription }}" />
   <meta property="og:type" content="{{ ogType or 'website' }}" />
   <meta property="og:url" content="{{ page.url | absoluteUrl(site.url) }}" />
   <meta property="og:image" content="{{ ogImg | absoluteUrl(site.url) }}" />
+  <meta property="og:image:width" content="{{ ogBook.cover.width2x }}" />
+  <meta property="og:image:height" content="{{ ogBook.cover.height2x }}" />
+  <meta property="og:image:alt" content="{{ ogBook.cover.alt }}" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{% if title %}{{ title }} — {{ site.name }}{% else %}{{ site.title }}{% endif %}" />
+  <meta name="twitter:description" content="{{ ogDescription or description or site.ogDescription }}" />
+  <meta name="twitter:image" content="{{ ogImg | absoluteUrl(site.url) }}" />
+  <meta name="twitter:image:alt" content="{{ ogBook.cover.alt }}" />
   <link rel="canonical" href="{{ page.url | absoluteUrl(site.url) }}" />
 {%- endif %}

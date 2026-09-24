@@ -22,6 +22,8 @@
       "base": "the-price-of-choosing-you-cover",
       "width": 600,
       "height": 988,
+      "width2x": 1200,
+      "height2x": 1977,
       "alt": "Cover of The Price of Choosing You by Courtney Thomas"
     },
     "retailers": null,
@@ -61,6 +63,8 @@
       "base": "the-price-of-letting-go-cover",
       "width": 600,
       "height": 982,
+      "width2x": 1200,
+      "height2x": 1964,
       "alt": "Cover of The Price of Letting Go by Courtney Thomas"
     },
     "retailers": null,
@@ -100,6 +104,8 @@
       "base": "what-we-keep-cover",
       "width": 600,
       "height": 1213,
+      "width2x": 1200,
+      "height2x": 2427,
       "alt": "Cover of What We Keep by Courtney Thomas"
     },
     "retailers": null,
@@ -135,6 +141,8 @@
       "base": "rooted-in-purpose-cover",
       "width": 600,
       "height": 1177,
+      "width2x": 1200,
+      "height2x": 2354,
       "alt": "Cover of Rooted in Purpose by Courtney Thomas"
     },
     "retailers": null,
@@ -170,6 +178,8 @@
       "base": "finding-your-self-worth-cover",
       "width": 600,
       "height": 1113,
+      "width2x": 1200,
+      "height2x": 2225,
       "alt": "Cover of Finding Your Self-Worth by Courtney Thomas"
     },
     "retailers": null,
@@ -205,6 +215,8 @@
       "base": "finding-drakes-feather-cover",
       "width": 600,
       "height": 1131,
+      "width2x": 1200,
+      "height2x": 2263,
       "alt": "Cover of Finding Drake’s Feather by Courtney Thomas"
     },
     "retailers": null,
@@ -240,6 +252,8 @@
       "base": "365-days-of-grace-cover",
       "width": 600,
       "height": 903,
+      "width2x": 1200,
+      "height2x": 1806,
       "alt": "Cover of 365 Days of Grace by Courtney Thomas"
     },
     "retailers": null,

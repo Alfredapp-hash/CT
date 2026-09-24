@@ -24,7 +24,13 @@
 {%- endif %}
 {%- block head %}{% endblock %}
   <link rel="icon" href="{{ site.favicon | safe }}" />
-{%- block headEnd %}{% endblock %}
+{%- block headEnd %}
+{%- if isHome %}
+{% include "partials/jsonld-home.njk" %}
+{%- elif not noindex and not book %}
+{% include "partials/jsonld-breadcrumbs.njk" %}
+{%- endif %}
+{%- endblock %}
 </head>
 <body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
   <a class="skip-link" href="#{{ skipTarget or 'main' }}">{{ skipLabel or 'Skip to content' }}</a>

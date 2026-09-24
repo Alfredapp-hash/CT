@@ -12,6 +12,22 @@ const author = read("src/_data/author.json");
 const errors = [];
 const fail = (msg) => errors.push(msg);
 
+// Pixel size of a baseline/progressive JPEG from its first SOFn marker.
+function jpegSize(file) {
+  if (!existsSync(file)) return null;
+  const buf = readFileSync(file);
+  let i = 2;
+  while (i < buf.length) {
+    if (buf[i] !== 0xff) return null;
+    const marker = buf[i + 1];
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+      return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
+    }
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  return null;
+}
+
 function isbn13Valid(isbn) {
   if (!/^\d{13}$/.test(isbn)) return false;
   const digits = isbn.split("").map(Number);
@@ -50,6 +66,12 @@ for (const b of books) {
       const f = resolve(root, "src/media/covers", b.cover.base + v);
       if (!existsSync(f)) fail(`${b.slug}: missing cover file ${b.cover.base + v}`);
     }
+    // og:image dimensions: cover.width2x/height2x must equal the real @2x.jpg pixel size (measured from the SOF marker)
+    const dims = jpegSize(resolve(root, "src/media/covers", b.cover.base + "@2x.jpg"));
+    const dims1 = jpegSize(resolve(root, "src/media/covers", b.cover.base + ".jpg"));
+    if (!dims) fail(`${b.slug}: cannot read @2x.jpg dimensions`);
+    else if (dims.width !== b.cover.width2x || dims.height !== b.cover.height2x) fail(`${b.slug}: cover.width2x/height2x ${b.cover.width2x}×${b.cover.height2x} ≠ file ${dims.width}×${dims.height}`);
+    if (dims1 && (dims1.width !== b.cover.width || dims1.height !== b.cover.height)) fail(`${b.slug}: cover.width/height ${b.cover.width}×${b.cover.height} ≠ file ${dims1.width}×${dims1.height}`);
   }
   if (b.retailers !== null && !Array.isArray(b.retailers)) fail(`${b.slug}: retailers must be null or an array of {name,url}`);
 }
@@ -58,6 +80,14 @@ if (seriesOrders.size !== 3) fail(`The Price Series must have exactly 3 ordered 
 if (!site.url || site.url.endsWith("/")) fail("site.url must be set without a trailing slash");
 if (!Array.isArray(site.retailerTemplates) || !site.retailerTemplates.every((r) => r.name && r.url.includes("{isbn}"))) fail("retailerTemplates entries need name + url containing {isbn}");
 if (!books.some((b) => b.slug === site.featuredSlug)) fail(`site.featuredSlug ${site.featuredSlug} is not a book`);
+if (!site.featured || !books.some((b) => b.slug === site.featured.slug)) fail(`site.featured.slug is not a book`);
+for (const k of ["statusPill", "hook", "ctaPrimary", "ctaSecondary"]) if (!site.featured?.[k]) fail(`site.featured.${k} is empty`);
+if ((site.featured?.hook || "").length > 120) fail(`site.featured.hook is ${site.featured.hook.length} chars; the band budget at 390px allows 120`);
+if (!("leadMagnet" in (site.newsletter || {}))) fail("site.newsletter.leadMagnet must exist (null until a real sample is sent)");
+const BANNED = /award|bestsell|★|review|TODO|lorem|coming soon/i;
+const homeCopy = read("src/_data/homeCopy.json");
+const walk = (v, path) => { if (typeof v === "string") { if (BANNED.test(v)) fail(`${path}: banned word in "${v}"`); } else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, path + "." + k); };
+walk(homeCopy, "homeCopy"); walk(site.featured, "site.featured");
 if (!Array.isArray(author.bioLong) || author.bioLong.length !== 3) fail("author.bioLong must hold the 3 #about paragraphs");
 for (const q of author.quotes || []) if (q.bookSlug && !slugs.has(q.bookSlug)) fail(`author quote references unknown book ${q.bookSlug}`);
 
