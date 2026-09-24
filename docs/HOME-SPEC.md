@@ -2,7 +2,7 @@
 
 Art director's build spec for `/` (`src/index.njk`). Written so the engineer can build every section without asking a question. Inputs read: `docs/PLAN.md` §3, `docs/SPRINT-1-AD-REVIEW.md`, the `252b6c3` fix commit, `src/css/styles.css` tokens, `src/css/components.css`, `src/_data/{site,books,author}.json`, the blog posts' front matter, and the captures in `/home/claude/shots/` (`s1-review-home-*`, `s1-fixed-*`, `s1-fixed-hero-390-reduced-motion.png`, `s1-fixed-styleguide-cards-1440.png`, `s1-fixed-styleguide-rail-390.png`, `s1-fixed-footer-1440.png`).
 
-> Note on inputs: the brief names `src/_data/homeCopy.json`. It does not exist in the tree. Every string this spec refers to is already in `site.json` (`tagline`, `distribution`, `newsletter.*`, `contact.*`, `blog.heading`, `bookGroups`, `featuredSlug`), `books.json` (`eyebrow`, `tagline`, `year`, `format`, `publishedAs`, `series.*`) or `author.json` (`bioLong`, `quotes`). If the PM wants a `homeCopy.json`, its keys are listed in §14 and the templates read copy from it; this spec never quotes copy, it only names the slot.
+> Note on inputs: `src/_data/homeCopy.json` landed in `966cd2c` while this spec was being written (see `docs/COPY-NOTES.md`). Every string on the page comes from it, from `site.json` (`distribution`, `bookGroups`, `featuredSlug`), `books.json` (`eyebrow`, `tagline`, `year`, `format`, `publishedAs`, `series.*`, `cover.*`) or `author.json` (`bioLong`, `headshot`, `quotes`). §14 maps each slot to its key. This spec never writes copy; where it quotes a line it is only to measure it.
 
 ---
 
@@ -231,13 +231,13 @@ A block renders only when its data is non-empty, and when it does not render **n
 |  Stories for the                      | 1173   H1 2 lines @ 40px = 82
 |  chapters we survive.                 |
 |  (Paperback · 2026)                   | 1267   pill 26 + 16
-|  Survival and sacrifice. Kathryn      | 1309   hook 3 lines = 88
-|  wakes in chains and learns ...       |
-|  [        BUY THE BOOK          ]     | 1421   44
-|  [     EXPLORE THE SERIES       ]     | 1477   44
-|  In print worldwide via IngramSpark   | 1533   18
-+---------------------------------------+ 1585   pb 32   band = 741 px (measured)
-|  START HERE (sunk panel)              | 1633   pt 48
+|  Kathryn wakes in the dark, wrists    | 1309   hook 3 lines @ --step-0 = 70
+|  bound, and learns the man ...        |
+|  [        BUY THE BOOK          ]     | 1403   44
+|  [   EXPLORE THE PRICE SERIES   ]     | 1459   44
+|  In print worldwide via IngramSpark   | 1515   18
++---------------------------------------+ 1567   pb 32   band = 723 px (measured)
+|  START HERE (sunk panel)              | 1615   pt 48
 |  +---------------------------------+  |
 |  | [96] NEW TO THE SERIES?         |  |
 |  |      Title / tagline            |  |
@@ -250,7 +250,7 @@ A block renders only when its data is non-empty, and when it does not render **n
 
 The header is fixed at `--nav-h` = 68 px; `#library` has `scroll-margin-top: calc(var(--nav-h) + 1rem)` = 84 px, so the usable height of the viewport the scroll cue lands on is **844 − 84 = 760 px**. The band must be ≤ 750 px at 390 so the primary and secondary buttons are both fully inside it.
 
-I built the band as specced (real tokens, real fonts, real cover, Book One's tagline as the hook) and measured it headless at 390 × 844: **741 px** (`/home/claude/shots/ad2/band-390.png`; cover 263, eyebrow 18, H1 82, hook 88). Row by row:
+I built the band as specced (real tokens, real fonts, real cover, the copywriter's `hero.hook` — 115 characters — and `hero.ctaSecondary`) and measured it headless at 390 × 844: **723 px** (`/home/claude/shots/ad2/band-390.png`; cover 263, eyebrow 18, H1 82, hook 70). Row by row:
 
 | Row | Height | Running |
 |---|---|---|
@@ -263,15 +263,15 @@ I built the band as specced (real tokens, real fonts, real cover, Book One's tag
 | gap `--space-3` | 12 | 423 |
 | Pill | 26 | 449 |
 | gap `--space-4` | 16 | 465 |
-| Hook three lines (`--step-1` = 20.2 px × 1.45) | 88 | 553 |
-| gap `--space-5` | 24 | 577 |
-| Primary button | 44 | 621 |
-| gap `--space-3` | 12 | 633 |
-| Secondary button | 44 | 677 |
-| gap `--space-3` + trust line (18) | 30 | 707 |
-| `padding-bottom` `--space-6` | 32 | **739** (measured 741) |
+| Hook three lines (`--step-0` = 16.1 px × 1.45 below 700; see §3.3) | 70 | 535 |
+| gap `--space-5` | 24 | 559 |
+| Primary button | 44 | 603 |
+| gap `--space-3` | 12 | 615 |
+| Secondary button | 44 | 659 |
+| gap `--space-3` + trust line (18) | 30 | 689 |
+| `padding-bottom` `--space-6` | 32 | **721** (measured 723) |
 
-741 ≤ 760: both buttons sit ≥ 80 px above the fold and the trust line is the last thing in view. Two guards keep the budget true, and both were the difference between fitting and not in the measurement: (a) the eyebrow is **one line** — it carries `books[featured].eyebrow` only ("The Price Series · Book One", 27 characters; the author's name is already in the header brand) and the validator rejects an eyebrow over 32 characters; (b) the hook is capped at 110 characters (Book One's tagline is 101 and wraps to exactly three lines at 351 px) — `scripts/validate-data.mjs` fails the build with a message rather than letting the band grow silently. At 320 × 568 the same band measures 806 px and needs one extra swipe, which is acceptable ("works at 320" means no overflow and no clipping, not one-viewport fit). **Max band height: 750 px at 390; 600 px at ≥ 1024** (measured 591 at both 1024 and 1440: 48 + 494 cover + 48).
+723 ≤ 760: both buttons sit ≥ 100 px above the fold and the trust line is the last thing in view. Three guards keep the budget true, and each was the difference between fitting and not during measurement: (a) the eyebrow is **one line** — `hero.eyebrow` ("The Price Series · Book One", 27 characters; the author's name is already in the header brand) and the validator rejects an eyebrow over 32 characters; (b) below 700 px the hook is set at `--step-0`, not `--step-1` — at `--step-1` the 115-character hook wraps to four lines and the band measures 770 px, over budget; (c) the hook is capped at 120 characters (three lines at `--step-0` in 351 px) — `scripts/validate-data.mjs` fails the build with a message rather than letting the band grow silently. At 320 × 568 the same band measures 759 px and needs one extra swipe, which is acceptable ("works at 320" means no overflow and no clipping, not one-viewport fit). **Max band height: 750 px at 390; 600 px at ≥ 1024** (measured 591 at both 1024 and 1440: 48 + 494 cover + 48).
 
 ---
 
@@ -307,19 +307,19 @@ Markup order (DOM = reading order = visual order at every width): eyebrow → H1
 
 | Element | Role | Slot |
 |---|---|---|
-| Eyebrow `<p class="eyebrow">` | §1.3 eyebrow, one line, ≤ 32 characters | `books[featured].eyebrow` (the author's name is the header brand directly above; do not repeat it here — it costs a line at 390, see §2.3) |
-| `<h1 class="hero-band__title">` | Cormorant `--step-4` 500, `--ink`, `line-height 1.02`; `max-width: 14ch` at ≥ 1024 only (three lines beside the 494-px cover), no max-width below (two lines at 390) | `site.tagline` |
-| Pill `<span class="pill pill--outline">` | `.pill--outline` (gold border, gold-deep text) | `books[featured].format` · `books[featured].year`, or `site.featured.status` when set |
-| Hook `<p class="hero-band__hook">` | Outfit `--step-1` 300, `--ink-soft`, `line-height 1.45`, `max-width: var(--measure)` | `site.featured.hook` (default: featured `tagline`), ≤ 110 chars |
-| Primary `<a class="btn btn--primary">` | | `/books/{featured}.html#buy` |
-| Secondary `<a class="btn btn--secondary">` | | `#reading-order` (Sprint 3: series page) |
+| Eyebrow `<p class="eyebrow">` | §1.3 eyebrow, one line, ≤ 32 characters | `homeCopy.hero.eyebrow` (the author's name is the header brand directly above; `hero.name` is not rendered in the band — it costs a line at 390, see §2.3; it belongs in the JSON-LD `Person`) |
+| `<h1 class="hero-band__title">` | Cormorant `--step-4` 500, `--ink`, `line-height 1.02`; `max-width: 14ch` at ≥ 1024 only (three lines beside the 494-px cover), no max-width below (two lines at 390) | `homeCopy.hero.positioning` |
+| Pill `<span class="pill pill--outline">` | `.pill--outline` (gold border, gold-deep text) | `homeCopy.hero.statusPill` |
+| Hook `<p class="hero-band__hook">` | Outfit 300, `--ink-soft`, `line-height 1.45`, `max-width: var(--measure)`; **`--step-1` at ≥ 700, `--step-0` below** (the stacked column has a 40-px H1, so the lede steps down with it; this is what keeps the band inside the 390 budget, §2.3) | `homeCopy.hero.hook`, ≤ 120 chars |
+| Primary `<a class="btn btn--primary">` | label `hero.ctaPrimary`, `aria-label` `hero.ctaPrimaryAria` | `/books/{hero.featuredSlug}.html#buy` |
+| Secondary `<a class="btn btn--secondary">` | label `hero.ctaSecondary` | `#reading-order` (Sprint 3: series page) |
 | Trust line `<p class="hero-band__trust">` | Outfit `--step--1` 400, `--ink-soft` | `site.distribution` |
 
 ### 3.4 Imagery, motion, states, a11y
 
 - Cover: `.jacket` at the widths above, `--lift-2` at rest; full `srcset` (1x + 2x, jpg + webp); `loading="eager"`, `decoding="async"`, **no** `fetchpriority="high"`. Hover/focus lift as §1.4.
 - Motion: **none**. No `.reveal` on anything in the band; it is fully painted when the hero finishes or is skipped.
-- Reference renders of this section built from the real tokens, fonts and cover: `/home/claude/shots/ad2/band-1440.png`, `band-1024.png`, `band-390.png`, `band-320.png` (measured heights 591 / 591 / 741 / 806).
+- Reference renders of this section built from the real tokens, fonts, cover and `homeCopy.hero` strings: `/home/claude/shots/ad2/band-1440.png`, `band-1024.png`, `band-390.png`, `band-320.png` (measured heights 591 / 591 / 723 / 759).
 - Interaction: as §1.6. The two buttons are `<a>`; both are ≥ 44 px tall at every width and, at < 700, full width.
 - Empty state: `site.featuredSlug` unresolvable → band renders H1 + trust line + one `.btn--secondary` to `#books`, no cover column, no pill, no hook; grid collapses to one column. (Launch data has a featured book, so this is a guard, not a design.)
 - A11y: `<main id="library">` is the page's only `main`; the band is `<section aria-labelledby="hero-band-title">`; the H1 is the page's only `<h1>` (the hero contains no heading elements — verified in `hero.njk`); the cover's `<a>` has the book title as accessible name via the image `alt`.
@@ -612,21 +612,19 @@ Motion: none. Empty state: n/a. A11y: `<section id="contact" aria-labelledby="co
 
 ## 14. Data slots the templates read (no copy in this spec)
 
-| Slot | File | Status |
+| Section | Copy keys (`homeCopy.json`) | Facts (other files) |
 |---|---|---|
-| `tagline`, `distribution`, `name` | `site.json` | exists |
-| `featuredSlug` | `site.json` | exists (`the-price-of-choosing-you`) |
-| `featured.status`, `featured.hook`, `featured.primaryCta`, `featured.secondaryCta` | `site.json` | add (PLAN §3 task 1); defaults: status = format · year, hook = featured tagline, CTAs from data |
-| `startHere[]` (two slugs + eyebrow strings) | `site.json` | add |
-| `bookGroups[*].label` | `site.json` | exists (section titles) |
-| `series.order`, `eyebrow`, `year`, `format`, `tagline`, `publishedAs`, `category`, `cover.*` | `books.json` | exists |
-| `bioLong[]`, `headshot`, `quotes[]` | `author.json` | exists (`headshot: null`) |
-| `newsletter.eyebrow/heading/lede`, `newsletter.privacy`, `newsletter.leadMagnet` | `site.json` | first three exist; add `privacy` (string) and `leadMagnet` (null) |
-| `contact.eyebrow/heading/lede` | `site.json` | exists |
-| `blog.heading` | `site.json` | exists |
-| posts: `title`, `date`, `description`, `relatedBooks[]` | front matter | exists |
-
-If a `homeCopy.json` is introduced, these are its keys; nothing else on the page is text.
+| §3 Decision band | `hero.eyebrow`, `hero.positioning`, `hero.statusPill`, `hero.hook`, `hero.ctaPrimary`, `hero.ctaPrimaryAria`, `hero.ctaSecondary` | `hero.featuredSlug` → `books[]` for cover/alt/link; `site.distribution` |
+| §4 Start here | `startHere.eyebrow`, `heading` (visually hidden per §4 — or shown if the PM prefers; the panel has room for it at all widths), `lede` (rendered above the cards at `--step-0` `--ink-soft` if present), `cards[].eyebrow/title/body/cta/slug` | `books[]` covers |
+| §5 Series shelf | `series.eyebrow`, `heading`, `lede`, `orderLabel`, `orderNote` (rendered under the strip at `--step--1` `--ink-soft`, max `--measure`), `seriesLink` | `books` where `shelf == price-series`; `series.order`, `year`, `format`, `tagline` |
+| §6 Standalone + children | `standalone.eyebrow`, `heading`, `lede`, `childrenEyebrow`, `childrenLede` (under the eyebrow at `--step-0` `--ink-soft`) | `books` where `shelf == faith-home`, split on `category`; `publishedAs` |
+| §7 Quote | `quote.eyebrow` (rendered as the panel eyebrow in `--gold-warm` above the blockquote) | `author.quotes[0].text/source/bookSlug` |
+| §9 About | `about.eyebrow`, `heading`, `moreLink` | `author.bioLong[]`, `author.headshot` |
+| §10 Journal | `journal.eyebrow`, `heading`, `lede`, `cta`, `rss`, `relatedLabel` (visually-hidden label on each chip row) | `collections.postsNewest` (3), `books[]` for chip titles |
+| §11 Newsletter | `newsletter.eyebrow`, `heading`, `promise`, `nameLabel`, `emailLabel`, `button`, `privacyNote` (HTML), `leadMagnetLine` | `site.newsletter.formName`; `site.newsletter.leadMagnet` (null → line hidden) |
+| §12 Contact | `contact.eyebrow`, `heading`, `lede`, `nameLabel`, `emailLabel`, `messageLabel`, `button`, `successNote`, `errorNote` (the JS in `opening.js` writes the note text today; the engineer decides whether to pass these strings through `data-` attributes) | `site.contact.formName` |
+| §13 Footer | `footer.*` | as built |
+| Rails / nav | `a11y.railPrev`, `railNext`, `skipLink` | |
 
 ---
 
@@ -697,4 +695,5 @@ The page should feel like a Picoult or Hannah site with a smaller list: one spin
 4. **What We Keep jacket.** The 600 × 1213 source is visibly soft and a different ratio from the other two novels (`s1-fixed-styleguide-cards-1440.png`). A print-resolution file from the designer would fix both; until then it ships as is, uncropped.
 5. **Newsletter promise + privacy sentence.** Approve the promise copy (`site.newsletter.lede`) and supply the one-line privacy note (`site.newsletter.privacy`); confirm whether a lead magnet exists (`leadMagnet` stays null until it does).
 6. **Newsletter name field.** Adding "Name" to the form changes the Netlify form's field set (a new submission column). Confirm you want name + email; otherwise §11 ships email only with the visible label.
-7. **Series page link.** "Explore the series" and "About the series" point to `#reading-order` until `/books/the-price-series.html` exists (Sprint 3). Confirm that page is still planned.
+7. **Lead-magnet line.** `homeCopy.newsletter.leadMagnetLine` is written but renders only when `site.newsletter.leadMagnet` is set; confirm whether a real sample will be sent before it is switched on.
+8. **Series page link.** "Explore the series" and "About the series" point to `#reading-order` until `/books/the-price-series.html` exists (Sprint 3). Confirm that page is still planned.
