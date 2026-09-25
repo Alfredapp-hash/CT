@@ -1,0 +1,90 @@
+---
+layout: layouts/page.njk
+permalink: /bookshelf.html
+title: The Bookshelf
+description: "Every book by Courtney Thomas in one place — the novels of The Choices We Carry, the devotional 365 Days of Grace, Rooted in Purpose, Finding Yourself, and the memoir Finding Drake’s Feather — with where to buy each."
+bodyClass: book-page bookshelf-page
+extraCss: bookshelf.css
+ogBookSlug: 365-days-of-grace
+---
+{%- from "partials/cover.njk" import cover -%}
+{%- from "partials/retailers.njk" import retailerGroups -%}
+{%- set bs = site.bookshelf -%}
+{%- set standalones = [] -%}{%- set seriesBooks = [] -%}
+{%- for b in books %}{% if b.series %}{% set seriesBooks = (seriesBooks.push(b), seriesBooks) %}{% else %}{% set standalones = (standalones.push(b), standalones) %}{% endif %}{% endfor -%}
+{%- set seriesName = seriesBooks[0].series.name if seriesBooks.length else "" -%}
+
+    <section class="wrap bookshelf-head">
+      <p class="eyebrow">{{ bs.eyebrow }}</p>
+      <h1>{{ bs.heading }}</h1>
+      <p class="lede">{{ bs.lede }}</p>
+    </section>
+
+    {#- The shelf photo with Courtney's covers composited onto bare spots (scripts/compose-bookshelf.py);
+        each book carries an invisible hotspot link to its entry below. Coordinates from _data/bookshelfImage.json. -#}
+    <section class="bookshelf" aria-label="Bookshelf">
+      <div class="bookshelf__photo" style="aspect-ratio: {{ bookshelfImage.width }} / {{ bookshelfImage.height }}">
+        <picture>
+          <source type="image/webp" srcset="/media/bookshelf/case-1024.webp?v=2 1024w, /media/bookshelf/case.webp?v=2 {{ bookshelfImage.width }}w" sizes="(min-width: 1200px) 1120px, 90vw" />
+          <img src="/media/bookshelf/case.jpg?v=2" srcset="/media/bookshelf/case-1024.jpg?v=2 1024w, /media/bookshelf/case.jpg?v=2 {{ bookshelfImage.width }}w" sizes="(min-width: 1200px) 1120px, 90vw" width="{{ bookshelfImage.width }}" height="{{ bookshelfImage.height }}" alt="A tall wooden bookcase with Courtney Thomas’s seven books standing among the shelves" fetchpriority="high" decoding="async" />
+        </picture>
+{%- for h in bookshelfImage.hotspots %}
+        <a class="bookshelf__spot" href="#{{ h.slug }}" style="left:{{ h.left }}%;top:{{ h.top }}%;width:{{ h.width }}%;height:{{ h.height }}%"><span class="visually-hidden">{{ h.title }} — jump to details and where to buy</span></a>
+{%- endfor %}
+      </div>
+      <p class="bookshelf__hint">Tap a book to jump to it.</p>
+    </section>
+
+    {#- The list: one entry per book with buy links. Standalones first (site order), then the series in reading order. -#}
+    <section class="wrap bookshelf-list" aria-label="All books">
+{%- for b in standalones %}
+      <article class="shelf-entry" id="{{ b.slug }}" aria-labelledby="entry-{{ b.slug }}">
+        <a class="shelf-entry__cover" href="/books/{{ b.slug }}.html" tabindex="-1" aria-hidden="true">
+          <figure class="jacket">{{ cover(b, { alt: "" }) }}</figure>
+        </a>
+        <div class="shelf-entry__body">
+          <p class="eyebrow">{{ b.eyebrow }}</p>
+          <h2 id="entry-{{ b.slug }}"><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></h2>
+{%- if b.awards and b.awards.length %}
+          <p class="shelf-entry__award"><span class="pill pill--gold">{{ b.awards[0].honor }}</span> <span class="shelf-entry__award-meta">{{ b.awards[0].name }} · {{ b.awards[0].year }}</span></p>
+{%- endif %}
+          <p class="shelf-entry__tagline">{{ b.tagline }}</p>
+          <p class="shelf-entry__meta">{{ b.year }} · {{ b.format }} · ISBN {{ b.isbn }}</p>
+          <div class="shelf-entry__buy">
+            <h3 class="shelf-entry__buy-h">Where to buy</h3>
+            <div class="retailer-groups">{{ retailerGroups(b, site.directOrder) }}</div>
+          </div>
+          <a class="btn btn--quiet btn--small" href="/books/{{ b.slug }}.html">About the book <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+{%- endfor %}
+
+{%- if seriesBooks.length %}
+      <div class="shelf-series" id="the-choices-we-carry">
+        <div class="section-head section-head--rule">
+          <p class="eyebrow">{{ bs.seriesEyebrow }}</p>
+          <h2>{{ seriesName }}</h2>
+          <p class="section-head__lede">{{ bs.seriesLede }}</p>
+        </div>
+{%- for b in seriesBooks %}
+        <article class="shelf-entry" id="{{ b.slug }}" aria-labelledby="entry-{{ b.slug }}">
+          <a class="shelf-entry__cover" href="/books/{{ b.slug }}.html" tabindex="-1" aria-hidden="true">
+            <figure class="jacket">{{ cover(b, { alt: "" }) }}</figure>
+          </a>
+          <div class="shelf-entry__body">
+            <p class="eyebrow">Book {{ b.series.order }} of {{ seriesBooks.length }}</p>
+            <h2 id="entry-{{ b.slug }}"><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></h2>
+            <p class="shelf-entry__tagline">{{ b.tagline }}</p>
+            <p class="shelf-entry__meta">{{ b.year }} · {{ b.format }} · ISBN {{ b.isbn }}</p>
+            <div class="shelf-entry__buy">
+              <h3 class="shelf-entry__buy-h">Where to buy</h3>
+              <div class="retailer-groups">{{ retailerGroups(b, site.directOrder) }}</div>
+            </div>
+            <a class="btn btn--quiet btn--small" href="/books/{{ b.slug }}.html">About the book <span aria-hidden="true">→</span></a>
+          </div>
+        </article>
+{%- endfor %}
+      </div>
+{%- endif %}
+      <p class="dist bookshelf-dist">{{ site.distribution }}. Every title can also be ordered by ISBN from any bookstore.</p>
+    </section>

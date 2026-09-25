@@ -1,0 +1,73 @@
+/* The Bookshelf (/bookshelf.html): a photographic-feeling wooden case — walnut with real grain,
+   depth, planks with thickness, books that stand as 3D objects with page blocks — then one entry
+   per book with retailer links. Colours stay inside the site's warm palette. */
+
+.bookshelf-head { padding: 4.5rem 0 2rem; }
+.bookshelf-head h1 { margin: 0 0 0.6rem; font-size: var(--step-5); line-height: 0.98; font-weight: 500; }
+
+/* ---------- the photo ---------- */
+.bookshelf {
+  width: min(1120px, calc(100% - 10vw));
+  margin: 0 auto 1rem;
+}
+.bookshelf__photo {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--lift-3);
+  background: #2a1c12;
+}
+.bookshelf__photo img { display: block; width: 100%; height: auto; }
+.bookshelf__spot {
+  position: absolute;
+  display: block;
+  border-radius: 3px;
+  outline: 2px solid transparent;
+  transition: outline-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.bookshelf__spot:hover,
+.bookshelf__spot:focus-visible {
+  outline-color: var(--gold-warm);
+  box-shadow: 0 0 0 6px rgba(172, 149, 122, 0.35);
+}
+.bookshelf__hint {
+  margin: 1.1rem 0 0;
+  text-align: center;
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ---------- the list ---------- */
+.bookshelf-list { padding: 3.5rem 0 5rem; }
+.shelf-entry {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  padding: var(--space-7) 0;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+.shelf-entry:first-child { border-top: 0; padding-top: 0; }
+.shelf-entry__cover .jacket { max-width: 200px; margin: 0; }
+.shelf-entry__body { max-width: var(--measure); }
+.shelf-entry__body h2 { margin: 0 0 0.4rem; font-size: var(--step-3); font-weight: 500; line-height: 1.05; }
+.shelf-entry__body h2 a { text-decoration: none; }
+.shelf-entry__body h2 a:hover { color: var(--leather); }
+.shelf-entry__award { margin: 0 0 var(--space-3); display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: center; }
+.shelf-entry__award-meta { font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+.shelf-entry__tagline { margin: 0 0 var(--space-2); font-family: var(--serif); font-style: italic; font-size: var(--step-1); line-height: 1.4; color: var(--ink); }
+.shelf-entry__meta { margin: 0 0 var(--space-4); font-size: var(--step--1); color: var(--ink-faint); }
+.shelf-entry__buy { margin: 0 0 var(--space-4); }
+.shelf-entry__buy-h { margin: 0 0 var(--space-2); font-family: var(--sans); font-size: var(--step--1); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500; color: var(--ink-soft); }
+.shelf-entry__buy .retailer-group__label { display: none; }
+.shelf-series { margin-top: var(--space-7); padding-top: var(--space-6); border-top: 1px solid var(--line-firm); }
+.shelf-series .shelf-entry:first-of-type { border-top: 0; }
+.bookshelf-dist { margin-top: var(--space-6); }
+
+@media (min-width: 720px) {
+  .shelf-entry { grid-template-columns: 200px minmax(0, 1fr); gap: var(--space-7); }
+}
+@media (max-width: 600px) {
+}

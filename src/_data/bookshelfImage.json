@@ -1,0 +1,62 @@
+{
+  "width": 1372,
+  "height": 768,
+  "hotspots": [
+    {
+      "slug": "365-days-of-grace",
+      "title": "365 Days of Grace",
+      "left": 65.82,
+      "top": 8.85,
+      "width": 3.21,
+      "height": 8.46
+    },
+    {
+      "slug": "finding-drakes-feather",
+      "title": "Finding Drake\u2019s Feather",
+      "left": 80.03,
+      "top": 8.85,
+      "width": 3.21,
+      "height": 8.46
+    },
+    {
+      "slug": "finding-your-self-worth",
+      "title": "Finding Yourself",
+      "left": 48.62,
+      "top": 16.93,
+      "width": 3.43,
+      "height": 9.24
+    },
+    {
+      "slug": "rooted-in-purpose",
+      "title": "Rooted in Purpose",
+      "left": 65.67,
+      "top": 25.78,
+      "width": 3.5,
+      "height": 9.51
+    },
+    {
+      "slug": "the-price-of-choosing-you",
+      "title": "The Price of Choosing You",
+      "left": 27.77,
+      "top": 25.78,
+      "width": 3.5,
+      "height": 9.51
+    },
+    {
+      "slug": "the-price-of-letting-go",
+      "title": "The Price of Letting Go",
+      "left": 30.39,
+      "top": 25.78,
+      "width": 3.5,
+      "height": 9.51
+    },
+    {
+      "slug": "what-we-keep",
+      "title": "What We Keep",
+      "left": 33.02,
+      "top": 25.78,
+      "width": 3.57,
+      "height": 9.51
+    }
+  ]
+}

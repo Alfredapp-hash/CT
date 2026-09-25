@@ -492,8 +492,8 @@
   border: 1px solid var(--ink-a10);
   border-radius: var(--radius-s) var(--radius-m) var(--radius-m) var(--radius-s);
   box-shadow: var(--lift-2);
-  grid-template-columns: max-content;
-  gap: 1.5rem 2.25rem;
+  grid-template-columns: max-content max-content;
+  gap: 1.5rem 2.75rem;
 }
 .nav-drop::before { content: ""; position: absolute; inset: -0.5rem 0 auto 0; height: 0.5rem; }
 .drop-open .nav-drop,
@@ -523,6 +523,11 @@ html:not(.has-nav-js) .nav-item--books:focus-within .nav-drop { display: grid; }
 }
 .site-nav nav .nav-drop a:hover { color: var(--leather); }
 .site-nav nav .nav-drop a[aria-current="page"] { color: var(--leather); box-shadow: none; }
+.nav-drop__label a { color: inherit; text-decoration: none; }
+.nav-drop__label a:hover { color: var(--leather); }
+.nav-drop__series-name { margin: 0 0 0.35rem; }
+.site-nav nav .nav-drop .nav-drop__series-name a { font-weight: 600; }
+.nav-drop__sub { padding-left: 0.9rem !important; border-left: 1px solid var(--line); }
 .nav-drop__series { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-left: 0.25rem; }
 .retailer--direct { font-weight: 600; }
 .nav-drop__num {

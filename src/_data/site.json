@@ -22,12 +22,8 @@
   "nav": [
     {
       "label": "Books",
-      "href": "/#books",
+      "href": "/bookshelf.html",
       "menu": "books"
-    },
-    {
-      "label": "The Choices We Carry",
-      "href": "/#reading-order"
     },
     {
       "label": "About",
@@ -49,7 +45,7 @@
   "footerNav": [
     {
       "label": "Books",
-      "href": "/#books"
+      "href": "/bookshelf.html"
     },
     {
       "label": "Blog",
@@ -150,5 +146,12 @@
     "name": "Order from IngramSpark",
     "url": null,
     "_todo": "Brian: paste the IngramSpark order link Courtney emailed. Renders as the first buy link on every book page once set."
+  },
+  "bookshelf": {
+    "eyebrow": "Every title",
+    "heading": "The Bookshelf",
+    "lede": "All of Courtney’s books in one place. Pick one off the shelf, or scroll down for where to buy each.",
+    "seriesEyebrow": "Series",
+    "seriesLede": "Read in order: Book 1, Book 2, Book 3."
   }
 }
