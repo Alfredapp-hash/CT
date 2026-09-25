@@ -7,7 +7,7 @@
 {%- macro bookCard(book, books, opts = {}) -%}
 {%- set seriesTotal = 0 -%}
 {%- if book.series %}{% for b in books %}{% if b.series and b.series.name == book.series.name %}{% set seriesTotal = seriesTotal + 1 %}{% endif %}{% endfor %}{% endif -%}
-{%- set nouns = { novel: "Novel", nonfiction: "Nonfiction", devotional: "Devotional", children: "Children’s" } -%}
+{%- set nouns = { novel: "Novel", nonfiction: "Nonfiction", devotional: "Devotional", children: "Children’s", memoir: "Memoir" } -%}
 <article class="book-card">
   <a class="book-card__cover" href="/books/{{ book.slug }}.html" tabindex="-1" aria-hidden="true">
     <figure class="jacket">

@@ -17,9 +17,9 @@
     "cover": {
       "base": "365-days-of-grace-cover",
       "width": 600,
-      "height": 903,
+      "height": 992,
       "width2x": 1200,
-      "height2x": 1806,
+      "height2x": 1984,
       "alt": "Cover of 365 Days of Grace by Courtney Thomas"
     },
     "retailers": null,
@@ -55,15 +55,15 @@
     "publishedAs": null,
     "series": null,
     "shelf": "faith-home",
-    "category": "children",
-    "eyebrow": "A story for children",
+    "category": "memoir",
+    "eyebrow": "A memoir",
     "year": 2024,
     "isbn": "9798330529551",
     "format": "Paperback",
     "pages": null,
-    "tagline": "A duck family learns how to miss Papa Drake, keep his feather, and go on loving him.",
-    "blurb": "Saying goodbye is never easy, especially for young hearts. Finding Drake’s Feather follows Mama Hen and her ducklings after Papa Drake is gone. Together they talk about sadness, play his games, and keep a feather so his love has a place to live. Written for children who have experienced loss, and for the families who support them.",
-    "excerpt": "“Papa Drake’s love will always be with us. He will always be in our hearts. And we will always remember him.”",
+    "tagline": "A memoir for my brother, who lost his battle to mental health.",
+    "blurb": "Finding Drake’s Feather is Courtney’s memoir for her brother, who lost his battle to mental health. It is a book about grief, about the person who is gone, and about what love leaves behind for the people still here.",
+    "excerpt": null,
     "cover": {
       "base": "finding-drakes-feather-cover",
       "width": 600,
@@ -84,7 +84,7 @@
     "sampleUrl": null,
     "audiobook": null,
     "ebookIsbn": null,
-    "_todo": "Brian to supply: page count, ebook/audio availability, discussion guide, any real endorsements"
+    "_todo": "Courtney: the site now describes this book only by what the cover says. Please supply the real synopsis (blurb), an excerpt (excerpt), and whether the year/format/ISBN are still right. Brian to supply: page count, ebook/audio availability, discussion guide."
   },
   {
     "slug": "finding-your-self-worth",

@@ -41,6 +41,9 @@ for (const f of baselineFiles) {
   urls.set("/" + f, typeOf(f));
   if (f.endsWith("/index.html")) urls.set("/" + f.replace(/index\.html$/, ""), "text/html");
 }
+// Intentionally unpublished pages (301 in netlify.toml); not expected to resolve locally.
+const RETIRED = new Set(["/blog/posts/keeping-what-love-leaves.html"]);
+for (const u of RETIRED) urls.delete(u);
 urls.set("/", "text/html");
 urls.set("/blog/rss.xml", "application/rss+xml");
 urls.set("/sitemap.xml", "application/xml");

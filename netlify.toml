@@ -25,6 +25,13 @@
   to = "/admin/analytics.html"
   status = 200
 
+# Retired: the journal post described Finding Drake's Feather as a children's book; it is a memoir.
+# The post is parked in src/_drafts until Courtney rewrites it.
+[[redirects]]
+  from = "/blog/posts/keeping-what-love-leaves.html"
+  to = "/books/finding-drakes-feather.html"
+  status = 301
+
 # Additions only: extensionless convenience rewrites. The .html URLs stay canonical.
 [[redirects]]
   from = "/privacy"

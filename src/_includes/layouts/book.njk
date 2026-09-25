@@ -56,7 +56,9 @@ needsRail: true
 {%- endif %}
           <div class="book-detail__cta" id="book-cta">
             <a class="btn btn--primary" href="#buy">Buy the book</a>
+{%- if book.excerpt %}
             <a class="btn btn--quiet" href="#excerpt">Read an excerpt</a>
+{%- endif %}
           </div>
         </header>
 
@@ -77,10 +79,12 @@ needsRail: true
           <p class="blurb">{{ book.blurb }}</p>
         </section>
 
+{%- if book.excerpt %}
         <section class="book-section excerpt" id="excerpt" aria-labelledby="excerpt-h">
           <p class="eyebrow" id="excerpt-h">From the pages</p>
           <blockquote><p>{{ book.excerpt }}</p></blockquote>
         </section>
+{%- endif %}
 
         <section class="book-section where" id="buy" aria-labelledby="buy-h">
           <h2 id="buy-h">Where to buy</h2>

@@ -26,6 +26,7 @@ export default function (eleventyConfig) {
 
   // admin/analytics.html is a self-contained dashboard: copied verbatim, never templated or collected.
   eleventyConfig.ignores.add("src/admin/**");
+  eleventyConfig.ignores.add("src/_drafts/**"); // unpublished posts awaiting a rewrite
 
   // RSS: /blog/rss.xml generated from the posts collection (newest first).
   eleventyConfig.addPlugin(feedPlugin, {

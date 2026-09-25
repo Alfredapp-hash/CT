@@ -5,7 +5,7 @@
 {%- set faithBooks = books | where("shelf", "faith-home") -%}
 {%- set standaloneBooks = [] -%}
 {%- set childrenBooks = [] -%}
-{%- for b in faithBooks %}{% if b.category == "children" %}{% set childrenBooks = (childrenBooks.push(b), childrenBooks) %}{% else %}{% set standaloneBooks = (standaloneBooks.push(b), standaloneBooks) %}{% endif %}{% endfor -%}
+{%- for b in faithBooks %}{% if b.category == "children" or b.category == "memoir" %}{% set childrenBooks = (childrenBooks.push(b), childrenBooks) %}{% else %}{% set standaloneBooks = (standaloneBooks.push(b), standaloneBooks) %}{% endif %}{% endfor -%}
 {%- if standaloneBooks.length or childrenBooks.length %}
     <section class="home-section container shelf-home" id="faith" aria-labelledby="faith-title">
 {%- if standaloneBooks.length %}
@@ -32,7 +32,7 @@
             </figure>
           </a>
           <div class="children-card__body book-card">
-            <p class="book-card__label">Children’s{% if b.year %} · {{ b.year }}{% endif %}</p>
+            <p class="book-card__label">{% if b.category == "memoir" %}Memoir{% else %}Children’s{% endif %}{% if b.year %} · {{ b.year }}{% endif %}</p>
             <h3 id="children-{{ b.slug }}"><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></h3>
             <p class="book-card__meta">{{ b.format }}</p>
             <p class="book-card__tagline">{{ b.tagline }}</p>

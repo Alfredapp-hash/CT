@@ -39,7 +39,7 @@ if (!Array.isArray(books) || books.length !== 7) fail(`books.json must hold 7 re
 
 const slugs = new Set();
 const seriesOrders = new Set();
-const REQUIRED = ["slug", "title", "shelf", "category", "eyebrow", "year", "isbn", "format", "tagline", "blurb", "excerpt", "cover"];
+const REQUIRED = ["slug", "title", "shelf", "category", "eyebrow", "year", "isbn", "format", "tagline", "blurb", "cover"];
 const VARIANTS = [".jpg", "@2x.jpg", ".webp", "@2x.webp"];
 
 for (const b of books) {
@@ -50,7 +50,7 @@ for (const b of books) {
   if (!isbn13Valid(b.isbn)) fail(`${b.slug}: ISBN ${b.isbn} fails the ISBN-13 checksum`);
   if (!Number.isInteger(b.year) || b.year < 2000 || b.year > 2100) fail(`${b.slug}: year ${b.year} out of range`);
   if (!["Paperback", "Hardcover"].includes(b.format)) fail(`${b.slug}: unknown format ${b.format}`);
-  if (!["novel", "devotional", "nonfiction", "children"].includes(b.category)) fail(`${b.slug}: unknown category ${b.category}`);
+  if (!["novel", "devotional", "nonfiction", "children", "memoir"].includes(b.category)) fail(`${b.slug}: unknown category ${b.category}`);
   if (!["price-series", "faith-home"].includes(b.shelf)) fail(`${b.slug}: unknown shelf ${b.shelf}`);
   if (b.pages !== null && !Number.isInteger(b.pages)) fail(`${b.slug}: pages must be null or an integer`);
   for (const k of ["reviews", "awards", "press", "praise", "related"]) if (!Array.isArray(b[k])) fail(`${b.slug}: ${k} must be an array`);
