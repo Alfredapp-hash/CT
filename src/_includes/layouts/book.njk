@@ -41,6 +41,19 @@ needsRail: true
             <span class="pill">Audiobook</span>
 {%- endif %}
           </p>
+{%- if book.awards and book.awards.length %}
+          <ul class="book-awards" aria-label="Awards">
+{%- for a in book.awards %}
+            <li class="book-award">
+              <img class="book-award__seal" src="{{ a.seal.src }}" srcset="{{ a.seal.srcset }}" width="72" height="72" alt="{{ a.seal.alt }}" decoding="async" />
+              <div>
+                <p class="book-award__honor">{{ a.honor }}</p>
+                <p class="book-award__meta">{{ a.name }}{% if a.category %} · {{ a.category }}{% endif %}{% if a.year %} · {{ a.year }}{% endif %}</p>
+              </div>
+            </li>
+{%- endfor %}
+          </ul>
+{%- endif %}
           <div class="book-detail__cta" id="book-cta">
             <a class="btn btn--primary" href="#buy">Buy the book</a>
             <a class="btn btn--quiet" href="#excerpt">Read an excerpt</a>

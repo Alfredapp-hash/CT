@@ -26,6 +26,17 @@
           <p>{{ p | safe }}</p>
 {%- endfor %}
           <a class="btn btn--quiet btn--small" href="/#about">{{ ab.moreLink }} <span aria-hidden="true">→</span></a>
+{%- if author.honor and author.honor.title %}
+          <aside class="honor" aria-labelledby="honor-title">
+            <img class="honor__seal" src="{{ author.honor.seal.src }}" srcset="{{ author.honor.seal.srcset }}" width="96" height="96" alt="{{ author.honor.seal.alt }}" loading="lazy" decoding="async" />
+            <div class="honor__body">
+              <p class="eyebrow">{{ author.honor.eyebrow }}</p>
+              <p class="honor__title" id="honor-title">{{ author.honor.title }}</p>
+              <p class="honor__text">{{ author.honor.body }}</p>
+              <a class="btn btn--primary btn--small" href="/books/{{ author.honor.bookSlug }}.html">{{ author.honor.cta }}</a>
+            </div>
+          </aside>
+{%- endif %}
         </div>
       </div>
     </section>

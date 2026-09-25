@@ -817,3 +817,35 @@ html:not(.has-nav-js) .nav-item--books:focus-within .nav-drop { display: grid; }
 .rail .book-card__cover .jacket { margin-bottom: 0; }
 .book-grid .book-card__cover,
 .rail .book-card__cover { margin-bottom: var(--space-2); }
+
+/* --------------------------------------------------------------------------
+   Awards (render only when books.json awards[] / author.honor are filled)
+   -------------------------------------------------------------------------- */
+.honor {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: center;
+  margin-top: var(--space-6);
+  padding: var(--space-5) clamp(1.2rem, 3vw, 2rem);
+  background: var(--paper-lift);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold-warm);
+  border-radius: var(--radius-s);
+  box-shadow: var(--lift-1);
+}
+.honor__seal { width: 96px; height: 96px; filter: drop-shadow(0 4px 10px rgba(50, 30, 18, 0.25)); }
+.honor .eyebrow { margin-bottom: var(--space-1); font-size: 0.72rem; letter-spacing: 0.14em; }
+.honor__title { margin: 0 0 var(--space-2); font-family: var(--serif); font-size: var(--step-2); line-height: 1.1; color: var(--ink); }
+.honor__text { margin: 0 0 var(--space-4); color: var(--ink-soft); }
+.about-home__text .honor .btn--primary { padding-inline: 1.2rem; }
+@media (max-width: 520px) {
+  .honor { grid-template-columns: 1fr; justify-items: start; }
+}
+.book-awards { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: var(--space-3); }
+.book-award { display: flex; align-items: center; gap: var(--space-4); }
+.book-award__seal { width: 72px; height: 72px; flex: none; filter: drop-shadow(0 3px 8px rgba(50, 30, 18, 0.25)); }
+.book-award__honor { margin: 0; font-family: var(--serif); font-size: var(--step-1); line-height: 1.15; color: var(--ink); }
+.book-award__meta { margin: 0.15rem 0 0; font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+.book-card__award { margin: 0.35rem 0 0; }
+.pill--gold { background: var(--gold-warm); border-color: var(--gold-warm); color: var(--ink); }

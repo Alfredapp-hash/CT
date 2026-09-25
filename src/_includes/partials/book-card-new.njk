@@ -23,6 +23,9 @@
   {%- elif opts.label %}{{ opts.label }}
   {%- endif %}</p>
   <h3><a href="/books/{{ book.slug }}.html">{{ book.title }}</a></h3>
+{%- if book.awards and book.awards.length %}
+  <p class="book-card__award"><span class="pill pill--gold">{{ book.awards[0].honor }}</span></p>
+{%- endif %}
   <p class="book-card__meta">{% if book.year %}{{ book.year }} · {% endif %}{{ book.format }}</p>
   <p class="book-card__tagline">{{ book.tagline }}</p>
   <div class="book-card__actions">

@@ -5,7 +5,7 @@
     "I’m Courtney Thomas, an author who writes from the heart about faith, healing, loss, purpose, and finding yourself again through life’s hardest seasons."
   ],
   "bioLong": [
-    "Courtney Thomas writes from the heart about faith, healing, loss, purpose, and finding yourself again through life’s hardest seasons. The essays and devotionals come from real experience. The novels ask what a person keeps after survival is no longer the whole story.",
+    "Courtney Thomas is a distinguished author whose devotional <strong>365 Days of Grace</strong> was honored with the International Impact Book Awards’ Outstanding Literary Achievement award for a devotional in 2026. She writes from the heart about faith, healing, loss, purpose, and finding yourself again through life’s hardest seasons. The essays and devotionals come from real experience. The novels ask what a person keeps after survival is no longer the whole story.",
     "<strong>The Choices We Carry</strong> follows Kathryn Hale and Kalem from captivity into freedom, exposure, and the quieter work of a life chosen on purpose. <strong>Rooted in Purpose</strong> treats a life like a garden: seeds, storms, waiting, and pruning. <strong>Finding Yourself</strong> is for the woman carrying every role at once. <strong>365 Days of Grace</strong> is a devotional for the working mom. <strong>Finding Drake’s Feather</strong> is a story for children who have experienced loss, and for the families who support them.",
     "Her books are in print worldwide through IngramSpark, so they can be ordered from Amazon, Barnes &amp; Noble, Walmart, Books-A-Million, and independent bookstores."
   ],
@@ -26,5 +26,17 @@
       "bookSlug": "rooted-in-purpose"
     }
   ],
-  "_todo": "Brian to supply: photographer credit for the headshot (headshot.credit) if one is required; press mentions; events."
+  "_todo": "Brian to supply: photographer credit for the headshot (headshot.credit) if one is required; press mentions; events.",
+  "honor": {
+    "eyebrow": "International Impact Book Awards · 2026",
+    "title": "Outstanding Literary Achievement",
+    "body": "365 Days of Grace was recognized in the Devotional category, and Courtney was named a Distinguished Author.",
+    "cta": "Read 365 Days of Grace",
+    "bookSlug": "365-days-of-grace",
+    "seal": {
+      "src": "/media/awards/iiba-distinguished-author-160.png",
+      "srcset": "/media/awards/iiba-distinguished-author-160.png 1x, /media/awards/iiba-distinguished-author-320.png 2x",
+      "alt": "International Impact Book Awards — Distinguished Author seal"
+    }
+  }
 }
