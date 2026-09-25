@@ -13,16 +13,13 @@
           <a href="/#books"{% if page.url.startsWith("/books/") %} aria-current="true"{% endif %}>Books</a>
           <button class="nav-drop__btn" type="button" aria-expanded="false" aria-controls="nav-books" hidden><span class="visually-hidden">Open the books menu</span><span aria-hidden="true">▾</span></button>
           <div class="nav-drop" id="nav-books">
-{%- for group in site.bookGroups %}
             <div class="nav-drop__group">
-              <p class="nav-drop__label">{{ group.label }}</p>
               <ul>
-{%- for b in books %}{% if (group.shelf and b.shelf == group.shelf) or (group.categories and group.categories.includes(b.category)) %}
-                <li><a href="/books/{{ b.slug }}.html"{% if page.url == "/books/" + b.slug + ".html" %} aria-current="page"{% endif %}>{% if b.series %}<span class="nav-drop__num">{{ b.series.order }}</span> {% endif %}{{ b.title }}</a></li>
-{%- endif %}{% endfor %}
+{%- for b in books %}
+                <li><a href="/books/{{ b.slug }}.html"{% if page.url == "/books/" + b.slug + ".html" %} aria-current="page"{% endif %}>{{ b.title }}{% if b.series %} <span class="nav-drop__series">Book {{ b.series.order }}</span>{% endif %}</a></li>
+{%- endfor %}
               </ul>
             </div>
-{%- endfor %}
           </div>
         </li>
 {%- for item in site.nav %}{% if not item.menu %}

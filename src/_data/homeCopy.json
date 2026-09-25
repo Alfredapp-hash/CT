@@ -1,13 +1,13 @@
 {
   "hero": {
-    "eyebrow": "The Price Series · Book One",
+    "eyebrow": "The Choices We Carry · Book One",
     "name": "Courtney Thomas",
     "positioning": "Stories for the chapters we survive.",
     "featuredSlug": "the-price-of-choosing-you",
     "statusPill": "Available now",
     "hook": "Kathryn wakes in the dark, wrists bound, and learns the man holding the key is not the worst thing looking for her.",
     "ctaPrimary": "Buy the book",
-    "ctaSecondary": "Explore the Price Series",
+    "ctaSecondary": "Explore the series",
     "ctaPrimaryAria": "Buy The Price of Choosing You",
     "scrollCue": "Scroll to the books"
   },
@@ -34,7 +34,7 @@
   },
   "series": {
     "eyebrow": "Three novels",
-    "heading": "The Price Series",
+    "heading": "The Choices We Carry",
     "lede": "Three novels about Kathryn and Kalem: survival, the cost of freedom, and what is worth keeping after the truth is told.",
     "orderLabel": "Read in this order",
     "orderNote": "Start with Book One, because each book asks a question that only becomes real once the one before it has been answered.",

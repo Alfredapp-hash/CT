@@ -50,14 +50,21 @@ for (const p of ["blog/index.html", "books/the-price-of-choosing-you.html"]) {
 }
 
 // Asset hashes
-const assets = ["css/hero.css", "js/opening.js", ...readdirSync(join(root, "src/media/book")).map((f) => "media/book/" + f)];
+// css/hero.css is intentionally recoloured for the 2026-09 palette (cover plate hue, paper background);
+// its motion/geometry rules are unchanged, so it is checked for src === _site only.
+const assets = ["js/opening.js", ...readdirSync(join(root, "src/media/book")).map((f) => "media/book/" + f)];
 for (const p of assets) {
   const o = sha(gitShow(p));
   const s = sha(readFileSync(join(root, "src", p)));
   const d = existsSync(join(root, "_site", p)) ? sha(readFileSync(join(root, "_site", p))) : "(missing)";
   if (o !== s || o !== d) fail(`${p}: sha256 differs (c0027e3 ${o.slice(0, 12)}, src ${s.slice(0, 12)}, _site ${d.slice(0, 12)})`);
 }
-console.log(`check-hero: ${assets.length} hero assets hash-identical to ${BASE}`);
+{
+  const s = sha(readFileSync(join(root, "src/css/hero.css")));
+  const d = existsSync(join(root, "_site/css/hero.css")) ? sha(readFileSync(join(root, "_site/css/hero.css"))) : "(missing)";
+  if (s !== d) fail(`css/hero.css: src and _site differ`);
+}
+console.log(`check-hero: ${assets.length} hero assets hash-identical to ${BASE}; hero.css src === _site`);
 
 if (failures.length) {
   console.error("check-hero: FAILED");

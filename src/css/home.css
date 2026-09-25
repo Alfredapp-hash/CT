@@ -61,7 +61,7 @@
 .hero-band__cover .jacket { max-width: none; }
 .hero-band__cover:hover .jacket,
 .hero-band__cover:focus-visible .jacket {
-  transform: perspective(1400px) rotateY(-7deg) translateY(-6px) scale(1.012);
+  transform: translateY(-4px);
   box-shadow: var(--lift-3);
 }
 .hero-band__cover:focus-visible { outline: var(--focus); outline-offset: var(--focus-offset); }
@@ -72,8 +72,8 @@
   font-size: var(--step-4);
   font-weight: 500;
   line-height: 1.02;
-  letter-spacing: -0.02em;
-  text-indent: -0.04em;
+  letter-spacing: 0;
+  text-indent: 0;
 }
 .hero-band__pill { margin: 0 0 var(--space-4); }
 .hero-band__hook {
@@ -149,7 +149,7 @@
 .start-card__cover .jacket { max-width: 96px; box-shadow: var(--lift-1); }
 .start-card__cover:hover .jacket,
 .start-card__cover:focus-visible .jacket {
-  transform: perspective(1400px) rotateY(-7deg) translateY(-4px) scale(1.012);
+  transform: translateY(-3px);
   box-shadow: var(--lift-2);
 }
 .start-card__body { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
@@ -166,7 +166,7 @@
   font-size: var(--step-1);
   font-weight: 500;
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 .start-card h3 a { text-decoration: none; transition: color var(--dur-base) var(--ease); }
 .start-card h3 a:hover { color: var(--leather); }
@@ -367,7 +367,7 @@
   line-height: 1;
 }
 .headshot { margin: 0; }
-.headshot img { object-fit: cover; height: auto; }
+.headshot img { object-fit: cover; object-position: 50% 20%; height: auto; }
 .headshot__credit { margin-top: var(--space-2); font-size: var(--step--1); color: var(--ink-soft); }
 .about-home__text { max-width: var(--measure); }
 .about-home__text h2 {
@@ -375,7 +375,7 @@
   font-size: var(--step-3);
   font-weight: 500;
   line-height: 1.05;
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 .about-home__text p { margin: 0 0 var(--space-4); font-size: var(--step-0); line-height: 1.6; color: var(--ink-soft); }
 .about-home__text strong { color: var(--ink); font-weight: 500; }
@@ -417,7 +417,7 @@
   font-size: var(--step-2);
   font-weight: 500;
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 .post-tile__title a { text-decoration: none; transition: color var(--dur-base) var(--ease); }
 .post-tile__title a:hover { color: var(--leather); }
@@ -450,7 +450,7 @@
   font-size: var(--step-3);
   font-weight: 500;
   line-height: 1.05;
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 .newsletter-home__promise,
 .contact-home__lede {

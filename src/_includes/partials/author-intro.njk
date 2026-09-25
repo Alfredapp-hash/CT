@@ -7,7 +7,10 @@
         <div class="about-home__media reveal">
 {%- if author.headshot and author.headshot.src %}
           <figure class="headshot">
-            <img src="{{ author.headshot.src }}" alt="{{ author.headshot.alt }}" width="{{ author.headshot.width }}" height="{{ author.headshot.height }}" loading="lazy" decoding="async" />
+            <picture>
+              <source type="image/webp" srcset="/media/author/courtney-thomas-480.webp 480w, /media/author/courtney-thomas.webp 960w" sizes="(min-width: 900px) 360px, 70vw" />
+              <img src="{{ author.headshot.src }}" srcset="{{ author.headshot.srcset }}" sizes="(min-width: 900px) 360px, 70vw" alt="{{ author.headshot.alt }}" width="{{ author.headshot.width }}" height="{{ author.headshot.height }}" loading="lazy" decoding="async" />
+            </picture>
 {%- if author.headshot.credit %}
             <figcaption class="headshot__credit">{{ author.headshot.credit }}</figcaption>
 {%- endif %}

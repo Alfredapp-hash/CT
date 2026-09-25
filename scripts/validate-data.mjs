@@ -55,7 +55,7 @@ for (const b of books) {
   if (b.pages !== null && !Number.isInteger(b.pages)) fail(`${b.slug}: pages must be null or an integer`);
   for (const k of ["reviews", "awards", "press", "praise", "related"]) if (!Array.isArray(b[k])) fail(`${b.slug}: ${k} must be an array`);
   if (b.series) {
-    if (b.series.name !== "The Price Series") fail(`${b.slug}: unknown series ${b.series.name}`);
+    if (b.series.name !== "The Choices We Carry") fail(`${b.slug}: unknown series ${b.series.name}`);
     if (![1, 2, 3].includes(b.series.order)) fail(`${b.slug}: series.order must be 1-3`);
     if (seriesOrders.has(b.series.order)) fail(`${b.slug}: duplicate series.order ${b.series.order}`);
     seriesOrders.add(b.series.order);
@@ -75,7 +75,7 @@ for (const b of books) {
   }
   if (b.retailers !== null && !Array.isArray(b.retailers)) fail(`${b.slug}: retailers must be null or an array of {name,url}`);
 }
-if (seriesOrders.size !== 3) fail(`The Price Series must have exactly 3 ordered books, found ${seriesOrders.size}`);
+if (seriesOrders.size !== 3) fail(`The Choices We Carry must have exactly 3 ordered books, found ${seriesOrders.size}`);
 
 if (!site.url || site.url.endsWith("/")) fail("site.url must be set without a trailing slash");
 if (!Array.isArray(site.retailerTemplates) || !site.retailerTemplates.every((r) => r.name && r.url.includes("{isbn}"))) fail("retailerTemplates entries need name + url containing {isbn}");

@@ -8,15 +8,15 @@
   "language": "en",
   "locale": "en_US",
   "distribution": "In print worldwide through IngramSpark",
-  "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%235c1f2a' width='32' height='32'/%3E%3Cpath fill='%23f0ddb0' d='M8 6h12v20H8z'/%3E%3Cpath fill='%235c1f2a' d='M10 9h8v1H10zm0 3h8v1H10z'/%3E%3C/svg%3E",
-  "assetVersion": "2026-09-24",
+  "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23624329' width='32' height='32'/%3E%3Cpath fill='%23f6f0ee' d='M8 6h12v20H8z'/%3E%3Cpath fill='%23624329' d='M10 9h8v1H10zm0 3h8v1H10z'/%3E%3C/svg%3E",
+  "assetVersion": "2026-09-25",
   "featuredSlug": "the-price-of-choosing-you",
   "featured": {
     "slug": "the-price-of-choosing-you",
     "statusPill": "Available now",
     "hook": "Kathryn wakes in the dark, wrists bound, and learns the man holding the key is not the worst thing looking for her.",
     "ctaPrimary": "Buy the book",
-    "ctaSecondary": "Explore the Price Series",
+    "ctaSecondary": "Explore the series",
     "_note": "Defaults copied from homeCopy.hero. Templates read status/hook only from here; change these when the featured title or its status changes."
   },
   "nav": [
@@ -26,7 +26,7 @@
       "menu": "books"
     },
     {
-      "label": "The Price Series",
+      "label": "The Choices We Carry",
       "href": "/#reading-order"
     },
     {
@@ -90,24 +90,9 @@
   },
   "bookGroups": [
     {
-      "key": "series",
-      "label": "The Price Series",
-      "shelf": "price-series"
-    },
-    {
-      "key": "nonfiction",
-      "label": "Devotionals & Nonfiction",
-      "categories": [
-        "devotional",
-        "nonfiction"
-      ]
-    },
-    {
-      "key": "children",
-      "label": "Children’s",
-      "categories": [
-        "children"
-      ]
+      "key": "all",
+      "label": null,
+      "all": true
     }
   ],
   "retailerTemplates": [
@@ -122,10 +107,6 @@
     {
       "name": "Bookshop.org",
       "url": "https://bookshop.org/search?keywords={isbn}"
-    },
-    {
-      "name": "ChristianBook.com",
-      "url": "https://www.christianbook.com/apps/search?Ntt={isbn}"
     },
     {
       "name": "Walmart",
@@ -164,5 +145,10 @@
     "lede": "Short essays about the work behind the books — faith, healing, loss, purpose, and the slow business of surviving a hard season and writing it down.",
     "description": "Notes from the page: Courtney Thomas on faith, healing, loss, purpose, and the books that came out of hard seasons."
   },
-  "_todo": "Brian to supply: real social profile URLs (social.*), affiliate disclosure copy if any retailer links become affiliate links, and the site-credit line text (siteCredit) if one is wanted."
+  "_todo": "Brian to supply: real social profile URLs (social.*), affiliate disclosure copy if any retailer links become affiliate links, and the site-credit line text (siteCredit) if one is wanted.",
+  "directOrder": {
+    "name": "Order from IngramSpark",
+    "url": null,
+    "_todo": "Brian: paste the IngramSpark order link Courtney emailed. Renders as the first buy link on every book page once set."
+  }
 }

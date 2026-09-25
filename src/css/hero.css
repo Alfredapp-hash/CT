@@ -10,8 +10,8 @@
   gap: 1.25rem;
   padding: calc(var(--nav-h) + clamp(1.5rem, 4vh, 3rem)) 4vw 6.5rem;
   background:
-    radial-gradient(70% 60% at 50% 48%, #fbf5e6 0%, rgba(251, 245, 230, 0) 72%),
-    linear-gradient(180deg, #f6edd7 0%, #f1e5ca 100%);
+    radial-gradient(70% 60% at 50% 48%, #fcfaf8 0%, rgba(252, 250, 248, 0) 72%),
+    linear-gradient(180deg, #f6f0ee 0%, #efe7e3 100%);
   overflow-x: clip;
 }
 .bk-stage {
@@ -100,8 +100,8 @@
   width: 9px;
   transform-origin: 100% 50%;
   transform: rotateY(90deg);
-  background: linear-gradient(180deg, #3d1219, #5e2029 50%, #3d1219);
-  box-shadow: inset 0 0 0 1px rgba(15, 3, 6, 0.55);
+  background: linear-gradient(180deg, #3e2a1d, #5e4230 50%, #3e2a1d);
+  box-shadow: inset 0 0 0 1px rgba(20, 10, 5, 0.55);
 }
 .bk-cover-front,
 .bk-cover-back {
@@ -112,8 +112,18 @@
 }
 .bk-cover-front {
   container-type: inline-size;
-  background: url(../media/book/cover-1x.jpg) 0 0 / 100% 100% no-repeat, #5a1d27;
+  background: #5a3a2a;
   border-radius: 2px 6px 6px 2px;
+  overflow: hidden;
+}
+/* Cover plate is burgundy in the photo; shift it to the palette's warm brown without touching the gold title. */
+.bk-cover-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(../media/book/cover-1x.jpg) 0 0 / 100% 100% no-repeat;
+  filter: hue-rotate(28deg) saturate(0.55) brightness(1.02);
+  border-radius: inherit;
 }
 .bk-cover-back {
   transform: rotateY(180deg);
@@ -123,10 +133,11 @@
 @media (min-resolution: 1.5dppx), (min-width: 1200px) {
   .bk-page--left { background-image: url(../media/book/open-left.jpg); }
   .bk-page--right { background-image: url(../media/book/open-right.jpg); }
-  .bk-cover-front { background-image: url(../media/book/cover.jpg); }
+  .bk-cover-front::before { background-image: url(../media/book/cover.jpg); }
   .bk-cover-back { background-image: url(../media/book/open-left.jpg); }
 }
 .bk-title {
+  z-index: 2;
   position: absolute;
   left: 6%; right: 9%; top: 32.5%;
   display: flex;
@@ -162,6 +173,7 @@
   background-image: linear-gradient(180deg, #f6e5b4 0%, #dbba7b 42%, #b08746 68%, #e6ca90 100%);
 }
 .bk-cover-shade {
+  z-index: 1;
   position: absolute;
   inset: 0;
   opacity: 0;

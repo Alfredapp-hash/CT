@@ -139,7 +139,7 @@ extraCss: styleguide.css
     <section class="sg-block" id="sg-retailers">
       <h2>Retailers, grouped by format</h2>
       <div class="retailer-groups">
-        {{ retailerGroups(sample) }}
+        {{ retailerGroups(sample, site.directOrder) }}
       </div>
       <p class="sg-note">eBook and audiobook rows appear only when a book record carries <code>ebookIsbn</code> or <code>audiobook.retailers</code>; none do yet.</p>
     </section>

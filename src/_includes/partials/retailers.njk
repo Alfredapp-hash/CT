@@ -1,22 +1,23 @@
 {#- Retailer links for a book. book.retailers overrides win; otherwise site.retailerTemplates
     with {isbn} substituted, in the fixed site order (see the retailerLinks filter). -#}
-{%- macro retailerItems(links) -%}
+{%- macro retailerItems(links, direct) -%}
+{%- if direct and direct.url -%}<li><a class="retailer--direct" href="{{ direct.url }}" data-track="buy-click" target="_blank" rel="noopener noreferrer">{{ direct.name }}</a></li>{%- endif -%}
 {%- for r in links -%}
 <li><a href="{{ r.url }}" data-track="buy-click" target="_blank" rel="noopener noreferrer">{{ r.name }}</a></li>
 {%- endfor -%}
 {%- endmacro -%}
 
 {#- retailers(book) → today's flat ul.retailers.retailers-large -#}
-{%- macro retailers(book) -%}
-<ul class="retailers retailers-large">{{ retailerItems(book | retailerLinks) }}</ul>
+{%- macro retailers(book, direct) -%}
+<ul class="retailers retailers-large">{{ retailerItems(book | retailerLinks, direct) }}</ul>
 {%- endmacro -%}
 
 {#- retailerGroups(book) → format-grouped lists (Sprint 1 book spine).
     Print always renders; eBook / Audiobook rows only when book.ebookIsbn / book.audiobook.retailers exist. -#}
-{%- macro retailerGroups(book) -%}
+{%- macro retailerGroups(book, direct) -%}
 <div class="retailer-group">
         <h3 class="retailer-group__label">{{ book.format }}</h3>
-        <ul class="retailers retailers-large chips">{{ retailerItems(book | retailerLinks) }}</ul>
+        <ul class="retailers retailers-large chips">{{ retailerItems(book | retailerLinks, direct) }}</ul>
       </div>
 {%- if book.ebookIsbn %}
       <div class="retailer-group">

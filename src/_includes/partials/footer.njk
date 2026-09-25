@@ -11,10 +11,10 @@
       <nav class="footer-col" aria-labelledby="footer-books-h">
         <h2 class="footer-col__h" id="footer-books-h">Books</h2>
         <ul class="footer-list">
-{#- same grouped order as the Books dropdown: site.bookGroups, then books.json order within each group -#}
-{%- for group in site.bookGroups %}{% for b in books %}{% if (group.shelf and b.shelf == group.shelf) or (group.categories and group.categories.includes(b.category)) %}
+{#- books.json order -#}
+{%- for b in books %}
           <li><a href="/books/{{ b.slug }}.html">{{ b.title }}</a></li>
-{%- endif %}{% endfor %}{% endfor %}
+{%- endfor %}
         </ul>
       </nav>
       <nav class="footer-col" aria-labelledby="footer-about-h">

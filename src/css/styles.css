@@ -1,20 +1,23 @@
 :root {
-  --ink: #1c1410;
-  --ink-soft: #5c4b40;
-  --ink-faint: #8a7668;
-  --paper: #f6edd7;
-  --paper-sunk: #efe4c9;
-  --paper-lift: #fbf6e9;
-  --line: rgba(28, 20, 16, 0.10);
-  --line-firm: rgba(28, 20, 16, 0.22);
-  --gold: #8f6a30;
-  --gold-warm: #c9a367;
-  --leather: #5a1d27;
-  --leather-lo: #40141c;
+  --ink: #2c2523;            /* deep charcoal-brown (Courtney palette) */
+  --ink-soft: #624329;       /* Quincy brown */
+  --ink-faint: #8c7b71;
+  --paper: #f6f0ee;          /* Muslin */
+  --paper-sunk: #ece4e0;
+  --paper-lift: #fcfaf8;
+  --line: rgba(44, 37, 35, 0.10);
+  --line-firm: rgba(44, 37, 35, 0.22);
+  --gold: #7c6242;           /* eyebrows, cites (5.1:1 on paper) */
+  --gold-warm: #ac957a;      /* Sandrift: hairlines, decorative */
+  --leather: #5f6e5b;        /* deep sage: primary buttons, link hover (5.4:1 with white) */
+  --leather-lo: #7a5f47;     /* warm soil: hover state */
   --serif: "Cormorant Garamond", Palatino, "Palatino Linotype", Georgia, serif;
   --sans: Outfit, "Avenir Next", "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --nav-h: 4.25rem;
+  --band: #624329;           /* dark bands: footer, quote band */
+  --band-lo: #4a3320;
+  --sage: #8a9a86;           /* decorative sage: pills, chips, rules */
   --lift-1: 0 1px 2px rgba(50, 30, 18, 0.10), 0 4px 10px rgba(50, 30, 18, 0.07);
   --lift-2: 0 2px 4px rgba(50, 30, 18, 0.12), 0 12px 28px rgba(50, 30, 18, 0.13);
   --lift-3: 0 4px 8px rgba(50, 30, 18, 0.14), 0 26px 56px rgba(50, 30, 18, 0.19);
@@ -51,7 +54,7 @@
      5.4:1 on paper-sunk — WCAG 1.4.11 needs 3:1; --gold-warm was 2.0:1 on paper. Leather surfaces
      (.site-footer, .panel--leather) re-set --focus-color to --gold-warm (5.4:1 on leather). Leather buttons on
      paper keep the deep ring: the 2px offset puts paper, not leather, next to the ring. */
-  --focus-color: #755526;
+  --focus-color: #6b5238;
   --focus: 3px solid var(--focus-color);
   --focus-offset: 2px;
   --measure: 65ch;
@@ -68,8 +71,8 @@ body {
   margin: 0;
   color: var(--ink);
   background:
-    radial-gradient(120% 80% at 50% -10%, #fbf4e2 0%, transparent 60%),
-    linear-gradient(180deg, #f8f0dc 0%, #f4e9d1 55%, #f0e3c6 100%) fixed;
+    radial-gradient(120% 80% at 50% -10%, #fbf8f6 0%, transparent 60%),
+    linear-gradient(180deg, #f8f3f1 0%, #f6f0ee 55%, #f1eae6 100%) fixed;
   font-family: var(--sans);
   font-weight: 400;
   line-height: 1.6;
@@ -229,7 +232,7 @@ textarea:focus-visible {
 h1, h2, h3 {
   font-family: var(--serif);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .intro h1 {
@@ -237,8 +240,8 @@ h1, h2, h3 {
   font-size: var(--step-5);
   line-height: 0.94;
   font-weight: 500;
-  letter-spacing: -0.025em;
-  text-indent: -0.04em;
+  letter-spacing: 0;
+  text-indent: 0;
 }
 .lede {
   max-width: 34rem;
@@ -259,7 +262,7 @@ h1, h2, h3 {
 .shelf-head h2 {
   margin: 0;
   font-size: var(--step-3);
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 .shelf-head p {
   margin: 0;
@@ -314,48 +317,23 @@ h1, h2, h3 {
   padding: 0;
   overflow: visible;
   background: transparent;
-  border-radius: 1px 3px 3px 1px;
+  border-radius: 3px;
   transform: translateZ(0);
   box-shadow: var(--lift-2);
   transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
 }
-.jacket::after {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 8px;
-  border-radius: 1px 0 0 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.28) 0%,
-    rgba(0, 0, 0, 0.08) 42%,
-    rgba(255, 255, 255, 0.12) 68%,
-    rgba(0, 0, 0, 0.12) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-.jacket::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  bottom: 2px;
-  right: -3px;
-  width: 3px;
-  border-radius: 0 2px 2px 0;
-  background: repeating-linear-gradient(180deg, #efe6d2 0 1px, #dcd0b6 1px 2px);
-  pointer-events: none;
-}
+/* Covers sit flat: no fake spine or page-edge overlays (Courtney: covers looked crooked). */
+.jacket::after, .jacket::before { display: none; }
 .jacket picture,
 .jacket img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 1px 3px 3px 1px;
+  border-radius: 3px;
 }
 .card-link:hover .jacket,
 .card-link:focus-visible .jacket {
-  transform: perspective(1400px) rotateY(-7deg) translateY(-6px) scale(1.012);
+  transform: translateY(-4px);
   box-shadow: var(--lift-3);
 }
 
@@ -642,7 +620,7 @@ button[type="submit"]:hover, .button:hover { background: var(--leather-lo); }
   font-size: var(--step-4);
   line-height: 1.0;
   font-weight: 500;
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 
 .post-list {
@@ -692,7 +670,7 @@ button[type="submit"]:hover, .button:hover { background: var(--leather-lo); }
   font-size: var(--step-4);
   line-height: 1.02;
   font-weight: 500;
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 .post-body h2 {
   margin: 2.4rem 0 0.8rem;
@@ -953,7 +931,7 @@ button[type="submit"]:hover, .button:hover { background: var(--leather-lo); }
   inset: 0 auto 0 0;
   width: 6px;
   border-radius: 2px 0 0 2px;
-  background: linear-gradient(180deg, var(--leather), var(--leather-lo));
+  background: linear-gradient(180deg, var(--band), var(--band-lo));
 }
 .journal-teaser h2 { font-weight: 500; }
 .journal-teaser .lede { margin-bottom: 1.4rem; }
@@ -1001,7 +979,7 @@ button[type="submit"]:hover, .button:hover { background: var(--leather-lo); }
 .contact input, .contact textarea { background: var(--paper); }
 
 .site-footer {
-  background: linear-gradient(180deg, var(--leather) 0%, var(--leather-lo) 100%);
+  background: linear-gradient(180deg, var(--band) 0%, var(--band-lo) 100%);
   color: var(--paper);
   border-top: 0;
   padding: 3rem 6vw 3rem;

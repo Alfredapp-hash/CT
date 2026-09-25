@@ -73,7 +73,7 @@ needsRail: true
           <h2 id="buy-h">Where to buy</h2>
           <p class="dist">{{ site.distribution }}. Order it from any of these retailers, or ask your local bookstore to order the ISBN.</p>
           <div class="retailer-groups">
-            {{ retailerGroups(book) }}
+            {{ retailerGroups(book, site.directOrder) }}
           </div>
         </section>
 {%- if book.discussionGuide %}

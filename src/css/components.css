@@ -9,7 +9,7 @@
 
 :root {
   /* one added colour: a darker gold for SMALL text on paper (5.6:1). --gold itself is unchanged. */
-  --gold-deep: #755526;
+  --gold-deep: #6b5238;
   /* alpha tokens: paper / ink at the opacities the components use (no new hues) */
   --paper-a10: rgba(246, 237, 215, 0.10);
   --paper-a16: rgba(246, 237, 215, 0.16);
@@ -151,14 +151,14 @@
   font-size: var(--step-4);
   font-weight: 500;
   line-height: 1.02;
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 .section-head h2 {
   margin: 0 0 var(--space-3);
   font-size: var(--step-3);
   font-weight: 500;
   line-height: 1.05;
-  text-indent: -0.04em;
+  text-indent: 0;
 }
 .section-head--compact h2 { font-size: var(--step-2); }
 .section-head .lede { margin: 0; font-size: var(--step-1); }
@@ -248,7 +248,7 @@
 .book-card__cover { display: block; text-decoration: none; }
 .book-card__cover:hover .jacket,
 .book-card__cover:focus-visible .jacket {
-  transform: perspective(1400px) rotateY(-7deg) translateY(-6px) scale(1.012);
+  transform: translateY(-4px);
   box-shadow: var(--lift-3);
 }
 .book-card__label {
@@ -265,7 +265,7 @@
   font-size: var(--step-1);
   line-height: 1.15;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 .book-card h3 a { text-decoration: none; transition: color var(--dur-base) var(--ease); }
 .book-card h3 a:hover { color: var(--leather); }
@@ -492,7 +492,7 @@
   border: 1px solid var(--ink-a10);
   border-radius: var(--radius-s) var(--radius-m) var(--radius-m) var(--radius-s);
   box-shadow: var(--lift-2);
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: max-content;
   gap: 1.5rem 2.25rem;
 }
 .nav-drop::before { content: ""; position: absolute; inset: -0.5rem 0 auto 0; height: 0.5rem; }
@@ -523,6 +523,8 @@ html:not(.has-nav-js) .nav-item--books:focus-within .nav-drop { display: grid; }
 }
 .site-nav nav .nav-drop a:hover { color: var(--leather); }
 .site-nav nav .nav-drop a[aria-current="page"] { color: var(--leather); box-shadow: none; }
+.nav-drop__series { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-left: 0.25rem; }
+.retailer--direct { font-weight: 600; }
 .nav-drop__num {
   display: inline-grid;
   place-items: center;
