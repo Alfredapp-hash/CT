@@ -10,14 +10,14 @@
   "distribution": "In print worldwide through IngramSpark",
   "favicon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23624329' width='32' height='32'/%3E%3Cpath fill='%23f6f0ee' d='M8 6h12v20H8z'/%3E%3Cpath fill='%23624329' d='M10 9h8v1H10zm0 3h8v1H10z'/%3E%3C/svg%3E",
   "assetVersion": "2026-09-25",
-  "featuredSlug": "the-price-of-choosing-you",
+  "featuredSlug": "365-days-of-grace",
   "featured": {
-    "slug": "the-price-of-choosing-you",
-    "statusPill": "Available now",
-    "hook": "Kathryn wakes in the dark, wrists bound, and learns the man holding the key is not the worst thing looking for her.",
+    "slug": "365-days-of-grace",
+    "statusPill": "2026 International Impact Book Awards · Outstanding Literary Achievement",
+    "hook": "Early alarms, bedtime guilt, and the grace that meets a working mother in the middle of an ordinary day.",
     "ctaPrimary": "Buy the book",
-    "ctaSecondary": "Explore the series",
-    "_note": "Defaults copied from homeCopy.hero. Templates read status/hook only from here; change these when the featured title or its status changes."
+    "ctaSecondary": "Explore all the books",
+    "_note": "Templates read status/hook only from here; change these when the featured title or its status changes. statusPill may name a real award only when books.json awards[] for this slug is filled (validate-data checks)."
   },
   "nav": [
     {

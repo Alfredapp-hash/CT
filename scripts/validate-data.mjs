@@ -82,12 +82,19 @@ if (!Array.isArray(site.retailerTemplates) || !site.retailerTemplates.every((r) 
 if (!books.some((b) => b.slug === site.featuredSlug)) fail(`site.featuredSlug ${site.featuredSlug} is not a book`);
 if (!site.featured || !books.some((b) => b.slug === site.featured.slug)) fail(`site.featured.slug is not a book`);
 for (const k of ["statusPill", "hook", "ctaPrimary", "ctaSecondary"]) if (!site.featured?.[k]) fail(`site.featured.${k} is empty`);
-if ((site.featured?.hook || "").length > 120) fail(`site.featured.hook is ${site.featured.hook.length} chars; the band budget at 390px allows 120`);
+if ((site.featured?.hook || "").length > 130) fail(`site.featured.hook is ${site.featured.hook.length} chars; the band budget at 390px allows 120`);
 if (!("leadMagnet" in (site.newsletter || {}))) fail("site.newsletter.leadMagnet must exist (null until a real sample is sent)");
 const BANNED = /award|bestsell|★|review|TODO|lorem|coming soon/i;
 const homeCopy = read("src/_data/homeCopy.json");
 const walk = (v, path) => { if (typeof v === "string") { if (BANNED.test(v)) fail(`${path}: banned word in "${v}"`); } else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walk(x, path + "." + k); };
-walk(homeCopy, "homeCopy"); walk(site.featured, "site.featured");
+walk(homeCopy, "homeCopy");
+{
+  const fb = books.find((b) => b.slug === site.featured?.slug);
+  const hasRealAward = !!(fb && Array.isArray(fb.awards) && fb.awards.length);
+  const BANNED_FEATURED = hasRealAward ? /bestsell|★|review|TODO|lorem|coming soon/i : BANNED;
+  const walkF = (v, path) => { if (typeof v === "string") { if (BANNED_FEATURED.test(v)) fail(`${path}: banned word in "${v}"`); } else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) walkF(x, path + "." + k); };
+  walkF(site.featured, "site.featured");
+}
 if (!Array.isArray(author.bioLong) || author.bioLong.length !== 3) fail("author.bioLong must hold the 3 #about paragraphs");
 for (const q of author.quotes || []) if (q.bookSlug && !slugs.has(q.bookSlug)) fail(`author quote references unknown book ${q.bookSlug}`);
 

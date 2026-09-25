@@ -1,14 +1,14 @@
 {
   "hero": {
-    "eyebrow": "The Choices We Carry · Book One",
+    "eyebrow": "Distinguished Author · 365 Days of Grace",
     "name": "Courtney Thomas",
     "positioning": "Stories for the chapters we survive.",
-    "featuredSlug": "the-price-of-choosing-you",
+    "featuredSlug": "365-days-of-grace",
     "statusPill": "Available now",
-    "hook": "Kathryn wakes in the dark, wrists bound, and learns the man holding the key is not the worst thing looking for her.",
+    "hook": "Early alarms, bedtime guilt, and the grace that meets a working mother in the middle of an ordinary day.",
     "ctaPrimary": "Buy the book",
-    "ctaSecondary": "Explore the series",
-    "ctaPrimaryAria": "Buy The Price of Choosing You",
+    "ctaSecondary": "Explore all the books",
+    "ctaPrimaryAria": "Buy 365 Days of Grace",
     "scrollCue": "Scroll to the books"
   },
   "startHere": {
@@ -17,18 +17,18 @@
     "lede": "Some readers come for the novels. Some come for a short page to read before the day begins. Start wherever you are.",
     "cards": [
       {
-        "eyebrow": "New to the novels?",
-        "title": "The Price of Choosing You",
-        "body": "Survival and sacrifice. Kathryn wakes in chains and learns she is being held against something worse.",
-        "cta": "Start with Book One",
-        "slug": "the-price-of-choosing-you"
-      },
-      {
         "eyebrow": "Need a daily word?",
         "title": "365 Days of Grace",
         "body": "Early alarms, bedtime guilt, and the grace that meets a working mother in the middle of an ordinary day.",
         "cta": "Open the devotional",
         "slug": "365-days-of-grace"
+      },
+      {
+        "eyebrow": "New to the novels?",
+        "title": "The Price of Choosing You",
+        "body": "Survival and sacrifice. Kathryn wakes in chains and learns she is being held against something worse.",
+        "cta": "Start with Book One",
+        "slug": "the-price-of-choosing-you"
       }
     ]
   },

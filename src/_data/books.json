@@ -1,5 +1,55 @@
 [
   {
+    "slug": "365-days-of-grace",
+    "title": "365 Days of Grace",
+    "publishedAs": null,
+    "series": null,
+    "shelf": "faith-home",
+    "category": "devotional",
+    "eyebrow": "A devotional for the working mom",
+    "year": 2025,
+    "isbn": "9798349319341",
+    "format": "Hardcover",
+    "pages": null,
+    "tagline": "Early alarms, bedtime guilt, and the grace that meets a working mother in the middle of an ordinary day.",
+    "blurb": "The journey of a working mother is a tapestry of joy, exhaustion, triumph, and doubt. 365 Days of Grace is a devotional born from that life: the weight of expectations, the guilt that arrives after the children are asleep, prayer on the commute, and the daily practice of trusting grace more than perfection.",
+    "excerpt": "The journey of a working mother is a tapestry woven with threads of joy, exhaustion, triumph, and doubt.",
+    "cover": {
+      "base": "365-days-of-grace-cover",
+      "width": 600,
+      "height": 903,
+      "width2x": 1200,
+      "height2x": 1806,
+      "alt": "Cover of 365 Days of Grace by Courtney Thomas"
+    },
+    "retailers": null,
+    "ogType": "book",
+    "featured": true,
+    "reviews": [],
+    "awards": [
+      {
+        "name": "International Impact Book Awards",
+        "honor": "Outstanding Literary Achievement",
+        "category": "Devotional",
+        "year": 2026,
+        "month": "September",
+        "seal": {
+          "src": "/media/awards/iiba-distinguished-author-160.png",
+          "srcset": "/media/awards/iiba-distinguished-author-160.png 1x, /media/awards/iiba-distinguished-author-320.png 2x",
+          "alt": "International Impact Book Awards — Distinguished Author seal"
+        }
+      }
+    ],
+    "press": [],
+    "praise": [],
+    "discussionGuide": null,
+    "related": [],
+    "sampleUrl": null,
+    "audiobook": null,
+    "ebookIsbn": null,
+    "_todo": "Brian to supply: page count, ebook/audio availability, discussion guide, any real endorsements."
+  },
+  {
     "slug": "finding-drakes-feather",
     "title": "Finding Drake’s Feather",
     "publishedAs": null,
@@ -111,56 +161,6 @@
     "_todo": "Brian to supply: page count, ebook/audio availability, discussion guide, any real endorsements"
   },
   {
-    "slug": "365-days-of-grace",
-    "title": "365 Days of Grace",
-    "publishedAs": null,
-    "series": null,
-    "shelf": "faith-home",
-    "category": "devotional",
-    "eyebrow": "A devotional for the working mom",
-    "year": 2025,
-    "isbn": "9798349319341",
-    "format": "Hardcover",
-    "pages": null,
-    "tagline": "Early alarms, bedtime guilt, and the grace that meets a working mother in the middle of an ordinary day.",
-    "blurb": "The journey of a working mother is a tapestry of joy, exhaustion, triumph, and doubt. 365 Days of Grace is a devotional born from that life: the weight of expectations, the guilt that arrives after the children are asleep, prayer on the commute, and the daily practice of trusting grace more than perfection.",
-    "excerpt": "The journey of a working mother is a tapestry woven with threads of joy, exhaustion, triumph, and doubt.",
-    "cover": {
-      "base": "365-days-of-grace-cover",
-      "width": 600,
-      "height": 903,
-      "width2x": 1200,
-      "height2x": 1806,
-      "alt": "Cover of 365 Days of Grace by Courtney Thomas"
-    },
-    "retailers": null,
-    "ogType": "book",
-    "featured": false,
-    "reviews": [],
-    "awards": [
-      {
-        "name": "International Impact Book Awards",
-        "honor": "Outstanding Literary Achievement",
-        "category": "Devotional",
-        "year": 2026,
-        "month": "September",
-        "seal": {
-          "src": "/media/awards/iiba-distinguished-author-160.png",
-          "srcset": "/media/awards/iiba-distinguished-author-160.png 1x, /media/awards/iiba-distinguished-author-320.png 2x",
-          "alt": "International Impact Book Awards — Distinguished Author seal"
-        }
-      }
-    ],
-    "press": [],
-    "praise": [],
-    "discussionGuide": null,
-    "related": [],
-    "sampleUrl": null,
-    "audiobook": null,
-    "ebookIsbn": null,
-    "_todo": "Brian to supply: page count, ebook/audio availability, discussion guide, any real endorsements."
-  },
-  {
     "slug": "the-price-of-choosing-you",
     "title": "The Price of Choosing You",
     "publishedAs": null,
@@ -189,7 +189,7 @@
     },
     "retailers": null,
     "ogType": "book",
-    "featured": true,
+    "featured": false,
     "reviews": [],
     "awards": [],
     "press": [],

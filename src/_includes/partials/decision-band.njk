@@ -16,7 +16,12 @@
         <p class="eyebrow hero-band__eyebrow">{{ homeCopy.hero.eyebrow }}</p>
         <h1 class="hero-band__title" id="hero-band-title"><span class="visually-hidden">{{ homeCopy.hero.name }}. </span>{{ homeCopy.hero.positioning }}</h1>
 {%- if featuredBook %}
-{%- if fx.statusPill %}
+{%- if featuredBook.awards and featuredBook.awards.length %}
+        <p class="hero-band__award">
+          <img src="{{ featuredBook.awards[0].seal.src }}" srcset="{{ featuredBook.awards[0].seal.srcset }}" width="64" height="64" alt="{{ featuredBook.awards[0].seal.alt }}" decoding="async" />
+          <span><strong>{{ featuredBook.awards[0].honor }}</strong><br>{{ featuredBook.awards[0].name }} · {{ featuredBook.awards[0].category }} · {{ featuredBook.awards[0].year }}</span>
+        </p>
+{%- elif fx.statusPill %}
         <p class="hero-band__pill"><span class="pill pill--outline">{{ fx.statusPill }}</span></p>
 {%- endif %}
 {%- if fx.hook %}
