@@ -2,7 +2,7 @@
     @2x pixel sizes from books.json (cover.width2x/height2x — validated against the files), alt from cover.alt.
     Book pages pass `book`; every other page falls back to the featured title. -#}
 {%- set ogBook = book if (book and book.cover) else (books | bookBySlug(site.featured.slug)) -%}
-{%- set ogImg = ogImage or ("/media/covers/" + ogBook.cover.base + "@2x.jpg") -%}
+{%- set ogImg = ogImage or ("/media/covers/" + ogBook.cover.base + "@2x.jpg?v=2026-09-25b") -%}
 {%- if not noindex %}
   <meta property="og:site_name" content="{{ site.name }}" />
   <meta property="og:locale" content="{{ site.locale }}" />
