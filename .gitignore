@@ -11,3 +11,4 @@ _site/
 # Local secrets — ANALYTICS_KEY lives in Netlify env vars, never in the repo
 .env
 .env.*
+_legacy-static/

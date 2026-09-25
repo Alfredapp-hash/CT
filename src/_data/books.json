@@ -67,9 +67,9 @@
     "cover": {
       "base": "finding-drakes-feather-cover",
       "width": 600,
-      "height": 1131,
+      "height": 982,
       "width2x": 1200,
-      "height2x": 2263,
+      "height2x": 1964,
       "alt": "Cover of Finding Drake’s Feather by Courtney Thomas"
     },
     "retailers": null,
@@ -104,9 +104,9 @@
     "cover": {
       "base": "finding-your-self-worth-cover",
       "width": 600,
-      "height": 1113,
+      "height": 986,
       "width2x": 1200,
-      "height2x": 2225,
+      "height2x": 1972,
       "alt": "Cover of Finding Yourself by Courtney Thomas"
     },
     "retailers": null,
@@ -141,9 +141,9 @@
     "cover": {
       "base": "rooted-in-purpose-cover",
       "width": 600,
-      "height": 1177,
+      "height": 990,
       "width2x": 1200,
-      "height2x": 2354,
+      "height2x": 1980,
       "alt": "Cover of Rooted in Purpose by Courtney Thomas"
     },
     "retailers": null,
@@ -182,9 +182,9 @@
     "cover": {
       "base": "the-price-of-choosing-you-cover",
       "width": 600,
-      "height": 988,
+      "height": 998,
       "width2x": 1200,
-      "height2x": 1977,
+      "height2x": 1996,
       "alt": "Cover of The Price of Choosing You by Courtney Thomas"
     },
     "retailers": null,
@@ -223,9 +223,9 @@
     "cover": {
       "base": "the-price-of-letting-go-cover",
       "width": 600,
-      "height": 982,
+      "height": 997,
       "width2x": 1200,
-      "height2x": 1964,
+      "height2x": 1994,
       "alt": "Cover of The Price of Letting Go by Courtney Thomas"
     },
     "retailers": null,
@@ -264,9 +264,9 @@
     "cover": {
       "base": "what-we-keep-cover",
       "width": 600,
-      "height": 1213,
+      "height": 989,
       "width2x": 1200,
-      "height2x": 2427,
+      "height2x": 1978,
       "alt": "Cover of What We Keep by Courtney Thomas"
     },
     "retailers": null,
