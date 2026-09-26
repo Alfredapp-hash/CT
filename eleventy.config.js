@@ -74,6 +74,9 @@ export default function (eleventyConfig) {
     if (!code) return [];
     return site.retailerTemplates.map((r) => ({ name: r.name, url: r.url.replace("{isbn}", code) }));
   });
+  eleventyConfig.addFilter("money", (cents, currency = "USD") =>
+    typeof cents === "number" ? new Intl.NumberFormat("en-US", { style: "currency", currency }).format(cents / 100) : ""
+  );
   eleventyConfig.addFilter("setAttribute", (obj, key, value) => ({ ...obj, [key]: value }));
 
   // Sitemap helpers: keep today's ordering (home, blog, posts oldest→newest, books in catalogue order).

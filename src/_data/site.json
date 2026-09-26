@@ -26,6 +26,10 @@
       "menu": "books"
     },
     {
+      "label": "Shop",
+      "href": "/merch.html"
+    },
+    {
       "label": "About",
       "href": "/#about"
     },
@@ -46,6 +50,10 @@
     {
       "label": "Books",
       "href": "/bookshelf.html"
+    },
+    {
+      "label": "Shop",
+      "href": "/merch.html"
     },
     {
       "label": "Blog",
@@ -153,5 +161,17 @@
     "lede": "All of Courtney’s books in one place. Pick one off the shelf, or scroll down for where to buy each.",
     "seriesEyebrow": "Series",
     "seriesLede": "Read in order: Book 1, Book 2, Book 3."
+  },
+  "shop": {
+    "origin": null,
+    "_note": "Set SHOP_ORIGIN in the Netlify build env (e.g. https://shop.booksbycourtney.site). Templates use shopOrigin from _data/shop.js, which reads the env var and falls back to this value.",
+    "eyebrow": "Merch",
+    "heading": "The Shop",
+    "lede": "Signed copies straight from Courtney, and a few things for the reading nook. Every order supports the next book.",
+    "emptyTitle": "The shop opens soon.",
+    "emptyLede": "Courtney is choosing the first pieces now. Join the reader notes below and you’ll hear the day it opens.",
+    "buy": "Buy",
+    "view": "View",
+    "soldOut": "Sold out"
   }
 }

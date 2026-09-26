@@ -1,0 +1,90 @@
+---
+layout: layouts/page.njk
+permalink: /merch.html
+title: The Shop
+description: "Signed copies of Courtney Thomas’s books and a few things for the reading nook. Every order supports the next book."
+bodyClass: book-page shop-page
+extraCss: shop.css
+ogBookSlug: 365-days-of-grace
+---
+{%- from "partials/newsletter-form.njk" import newsletterForm -%}
+{%- set sh = site.shop -%}
+{%- set products = shop.products -%}
+
+    <section class="wrap shop-head">
+      <p class="eyebrow">{{ sh.eyebrow }}</p>
+      <h1>{{ sh.heading }}</h1>
+      <p class="lede">{{ sh.lede }}</p>
+    </section>
+
+{%- if products.length %}
+{%- for cat in shop.categories %}
+{%- set items = products | where("category", cat.key) %}
+{%- if items.length %}
+    <section class="wrap shop-section" id="{{ cat.key }}" aria-labelledby="shop-{{ cat.key }}">
+      <div class="section-head section-head--rule section-head--row">
+        <div>
+          <p class="eyebrow">{{ cat.label }}</p>
+          <h2 id="shop-{{ cat.key }}">{{ cat.blurb }}</h2>
+        </div>
+      </div>
+      <ul class="product-grid" role="list">
+{%- for p in items %}
+        <li class="product-card{% if not p.inStock %} product-card--out{% endif %}">
+          <a class="product-card__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+{%- if p.image %}
+            <img src="{{ p.image }}" alt="" loading="lazy" decoding="async" />
+{%- else %}
+            <span class="product-card__blank" aria-hidden="true"></span>
+{%- endif %}
+          </a>
+          <div class="product-card__body">
+            <h3 class="product-card__title"><a href="{{ p.url }}">{{ p.name }}</a></h3>
+{%- if p.description %}
+            <p class="product-card__desc">{{ p.description }}</p>
+{%- endif %}
+            <p class="product-card__price">{% if p.priceCents !== null %}{{ p.priceCents | money(p.currency) }}{% endif %}{% if not p.inStock %} <span class="pill pill--outline">{{ sh.soldOut }}</span>{% endif %}</p>
+            <div class="product-card__actions">
+              <a class="btn btn--primary btn--small" href="{{ p.url }}">{% if p.inStock %}{{ sh.buy }}{% else %}{{ sh.view }}{% endif %}<span class="visually-hidden">: {{ p.name }}</span></a>
+            </div>
+          </div>
+        </li>
+{%- endfor %}
+      </ul>
+    </section>
+{%- endif %}
+{%- endfor %}
+{%- set uncategorised = [] %}
+{%- for p in products %}{% set known = false %}{% for cat in shop.categories %}{% if cat.key == p.category %}{% set known = true %}{% endif %}{% endfor %}{% if not known %}{% set uncategorised = (uncategorised.push(p), uncategorised) %}{% endif %}{% endfor %}
+{%- if uncategorised.length %}
+    <section class="wrap shop-section" id="more" aria-labelledby="shop-more">
+      <div class="section-head section-head--rule"><h2 id="shop-more">More</h2></div>
+      <ul class="product-grid" role="list">
+{%- for p in uncategorised %}
+        <li class="product-card"><a class="product-card__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true">{% if p.image %}<img src="{{ p.image }}" alt="" loading="lazy" decoding="async" />{% else %}<span class="product-card__blank"></span>{% endif %}</a><div class="product-card__body"><h3 class="product-card__title"><a href="{{ p.url }}">{{ p.name }}</a></h3><p class="product-card__price">{{ p.priceCents | money(p.currency) }}</p><div class="product-card__actions"><a class="btn btn--primary btn--small" href="{{ p.url }}">{{ sh.buy }}<span class="visually-hidden">: {{ p.name }}</span></a></div></div></li>
+{%- endfor %}
+      </ul>
+    </section>
+{%- endif %}
+{%- else %}
+    <section class="wrap shop-empty" aria-labelledby="shop-empty-h">
+      <div class="panel panel--spine shop-empty__panel">
+        <p class="eyebrow">{{ sh.eyebrow }}</p>
+        <h2 id="shop-empty-h">{{ sh.emptyTitle }}</h2>
+        <p class="lede">{{ sh.emptyLede }}</p>
+        <ul class="shop-empty__cats" role="list">
+{%- for cat in shop.categories %}
+          <li><strong>{{ cat.label }}</strong><span>{{ cat.blurb }}</span></li>
+{%- endfor %}
+        </ul>
+        <p class="shop-empty__books">In the meantime, every book is available now — <a href="/bookshelf.html">see the Bookshelf</a>.</p>
+      </div>
+    </section>
+{%- endif %}
+
+    <section class="wrap newsletter" id="newsletter">
+      <p class="eyebrow">{{ site.newsletter.eyebrow }}</p>
+      <h2>{{ site.newsletter.heading }}</h2>
+      <p class="lede">{{ site.newsletter.lede }}</p>
+      {{ newsletterForm(site, "-shop") }}
+    </section>

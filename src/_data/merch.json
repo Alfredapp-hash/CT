@@ -1,0 +1,21 @@
+{
+  "_note": "Fallback used when SHOP_ORIGIN is unset or the shop API is unreachable at build time. Real products come from the backend (/api/products). Do not invent prices here.",
+  "categories": [
+    {
+      "key": "signed",
+      "label": "Signed copies",
+      "blurb": "Every title, signed by Courtney and shipped from her desk."
+    },
+    {
+      "key": "apparel",
+      "label": "Apparel",
+      "blurb": "Shirts and sweatshirts with lines from the books."
+    },
+    {
+      "key": "home",
+      "label": "For the reading nook",
+      "blurb": "Mugs, bookmarks, and totes."
+    }
+  ],
+  "products": []
+}

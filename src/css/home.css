@@ -612,3 +612,38 @@
 }
 .hero-band__award img { width: 64px; height: 64px; flex: none; filter: drop-shadow(0 3px 8px rgba(50, 30, 18, 0.25)); }
 .hero-band__award strong { font-family: var(--serif); font-size: var(--step-1); font-weight: 500; color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   Mobile pass (≤ 600px): home shelves become a compact vertical list — cover left, text right —
+   instead of a two-up rail; award pill wraps; the related rail on book pages shows ~1.4 cards.
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .shelf-home .rail__controls,
+  .shelf-home .rail__status { display: none; }
+  .shelf-home .rail__track { overflow: visible; scroll-snap-type: none; padding: 0; margin: 0; }
+  .shelf-home .rail__list { flex-direction: column; gap: 0; }
+  .shelf-home .rail__item { width: 100%; display: block; padding: var(--space-4) 0; border-top: 1px solid var(--line); }
+  .shelf-home .rail__item:first-child { border-top: 0; padding-top: 0; }
+  .shelf-home .rail .book-card {
+    width: 100%;
+    max-width: none;
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    grid-template-areas: "cover label" "cover title" "cover award" "cover meta" "cover tagline" "cover actions";
+    column-gap: var(--space-4);
+    align-items: start;
+  }
+  .shelf-home .rail .book-card__cover { grid-area: cover; aspect-ratio: auto; display: block; margin: 0; }
+  .shelf-home .rail .book-card__cover .jacket { max-width: 96px; box-shadow: var(--lift-1); }
+  .shelf-home .rail .book-card__label { grid-area: label; min-height: 0; }
+  .shelf-home .rail .book-card h3 { grid-area: title; margin: 0.15rem 0 0.2rem; font-size: var(--step-1); }
+  .shelf-home .rail .book-card__award { grid-area: award; }
+  .shelf-home .rail .book-card__meta { grid-area: meta; margin: 0 0 0.35rem; }
+  .shelf-home .rail .book-card__tagline { grid-area: tagline; font-size: 0.95rem; line-height: 1.45; margin: 0 0 var(--space-3); }
+  .shelf-home .rail .book-card__actions { grid-area: actions; margin-top: 0; gap: var(--space-2) var(--space-4); align-items: center; }
+  .shelf-home .rail .book-card__actions .btn--quiet { padding-inline: 0; }
+  .children-row .children-card { grid-template-columns: 96px minmax(0, 1fr); }
+  .hero-band__eyebrow { font-size: 0.68rem; }
+  .hero-band__award { align-items: flex-start; }
+  .hero-band__award img { width: 52px; height: 52px; }
+}

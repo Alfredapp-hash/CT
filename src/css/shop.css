@@ -1,0 +1,64 @@
+/* The Shop (/merch.html): product grid fed from the shop backend at build time, plus the
+   "opens soon" state used until Courtney adds products. Tokens only. */
+
+.shop-head { padding: 4.5rem 0 2rem; }
+.shop-head h1 { margin: 0 0 0.6rem; font-size: var(--step-5); line-height: 0.98; font-weight: 500; }
+
+.shop-section { padding: 2.5rem 0 1rem; }
+.shop-section .section-head h2 { font-size: var(--step-2); font-weight: 500; }
+
+.product-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--space-6) var(--space-5);
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-lift);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  box-shadow: var(--lift-1);
+  transition: transform var(--dur-base) var(--ease), box-shadow var(--dur-base) var(--ease);
+}
+.product-card:hover { transform: translateY(-3px); box-shadow: var(--lift-2); }
+.product-card--out { opacity: 0.85; }
+.product-card__media { display: block; aspect-ratio: 1 / 1; background: var(--paper-sunk); }
+.product-card__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.product-card__blank {
+  display: block; width: 100%; height: 100%;
+  background: radial-gradient(60% 60% at 50% 45%, rgba(172, 149, 122, 0.25), transparent 70%), var(--paper-sunk);
+}
+.product-card__body { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4) var(--space-4) var(--space-5); }
+.product-card__title { margin: 0; font-size: var(--step-1); font-weight: 500; line-height: 1.15; }
+.product-card__title a { text-decoration: none; }
+.product-card__title a:hover { color: var(--leather); }
+.product-card__desc { margin: 0; color: var(--ink-soft); font-size: 0.95rem; line-height: 1.5; }
+.product-card__price { margin: 0.2rem 0 0; font-family: var(--serif); font-size: var(--step-1); color: var(--ink); display: flex; gap: 0.6rem; align-items: center; }
+.product-card__actions { margin-top: auto; padding-top: var(--space-2); }
+
+.shop-empty { padding: 1rem 0 3rem; }
+.shop-empty__panel { max-width: 48rem; }
+.shop-empty__panel h2 { margin: 0 0 0.4rem; font-size: var(--step-3); font-weight: 500; }
+.shop-empty__cats {
+  list-style: none;
+  margin: var(--space-5) 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.shop-empty__cats li { display: grid; gap: 0.15rem; padding-left: var(--space-4); border-left: 2px solid var(--gold-warm); }
+.shop-empty__cats strong { font-family: var(--serif); font-weight: 600; font-size: var(--step-1); }
+.shop-empty__cats span { color: var(--ink-soft); }
+.shop-empty__books { margin: 0; color: var(--ink-soft); }
+.shop-empty__books a { color: var(--leather); }
+
+@media (max-width: 600px) {
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-3); }
+  .product-card__body { padding: var(--space-3); }
+  .product-card__desc { display: none; }
+}

@@ -53,6 +53,7 @@ urls.set("/privacy", "text/html");
 urls.set("/accessibility", "text/html");
 urls.set("/books/the-price-of-choosing-you", "text/html");
 urls.set("/bookshelf.html", "text/html");
+urls.set("/merch.html", "text/html");
 urls.set("/blog/posts/surviving-into-story", "text/html");
 
 // Static server honouring netlify.toml's 200 rewrites

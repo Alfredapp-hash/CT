@@ -814,7 +814,7 @@ html:not(.has-nav-js) .nav-item--books:focus-within .nav-drop { display: grid; }
 .rail .book-card__cover {
   display: flex;
   align-items: flex-end;
-  aspect-ratio: 600 / 1213;
+  aspect-ratio: 600 / 1000; /* tallest current cover (the new set is ~1.66:1); was 600/1213 for the old What We Keep */
 }
 /* The jacket's bottom margin lives on the slot, not inside it, so the tallest jacket cannot overflow the
    aspect-ratio box and push its label down (Sprint 2 fix: What We Keep sat 8px lower than its neighbours). */
@@ -854,3 +854,10 @@ html:not(.has-nav-js) .nav-item--books:focus-within .nav-drop { display: grid; }
 .book-award__meta { margin: 0.15rem 0 0; font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
 .book-card__award { margin: 0.35rem 0 0; }
 .pill--gold { background: var(--gold-warm); border-color: var(--gold-warm); color: var(--ink); }
+
+/* Mobile pass (≤ 600px): award pill wraps; the related rail on book pages shows ~1.4 cards. */
+@media (max-width: 600px) {
+  .pill { white-space: normal; text-align: left; line-height: 1.25; font-size: 0.62rem; max-width: 100%; }
+  .book-card__award { margin-top: 0.25rem; }
+  .book-related .rail__item { width: 62vw; }
+}

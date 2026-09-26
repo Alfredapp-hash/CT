@@ -25,6 +25,9 @@
   outline: 2px solid transparent;
   transition: outline-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
+/* the covers are small in the photo, so every spot carries a larger invisible hit area (≥ 44px on phones) */
+.bookshelf__spot::before { content: ""; position: absolute; inset: -14px; }
+@media (max-width: 700px) { .bookshelf__spot::before { inset: -18px; } }
 .bookshelf__spot:hover,
 .bookshelf__spot:focus-visible {
   outline-color: var(--gold-warm);
