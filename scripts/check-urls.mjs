@@ -101,8 +101,8 @@ server.close();
 // 3. Forms in _site/index.html
 const html = readFileSync(join(site, "index.html"), "utf8");
 const forms = [
-  { name: "newsletter", open: /<form name="newsletter" method="POST" action="\/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">/ },
-  { name: "notes", open: /<form name="notes" method="POST" action="\/thank-you" data-netlify="true" netlify-honeypot="bot-field">/ },
+  { name: "newsletter", open: /<form name="newsletter" method="POST" action="\/api\/messages" class="newsletter-form">/ },
+  { name: "notes", open: /<form name="notes" method="POST" action="\/api\/messages">/ },
 ];
 for (const f of forms) {
   if (!f.open.test(html)) fail(`form "${f.name}": opening tag changed`);
@@ -113,7 +113,7 @@ if (botFields < 2) fail(`expected at least 2 honeypot bot-field inputs on the ho
 // Sprint 2: the home newsletter form gained a visible label and an optional "name" field, so it is asserted at
 // attribute level (every Netlify-relevant attribute exactly as the original). The footer mini-form (id suffix
 // "-footer") and the notes form stay byte-equivalent to the original.
-const NEWSLETTER_OPEN = '<form name="newsletter" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form';
+const NEWSLETTER_OPEN = '<form name="newsletter" method="POST" action="/api/messages" class="newsletter-form';
 const newsletterForms = html.split(NEWSLETTER_OPEN).slice(1).map((chunk) => chunk.slice(0, chunk.indexOf("</form>")));
 if (newsletterForms.length < 2) fail(`expected the home newsletter form + the footer mini-form, found ${newsletterForms.length}`);
 for (const [i, f] of newsletterForms.entries()) {
@@ -128,14 +128,14 @@ for (const [i, f] of newsletterForms.entries()) {
     if (!ok) fail(`newsletter form #${i + 1}: missing ${m}`);
   }
 }
-const ORIGINAL_NEWSLETTER_FOOTER = `<form name="newsletter" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
+const ORIGINAL_NEWSLETTER_FOOTER = `<form name="newsletter" method="POST" action="/api/messages" class="newsletter-form">
         <input type="hidden" name="form-name" value="newsletter" />
         <p hidden><label>Leave this empty <input name="bot-field" /></label></p>
         <label class="visually-hidden" for="newsletter-email-footer">Email</label>
         <input id="newsletter-email-footer" type="email" name="email" required autocomplete="email" placeholder="Your email" />
         <button type="submit">Subscribe</button>
       </form>`;
-const ORIGINAL_NOTES = `<form name="notes" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field">
+const ORIGINAL_NOTES = `<form name="notes" method="POST" action="/api/messages">
         <input type="hidden" name="form-name" value="notes" />
         <p hidden>
           <label>Leave this empty <input name="bot-field" /></label>

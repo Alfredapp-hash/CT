@@ -4,7 +4,7 @@
   var gate = document.getElementById("gate");
   var app = document.getElementById("app");
   var gateError = document.getElementById("gate-error");
-  var state = { books: [], posts: [], filePosts: [], pieces: [], products: [], orders: [], productId: null, pieceId: null, journalId: null };
+  var state = { books: [], posts: [], filePosts: [], pieces: [], products: [], orders: [], messages: [], productId: null, pieceId: null, journalId: null };
 
   function say(id, message, ok) {
     var el = document.getElementById(id);
@@ -307,6 +307,51 @@
     }).catch(function (error) { say("numbers-error", error.message); });
   }
 
+  function renderLetters() {
+    var list = document.getElementById("letter-list");
+    list.textContent = "";
+    var unread = state.messages.filter(function (letter) { return !letter.read; }).length;
+    document.getElementById("home-letters").textContent = String(unread);
+    document.getElementById("letters-nav").textContent = unread ? "Letters · " + unread : "Letters";
+    if (!state.messages.length) {
+      emptyRow(list, "No letters yet.");
+      return;
+    }
+    state.messages.forEach(function (letter) {
+      var item = document.createElement("li");
+      var title = document.createElement("strong");
+      title.textContent = (letter.kind === "note" ? "Note" : "Reader note") + " · " + (letter.name || letter.email);
+      var meta = document.createElement("span");
+      meta.className = "meta";
+      meta.textContent = (letter.read ? "Read" : "New") + " · " + letter.email + (letter.createdAt ? " · " + letter.createdAt.slice(0, 10) : "");
+      item.appendChild(title);
+      item.appendChild(meta);
+      if (letter.body) {
+        var body = document.createElement("p");
+        body.textContent = letter.body;
+        item.appendChild(body);
+      }
+      if (!letter.read) {
+        var done = document.createElement("button");
+        done.type = "button";
+        done.className = "quiet";
+        done.textContent = "Mark read";
+        done.addEventListener("click", function () {
+          api("/api/studio/messages/" + letter.id, { method: "PATCH" }).then(loadLetters);
+        });
+        item.appendChild(done);
+      }
+      list.appendChild(item);
+    });
+  }
+
+  function loadLetters() {
+    return api("/api/studio/messages").then(function (data) {
+      state.messages = data.messages || [];
+      renderLetters();
+    });
+  }
+
   function loadShop() {
     return Promise.all([
       api("/api/studio/products"),
@@ -328,6 +373,7 @@
       api("/api/studio/posts"),
       api("/api/studio/social"),
       loadShop(),
+      loadLetters(),
       loadNumbers(),
     ]).then(function (results) {
       state.books = results[0].books || [];

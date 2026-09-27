@@ -7,7 +7,7 @@
   <title>The desk — Courtney Thomas</title>
   <link rel="stylesheet" href="/css/fonts.css?v=2026-09-25b" />
   <link rel="stylesheet" href="/css/styles.css?v=2026-09-25b" />
-  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-27b" />
+  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-27c" />
 </head>
 <body>
   <div class="gate-screen" id="gate">
@@ -35,6 +35,7 @@
         <button type="button" data-view="journal">Journal</button>
         <button type="button" data-view="social">Social</button>
         <button type="button" data-view="shop" id="shop-nav">Shop</button>
+        <button type="button" data-view="letters" id="letters-nav">Letters</button>
         <button type="button" data-view="books">Books</button>
         <button type="button" data-view="numbers">Numbers</button>
       </nav>
@@ -57,6 +58,7 @@
           <li><button type="button" data-view="journal"><span class="meta">Journal</span><strong id="home-journal">—</strong><span>on the site</span></button></li>
           <li><button type="button" data-view="shop"><span class="meta">Shop</span><strong id="home-listed">—</strong><span>listed for sale</span></button></li>
           <li><button type="button" data-view="social"><span class="meta">Social</span><strong id="home-ready">—</strong><span>ready to post</span></button></li>
+          <li><button type="button" data-view="letters"><span class="meta">Letters</span><strong id="home-letters">—</strong><span>unread</span></button></li>
         </ul>
         <p class="lede-quiet">A journal piece marked “On the site” appears in the journal. A shop piece with a photograph and a price appears on the store, and readers pay there. The books stay on the retailer links.</p>
       </section>
@@ -191,6 +193,15 @@
         </table>
       </section>
 
+      <section data-panel="letters" hidden>
+        <div class="canvas-head">
+          <p class="eyebrow">Letters</p>
+          <h1>From readers</h1>
+          <p class="lede-quiet">Reader notes and notes from the contact form arrive here.</p>
+        </div>
+        <ul class="contents" id="letter-list"></ul>
+      </section>
+
       <section data-panel="books" hidden>
         <div class="canvas-head">
           <p class="eyebrow">Shelf</p>
@@ -222,6 +233,6 @@
       </section>
     </main>
   </div>
-  <script src="/admin/studio.js?v=2026-09-27b"></script>
+  <script src="/admin/studio.js?v=2026-09-27c"></script>
 </body>
 </html>

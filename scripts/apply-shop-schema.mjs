@@ -72,6 +72,16 @@ const statements = [
     CONSTRAINT social_pieces_platform_check CHECK (platform IN ('instagram', 'facebook', 'goodreads', 'amazonAuthor')),
     CONSTRAINT social_pieces_status_check CHECK (status IN ('idea', 'drafting', 'ready', 'posted'))
   )`,
+  `CREATE TABLE IF NOT EXISTS messages (
+    id serial PRIMARY KEY,
+    kind varchar(20) NOT NULL,
+    name varchar(160) NOT NULL DEFAULT '',
+    email varchar(180) NOT NULL,
+    body text NOT NULL DEFAULT '',
+    read boolean NOT NULL DEFAULT false,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT messages_kind_check CHECK (kind IN ('newsletter', 'note'))
+  )`,
   `INSERT INTO social_profiles (platform, label, url)
    VALUES ('facebook', 'Facebook', 'https://www.facebook.com/profile.php?id=61593191562395')
    ON CONFLICT (platform) DO UPDATE SET url = EXCLUDED.url, label = EXCLUDED.label, updated_at = now()`,

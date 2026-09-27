@@ -969,6 +969,93 @@ var logout_default = async (req) => {
   });
 };
 
+// netlify/functions/messages.ts
+var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var ready = null;
+function ensureMessages() {
+  if (!ready) {
+    ready = database().sql.query(`CREATE TABLE IF NOT EXISTS messages (
+      id serial PRIMARY KEY,
+      kind varchar(20) NOT NULL,
+      name varchar(160) NOT NULL DEFAULT '',
+      email varchar(180) NOT NULL,
+      body text NOT NULL DEFAULT '',
+      read boolean NOT NULL DEFAULT false,
+      created_at timestamptz NOT NULL DEFAULT now(),
+      CONSTRAINT messages_kind_check CHECK (kind IN ('newsletter', 'note'))
+    )`).then(() => void 0).catch((error) => {
+      ready = null;
+      throw error;
+    });
+  }
+  return ready;
+}
+async function fieldsOf(req) {
+  const type = req.headers.get("content-type") || "";
+  if (type.includes("application/json")) {
+    const body = await readJson2(req);
+    const out2 = {};
+    for (const [key, value] of Object.entries(body)) {
+      if (typeof value === "string") out2[key] = value;
+    }
+    return out2;
+  }
+  const form = await req.formData();
+  const out = {};
+  form.forEach((value, key) => {
+    if (typeof value === "string") out[key] = value;
+  });
+  return out;
+}
+function finish(req, ok, message) {
+  if ((req.headers.get("accept") || "").includes("application/json")) {
+    return json(ok ? { ok: true } : { error: message }, ok ? 200 : 400);
+  }
+  if (ok) return Response.redirect(new URL("/thank-you.html", req.url), 303);
+  return new Response(message, { status: 400, headers: { "content-type": "text/plain; charset=utf-8" } });
+}
+async function messages(req) {
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+  try {
+    const fields = await fieldsOf(req);
+    if (text(fields["bot-field"], 200)) return finish(req, true, "");
+    const formName = text(fields["form-name"], 40);
+    const kind = formName === "notes" ? "note" : formName === "newsletter" ? "newsletter" : "";
+    if (!kind) return finish(req, false, "That form was not recognized.");
+    const email = text(fields.email, 180).toLowerCase();
+    const name = text(fields.name, 160);
+    const body = text(fields.message, 4e3);
+    if (!EMAIL.test(email)) return finish(req, false, "Enter a real email address.");
+    if (kind === "note" && (!name || !body)) return finish(req, false, "A name and a note are needed.");
+    await ensureMessages();
+    const db = database();
+    await db.sql`
+      INSERT INTO messages (kind, name, email, body)
+      VALUES (${kind}, ${name}, ${email}, ${body})
+    `;
+    return finish(req, true, "");
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : "letter");
+    return finish(req, false, "That could not be saved.");
+  }
+}
+async function listMessages() {
+  await ensureMessages();
+  const rows = await query(database().sql`
+    SELECT id, kind, name, email, body, read, created_at
+    FROM messages ORDER BY created_at DESC LIMIT 100
+  `);
+  return rows.map((row) => ({
+    id: Number(row.id),
+    kind: String(row.kind),
+    name: String(row.name || ""),
+    email: String(row.email || ""),
+    body: String(row.body || ""),
+    read: row.read === true,
+    createdAt: iso(row.created_at)
+  }));
+}
+
 // netlify/functions/media.ts
 var media_default = async (req) => {
   const id = new URL(req.url).pathname.split("/").filter(Boolean).pop() || "";
@@ -1604,6 +1691,15 @@ async function products(req, id, action) {
   if (req.method === "PATCH") return saveProduct(req, productId);
   return json({ error: "Method not allowed" }, 405);
 }
+async function letters(req, id) {
+  if (req.method === "GET" && !id) return json({ messages: await listMessages() });
+  if (req.method === "PATCH" && id && /^\d+$/.test(id)) {
+    await ensureMessages();
+    await database().sql`UPDATE messages SET read = true WHERE id = ${Number(id)}`;
+    return json({ ok: true });
+  }
+  return json({ error: "Method not allowed" }, 405);
+}
 async function orders(req, id) {
   const db = database();
   if (req.method === "GET" && !id) {
@@ -1654,6 +1750,7 @@ var studio_default = async (req) => {
     if (resource === "profiles") return await profiles(req);
     if (resource === "products") return await products(req, id, action);
     if (resource === "orders") return await orders(req, id);
+    if (resource === "messages") return await letters(req, id);
     return json({ error: "Not found" }, 404);
   } catch (error) {
     return fail(error);
@@ -1794,6 +1891,7 @@ async function dispatch(req) {
   }
   if (path === "/api/checkout" && method === "POST") return checkout_default(req);
   if (path === "/api/orders" && method === "POST") return orders_default(req);
+  if (path === "/api/messages" && method === "POST") return messages(req);
   if (path === "/api/stripe/webhook" && method === "POST") return stripe_webhook_default(req);
   if (path === "/api/auth/login" && method === "POST") return login_default(req);
   if (path === "/api/auth/logout" && method === "POST") return logout_default(req);
@@ -1816,7 +1914,7 @@ async function write(res, response) {
   res.end(Buffer.from(await response.arrayBuffer()));
 }
 async function handler(req, res) {
-  const finish = async (response) => {
+  const finish2 = async (response) => {
     if (res && typeof res.end === "function") {
       await write(res, response);
       return;
@@ -1824,10 +1922,10 @@ async function handler(req, res) {
     return response;
   };
   try {
-    return await finish(await dispatch(await toRequest(req)));
+    return await finish2(await dispatch(await toRequest(req)));
   } catch (error) {
     console.error(redact(error));
-    return finish(new Response(JSON.stringify({ error: redact(error) }), {
+    return finish2(new Response(JSON.stringify({ error: redact(error) }), {
       status: 500,
       headers: { "content-type": "application/json; charset=utf-8" }
     }));

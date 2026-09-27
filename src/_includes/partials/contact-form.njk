@@ -1,6 +1,6 @@
-{#- Netlify Forms markup, byte-for-byte the home page form. opening.js owns its submit handler (form[name='notes'], #form-note). -#}
+{#- Notes for Courtney. letters.js confirms on the page; without JavaScript the form still posts. -#}
 {%- macro contactForm(site) -%}
-<form name="{{ site.contact.formName }}" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field">
+<form name="{{ site.contact.formName }}" method="POST" action="/api/messages">
         <input type="hidden" name="form-name" value="{{ site.contact.formName }}" />
         <p hidden>
           <label>Leave this empty <input name="bot-field" /></label>

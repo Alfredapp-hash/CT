@@ -21,6 +21,7 @@ import {
 import { json, readJson, text, uniqueViolation } from "./_shared/http";
 import { PHOTO_LIMIT, PHOTO_TYPES, deletePhoto, savePhoto } from "./_shared/photos";
 import { renderProse, slugify } from "./_shared/prose";
+import { ensureMessages, listMessages } from "./messages";
 
 type Row = Record<string, unknown>;
 
@@ -303,6 +304,16 @@ async function products(req: Request, id: string | undefined, action: string | u
   return json({ error: "Method not allowed" }, 405);
 }
 
+async function letters(req: Request, id: string | undefined): Promise<Response> {
+  if (req.method === "GET" && !id) return json({ messages: await listMessages() });
+  if (req.method === "PATCH" && id && /^\d+$/.test(id)) {
+    await ensureMessages();
+    await database().sql`UPDATE messages SET read = true WHERE id = ${Number(id)}`;
+    return json({ ok: true });
+  }
+  return json({ error: "Method not allowed" }, 405);
+}
+
 async function orders(req: Request, id: string | undefined): Promise<Response> {
   const db = database();
   if (req.method === "GET" && !id) {
@@ -354,6 +365,7 @@ export default async (req: Request) => {
     if (resource === "profiles") return await profiles(req);
     if (resource === "products") return await products(req, id, action);
     if (resource === "orders") return await orders(req, id);
+    if (resource === "messages") return await letters(req, id);
     return json({ error: "Not found" }, 404);
   } catch (error) {
     return fail(error);

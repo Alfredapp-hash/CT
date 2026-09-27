@@ -153,30 +153,4 @@
   }
 
   cue?.addEventListener("click", enterLibrary);
-
-  const form = document.querySelector("form[name='notes']");
-  form?.addEventListener("submit", async (event) => {
-    if (location.protocol === "file:") return;
-    event.preventDefault();
-    const note = document.getElementById("form-note");
-    const data = new FormData(form);
-    try {
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data).toString(),
-      });
-      if (!response.ok) throw new Error("Form was not accepted");
-      form.reset();
-      if (note) {
-        note.hidden = false;
-        note.textContent = "Your note is on its way. Thank you for writing.";
-      }
-    } catch (error) {
-      if (note) {
-        note.hidden = false;
-        note.textContent = "The note could not be sent from this preview. It will send once the site is published.";
-      }
-    }
-  });
 })();

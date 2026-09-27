@@ -3,6 +3,7 @@ import checkout from "../netlify/functions/checkout";
 import journalPage from "../netlify/functions/journal-page";
 import login from "../netlify/functions/login";
 import logout from "../netlify/functions/logout";
+import mail from "../netlify/functions/messages";
 import media from "../netlify/functions/media";
 import orders from "../netlify/functions/orders";
 import productPage from "../netlify/functions/product-page";
@@ -68,6 +69,7 @@ async function dispatch(req: Request): Promise<Response> {
   }
   if (path === "/api/checkout" && method === "POST") return checkout(req);
   if (path === "/api/orders" && method === "POST") return orders(req);
+  if (path === "/api/messages" && method === "POST") return mail(req);
   if (path === "/api/stripe/webhook" && method === "POST") return stripeWebhook(req);
   if (path === "/api/auth/login" && method === "POST") return login(req);
   if (path === "/api/auth/logout" && method === "POST") return logout(req);
