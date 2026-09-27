@@ -25,8 +25,6 @@ function logSafe(error: unknown): void {
 }
 
 export default async (req: Request) => {
-  const secret = stripeSecret();
-  if (!secret) return json({ error: "Card checkout is not set up yet." }, 503);
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
   try {
@@ -35,6 +33,8 @@ export default async (req: Request) => {
     const quantity = body.quantity;
     if (!slug) return json({ error: "Choose a piece from the shop." }, 400);
     if (isCatalogBook(slug)) return json({ error: "Books are bought from the retailers on the book page." }, 400);
+    const secret = stripeSecret();
+    if (!secret) return json({ error: "Card checkout is not set up yet." }, 503);
     if (typeof quantity !== "number" || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
       return json({ error: "Choose a quantity between 1 and 20." }, 400);
     }

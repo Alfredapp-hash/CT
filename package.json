@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Static author site for Courtney Thomas with privacy-friendly analytics on Netlify Functions.",
   "scripts": {
-    "build": "eleventy",
+    "build": "eleventy && node scripts/bundle-api.mjs",
     "start": "eleventy --serve",
     "dev": "netlify dev",
     "verify": "node scripts/check-urls.mjs",
@@ -25,6 +25,7 @@
     "@fontsource/cormorant-garamond": "^5.3.0",
     "@fontsource/outfit": "^5.3.0",
     "@types/node": "^22.7.0",
+    "esbuild": "^0.28.2",
     "typescript": "^5.6.0"
   }
 }

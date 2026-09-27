@@ -10,5 +10,5 @@
     "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": ["netlify/functions/**/*.ts", "api/**/*.ts"]
+  "include": ["netlify/functions/**/*.ts", "server/**/*.ts"]
 }
