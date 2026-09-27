@@ -3,7 +3,7 @@
  * Used only when Stripe is not configured. Card numbers are never accepted.
  * A checkout link, when set, is the payment path.
  */
-import { database } from "./_shared/content";
+import { database, isCatalogBook } from "./_shared/content";
 import { json, readJson, text } from "./_shared/http";
 import { stripeConfigured } from "./_shared/stripe-env";
 
@@ -19,6 +19,7 @@ export default async (req: Request) => {
     const address = text(body.address, 500);
     const note = text(body.note, 800);
     const quantity = body.quantity;
+    if (isCatalogBook(slug)) return json({ error: "Books are bought from the retailers on the book page." }, 400);
     if (!slug || !name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !address) {
       return json({ error: "Add your name, email, and where it should ship." }, 400);
     }

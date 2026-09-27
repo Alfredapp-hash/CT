@@ -167,7 +167,7 @@
     "_note": "Set SHOP_ORIGIN in the Netlify build env (e.g. https://shop.booksbycourtney.site). Templates use shopOrigin from _data/shop.js, which reads the env var and falls back to this value.",
     "eyebrow": "Merch",
     "heading": "The Shop",
-    "lede": "Signed copies straight from Courtney, and a few things for the reading nook. Every order supports the next book.",
+    "lede": "Signed copies and a few things for the reading nook, sent from Courtney. The books themselves are sold by the retailers on each book page.",
     "emptyTitle": "The shop opens soon.",
     "emptyLede": "Courtney is choosing the first pieces now. Join the reader notes below and you’ll hear the day it opens.",
     "buy": "Buy",

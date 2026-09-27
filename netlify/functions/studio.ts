@@ -11,6 +11,7 @@ import {
   PLATFORMS,
   POST_STATUSES,
   bookTitle,
+  isCatalogBook,
   cleanUrl,
   database,
   iso,
@@ -228,6 +229,7 @@ async function saveProduct(req: Request, id?: number): Promise<Response> {
   if (!name) return json({ error: "Name the product." }, 400);
   const slug = slugify(text(body.slug, 120) || name);
   if (!slug) return json({ error: "Choose a web address for this product." }, 400);
+  if (isCatalogBook(slug)) return json({ error: "That address belongs to a book. Books stay on the retailer links." }, 400);
   const category = String(body.category || "signed");
   if (!CATEGORIES.includes(category as "signed")) return json({ error: "Choose a shop category." }, 400);
   const status = body.status === "listed" ? "listed" : "draft";

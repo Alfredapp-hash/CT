@@ -34,18 +34,41 @@ async function route(req: Request): Promise<Response> {
   return notFound();
 }
 
-export function GET(req: Request) {
-  return route(req);
-}
-export function POST(req: Request) {
-  return route(req);
-}
-export function PATCH(req: Request) {
-  return route(req);
-}
-export function DELETE(req: Request) {
-  return route(req);
-}
-export function OPTIONS(req: Request) {
-  return route(req);
+type NodeRequest = AsyncIterable<Buffer> & {
+  method?: string;
+  url?: string;
+  headers: Record<string, string | string[] | undefined>;
+};
+
+export default async function handler(req: Request | NodeRequest, res?: { statusCode: number; setHeader: (name: string, value: string | string[]) => void; end: (body?: Buffer) => void }) {
+  if (typeof (req.headers as Headers).get === "function") return route(req as Request);
+  const nodeReq = req as NodeRequest;
+  const hostHeader = nodeReq.headers["x-forwarded-host"] || nodeReq.headers.host || "www.booksbycourtney.site";
+  const host = Array.isArray(hostHeader) ? hostHeader[0] : hostHeader;
+  const protoHeader = nodeReq.headers["x-forwarded-proto"] || "https";
+  const proto = Array.isArray(protoHeader) ? protoHeader[0] : protoHeader;
+  const url = new URL(nodeReq.url || "/", `${proto}://${host}`);
+  const chunks: Buffer[] = [];
+  if (nodeReq.method !== "GET" && nodeReq.method !== "HEAD") {
+    for await (const chunk of nodeReq) chunks.push(chunk);
+  }
+  const headers = new Headers();
+  for (const [key, value] of Object.entries(nodeReq.headers)) {
+    if (typeof value === "string") headers.set(key, value);
+    else if (Array.isArray(value)) headers.set(key, value.join(", "));
+  }
+  const request = new Request(url, {
+    method: nodeReq.method,
+    headers,
+    body: chunks.length ? Buffer.concat(chunks) : undefined,
+  });
+  const response = await route(request);
+  if (!res) return response;
+  res.statusCode = response.status;
+  response.headers.forEach((value, key) => {
+    if (key.toLowerCase() !== "set-cookie") res.setHeader(key, value);
+  });
+  const cookies = typeof response.headers.getSetCookie === "function" ? response.headers.getSetCookie() : [];
+  if (cookies.length) res.setHeader("set-cookie", cookies);
+  res.end(Buffer.from(await response.arrayBuffer()));
 }

@@ -3,7 +3,7 @@
  * the webhook records the order after payment.
  */
 import Stripe from "stripe";
-import { database, query } from "./_shared/content";
+import { database, isCatalogBook, query } from "./_shared/content";
 import { json, readJson } from "./_shared/http";
 import { checkoutOrigin, stripeSecret } from "./_shared/stripe-env";
 
@@ -34,6 +34,7 @@ export default async (req: Request) => {
     const slug = typeof body.slug === "string" ? body.slug.trim() : "";
     const quantity = body.quantity;
     if (!slug) return json({ error: "Choose a piece from the shop." }, 400);
+    if (isCatalogBook(slug)) return json({ error: "Books are bought from the retailers on the book page." }, 400);
     if (typeof quantity !== "number" || !Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
       return json({ error: "Choose a quantity between 1 and 20." }, 400);
     }
