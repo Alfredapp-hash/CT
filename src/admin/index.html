@@ -7,7 +7,7 @@
   <title>The desk — Courtney Thomas</title>
   <link rel="stylesheet" href="/css/fonts.css?v=2026-09-25b" />
   <link rel="stylesheet" href="/css/styles.css?v=2026-09-25b" />
-  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-27" />
+  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-27b" />
 </head>
 <body>
   <div class="gate-screen" id="gate">
@@ -53,7 +53,12 @@
           <div><dt>Drafts</dt><dd id="home-drafts">—</dd></div>
           <div><dt>New orders</dt><dd id="home-orders">—</dd></div>
         </dl>
-        <p class="lede-quiet">List a product in the Shop with a photograph and a price, and it appears on the store. A journal piece marked “On the site” appears in the journal. Social links appear in the footer.</p>
+        <ul class="rooms">
+          <li><button type="button" data-view="journal"><span class="meta">Journal</span><strong id="home-journal">—</strong><span>on the site</span></button></li>
+          <li><button type="button" data-view="shop"><span class="meta">Shop</span><strong id="home-listed">—</strong><span>listed for sale</span></button></li>
+          <li><button type="button" data-view="social"><span class="meta">Social</span><strong id="home-ready">—</strong><span>ready to post</span></button></li>
+        </ul>
+        <p class="lede-quiet">A journal piece marked “On the site” appears in the journal. A shop piece with a photograph and a price appears on the store, and readers pay there. The books stay on the retailer links.</p>
       </section>
 
       <section data-panel="journal" hidden>
@@ -81,6 +86,7 @@
               <button type="submit">Save piece</button>
               <button type="button" class="quiet" id="journal-delete" hidden>Delete</button>
             </div>
+            <p class="lede-quiet" id="journal-public" hidden></p>
             <p class="error" id="journal-error" hidden></p>
           </form>
         </div>
@@ -136,7 +142,7 @@
         <div class="canvas-head">
           <p class="eyebrow">Shop</p>
           <h1>The marketplace</h1>
-          <p class="lede-quiet">Shop pieces are paid through Stripe. Books stay on the retailer links already on each book page. A listing needs a photograph, a price, and a short description.</p>
+          <p class="lede-quiet">Shop pieces are paid through Stripe. Books stay on the retailer links already on each book page. A listing needs a photograph, a price, and a short description. <a href="/merch.html">Open the shop</a></p>
         </div>
         <div class="split">
           <div>
@@ -173,6 +179,7 @@
                 <button type="submit">Save product</button>
                 <button type="button" class="quiet" id="product-delete" hidden>Delete</button>
               </div>
+              <p class="lede-quiet" id="product-public" hidden></p>
               <p class="error" id="shop-error" hidden></p>
             </div>
           </form>
@@ -188,7 +195,7 @@
         <div class="canvas-head">
           <p class="eyebrow">Shelf</p>
           <h1>The books</h1>
-          <p class="lede-quiet">Attach one of these when you write or list a signed copy.</p>
+          <p class="lede-quiet">Readers buy these from the retailers on each book page. A signed copy in the shop needs its own address, not the book’s.</p>
         </div>
         <ul class="contents" id="book-list"></ul>
       </section>
@@ -215,6 +222,6 @@
       </section>
     </main>
   </div>
-  <script src="/admin/studio.js?v=2026-09-27"></script>
+  <script src="/admin/studio.js?v=2026-09-27b"></script>
 </body>
 </html>

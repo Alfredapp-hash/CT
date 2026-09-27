@@ -14,15 +14,18 @@ export default async (req: Request) => {
   if (!post) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain" } });
   const when = iso(post.published_at);
   const related = bookTitle(post.related_book as string | null);
+  const dated = when
+    ? new Date(when).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })
+    : "";
   const html = page({
     title: String(post.title),
     description: String(post.description || post.title),
     main: `<article class="post-body">
-      <p class="post-meta"><time datetime="${when || ""}">${when ? when.slice(0, 10) : ""}</time></p>
+      <p class="post-meta"><time datetime="${when || ""}">${escapeHtml(dated)}</time></p>
       <h1>${escapeHtml(String(post.title))}</h1>
-      ${post.body_html}
-      ${related ? `<p>Related book: <a href="/books/${escapeHtml(String(post.related_book))}.html">${escapeHtml(related)}</a></p>` : ""}
-    </article>`,
+      ${post.body_html || ""}
+    </article>
+    ${related ? `<section class="related-books"><p class="eyebrow">Books in this post</p><ul><li><a href="/books/${escapeHtml(String(post.related_book))}.html">${escapeHtml(related)}</a></li></ul></section>` : ""}`,
   });
   return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
 };

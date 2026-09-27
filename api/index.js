@@ -717,11 +717,15 @@ function page(options) {
   ${css}
   ${ld}
 </head>
-<body class="blog-page">
+<body class="${escapeHtml(options.bodyClass || "blog-page")}">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-nav">
+  <header class="site-nav" data-nav>
     <a class="brand" href="/">Courtney Thomas</a>
-    <nav aria-label="Primary">
+    <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" hidden>
+      <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="nav-toggle__label">Menu</span>
+    </button>
+    <nav class="nav-menu" id="nav-menu" aria-label="Primary">
       <ul class="nav-list">
         <li class="nav-item"><a href="/bookshelf.html">Books</a></li>
         <li class="nav-item"><a href="/merch.html">Shop</a></li>
@@ -734,11 +738,46 @@ function page(options) {
   <main id="main">
     ${options.main}
   </main>
-  <footer class="site-footer">
-    <span>Courtney Thomas</span>
-    <nav aria-label="Legal"><a href="/privacy.html">Privacy</a> \xB7 <a href="/merch.html">Shop</a> \xB7 <a href="/blog/">Journal</a></nav>
+  <footer class="site-footer" id="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/">Courtney Thomas</a>
+        <p>Stories for the chapters we survive.</p>
+        <p class="footer-note">In print worldwide through IngramSpark</p>
+      </div>
+      <nav class="footer-col" aria-labelledby="footer-books-h">
+        <h2 class="footer-col__h" id="footer-books-h">Books</h2>
+        <ul class="footer-list">
+          ${books_default.map((book) => `<li><a href="/books/${escapeHtml(book.slug)}.html">${escapeHtml(book.title)}</a></li>`).join("")}
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-labelledby="footer-about-h">
+        <h2 class="footer-col__h" id="footer-about-h">About</h2>
+        <ul class="footer-list">
+          <li><a href="/#about">About Courtney</a></li>
+          <li><a href="/blog/">Journal</a></li>
+          <li><a href="/merch.html">Shop</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col footer-col--connect">
+        <h2 class="footer-col__h">Connect</h2>
+        <ul class="footer-list footer-list--inline">
+          <li><a href="https://www.facebook.com/profile.php?id=61593191562395" rel="me noopener">Facebook</a></li>
+          <li><a href="/blog/rss.xml" type="application/rss+xml">RSS feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <p class="footer-legal__copy">\xA9 ${(/* @__PURE__ */ new Date()).getUTCFullYear()} Courtney Thomas</p>
+      <nav class="footer-legal__nav" aria-label="Legal">
+        <a href="/privacy.html">Privacy</a>
+        <a href="/accessibility.html">Accessibility</a>
+      </nav>
+    </div>
   </footer>
   <script src="/js/nav.js?v=2026-09-25b" defer></script>
+  <script src="/js/desk.js?v=2026-09-27b" defer></script>
 </body>
 </html>`;
 }
@@ -754,15 +793,16 @@ var journal_page_default = async (req) => {
   if (!post) return new Response("Not found", { status: 404, headers: { "content-type": "text/plain" } });
   const when = iso(post.published_at);
   const related = bookTitle(post.related_book);
+  const dated = when ? new Date(when).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
   const html = page({
     title: String(post.title),
     description: String(post.description || post.title),
     main: `<article class="post-body">
-      <p class="post-meta"><time datetime="${when || ""}">${when ? when.slice(0, 10) : ""}</time></p>
+      <p class="post-meta"><time datetime="${when || ""}">${escapeHtml(dated)}</time></p>
       <h1>${escapeHtml(String(post.title))}</h1>
-      ${post.body_html}
-      ${related ? `<p>Related book: <a href="/books/${escapeHtml(String(post.related_book))}.html">${escapeHtml(related)}</a></p>` : ""}
-    </article>`
+      ${post.body_html || ""}
+    </article>
+    ${related ? `<section class="related-books"><p class="eyebrow">Books in this post</p><ul><li><a href="/books/${escapeHtml(String(post.related_book))}.html">${escapeHtml(related)}</a></li></ul></section>` : ""}`
   });
   return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
 };
@@ -1057,6 +1097,7 @@ var product_page_default = async (req) => {
     title: String(product.name),
     description: String(product.description || product.name),
     extraCss: "shop.css",
+    bodyClass: "book-page shop-page",
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -1080,6 +1121,7 @@ var product_page_default = async (req) => {
           <p class="product-page__price">${price}${inStock ? "" : " \xB7 Sold out"}</p>
           <p>${escapeHtml(String(product.description || ""))}</p>
           <p class="product-page__ship">${escapeHtml(String(product.shipping_note || ""))}</p>
+          <p class="product-page__ship">The books themselves are sold on each book page.</p>
           ${banner}
           ${buy}
         </div>
@@ -1566,7 +1608,7 @@ async function orders(req, id) {
   const db = database();
   if (req.method === "GET" && !id) {
     const rows = await query(db.sql`
-      SELECT o.id, o.quantity, o.buyer_name, o.buyer_email, o.address, o.note, o.status, o.created_at,
+      SELECT o.id, o.quantity, o.buyer_name, o.buyer_email, o.address, o.note, o.status, o.paid, o.created_at,
              p.name AS product_name, p.slug AS product_slug
       FROM orders o JOIN products p ON p.id = o.product_id
       ORDER BY o.created_at DESC LIMIT 100
@@ -1580,6 +1622,7 @@ async function orders(req, id) {
         address: row.address,
         note: row.note,
         status: row.status,
+        paid: row.paid === true,
         productName: row.product_name,
         productSlug: row.product_slug,
         createdAt: iso(row.created_at)

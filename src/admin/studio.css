@@ -86,7 +86,25 @@
 }
 .row-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
 .quiet { border: 1px solid var(--line-firm); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.68rem; }
-.error { color: var(--leather); min-height: 1.2em; }
+.error { color: var(--leather-lo); min-height: 1.2em; }
+.error.note { color: var(--ink-soft); }
+.rooms { list-style: none; margin: 0 0 1.6rem; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.rooms button {
+  width: 100%;
+  text-align: left;
+  background: var(--paper-lift);
+  border: 1px solid var(--line);
+  padding: 1rem 1rem 1.1rem;
+  cursor: pointer;
+  color: inherit;
+  min-height: 7rem;
+  box-shadow: var(--lift-1);
+}
+.rooms button:hover { border-color: var(--line-firm); }
+.rooms strong { display: block; font-family: var(--serif); font-size: var(--step-3); font-weight: 500; line-height: 1; margin: 0.2rem 0; }
+.rooms span:last-child { color: var(--ink-soft); font-size: 0.9rem; }
+.contents button.is-current { background: var(--paper-sunk); }
+.contents .empty { padding: 0.9rem 0.15rem; color: var(--ink-faint); }
 .shop-editor { display: grid; grid-template-columns: 16rem minmax(0, 1fr); gap: 1.5rem; }
 .photo-well {
   position: relative;
@@ -106,7 +124,7 @@
 .chart { display: flex; align-items: flex-end; gap: 3px; height: 8rem; border-bottom: 1px solid var(--line-firm); }
 .chart i { display: block; flex: 1; background: linear-gradient(180deg, var(--gold-warm), var(--leather)); min-height: 2px; }
 @media (max-width: 900px) {
-  .desk, .split, .shop-editor, .figures { grid-template-columns: 1fr; }
+  .desk, .split, .shop-editor, .figures, .rooms { grid-template-columns: 1fr; }
   .spine { position: static; height: auto; min-height: 0; }
   .spine nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .canvas { padding: 1.4rem 1rem 3rem; }

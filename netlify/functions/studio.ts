@@ -307,7 +307,7 @@ async function orders(req: Request, id: string | undefined): Promise<Response> {
   const db = database();
   if (req.method === "GET" && !id) {
     const rows = await query<Row>(db.sql`
-      SELECT o.id, o.quantity, o.buyer_name, o.buyer_email, o.address, o.note, o.status, o.created_at,
+      SELECT o.id, o.quantity, o.buyer_name, o.buyer_email, o.address, o.note, o.status, o.paid, o.created_at,
              p.name AS product_name, p.slug AS product_slug
       FROM orders o JOIN products p ON p.id = o.product_id
       ORDER BY o.created_at DESC LIMIT 100
@@ -321,6 +321,7 @@ async function orders(req: Request, id: string | undefined): Promise<Response> {
         address: row.address,
         note: row.note,
         status: row.status,
+        paid: row.paid === true,
         productName: row.product_name,
         productSlug: row.product_slug,
         createdAt: iso(row.created_at),

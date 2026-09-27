@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Static author site for Courtney Thomas with privacy-friendly analytics on Netlify Functions.",
+  "description": "Author site for Courtney Thomas.",
   "scripts": {
     "build": "eleventy && node scripts/bundle-api.mjs",
     "start": "eleventy --serve",

@@ -164,7 +164,7 @@
   },
   "shop": {
     "origin": null,
-    "_note": "Set SHOP_ORIGIN in the Netlify build env (e.g. https://shop.booksbycourtney.site). Templates use shopOrigin from _data/shop.js, which reads the env var and falls back to this value.",
+    "_note": "Listed shop pieces are read from the database at build time and again in the browser. Books stay on the retailer links.",
     "eyebrow": "Merch",
     "heading": "The Shop",
     "lede": "Signed copies and a few things for the reading nook, sent from Courtney. The books themselves are sold by the retailers on each book page.",

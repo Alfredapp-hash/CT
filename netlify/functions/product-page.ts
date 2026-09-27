@@ -67,6 +67,7 @@ export default async (req: Request) => {
     title: String(product.name),
     description: String(product.description || product.name),
     extraCss: "shop.css",
+    bodyClass: "book-page shop-page",
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -90,6 +91,7 @@ export default async (req: Request) => {
           <p class="product-page__price">${price}${inStock ? "" : " · Sold out"}</p>
           <p>${escapeHtml(String(product.description || ""))}</p>
           <p class="product-page__ship">${escapeHtml(String(product.shipping_note || ""))}</p>
+          <p class="product-page__ship">The books themselves are sold on each book page.</p>
           ${banner}
           ${buy}
         </div>

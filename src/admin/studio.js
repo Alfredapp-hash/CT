@@ -6,11 +6,34 @@
   var gateError = document.getElementById("gate-error");
   var state = { books: [], posts: [], filePosts: [], pieces: [], products: [], orders: [], productId: null, pieceId: null, journalId: null };
 
-  function say(id, message) {
+  function say(id, message, ok) {
     var el = document.getElementById(id);
     if (!el) return;
     el.hidden = !message;
     el.textContent = message || "";
+    el.classList.toggle("note", !!ok);
+  }
+
+  function slugify(value) {
+    return String(value || "").toLowerCase().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+  }
+
+  function emptyRow(list, message) {
+    var item = document.createElement("li");
+    item.className = "empty";
+    item.textContent = message;
+    list.appendChild(item);
+  }
+
+  function publicLink(id, href, label) {
+    var el = document.getElementById(id);
+    el.textContent = "";
+    if (!href) { el.hidden = true; return; }
+    var link = document.createElement("a");
+    link.href = href;
+    link.textContent = label;
+    el.appendChild(link);
+    el.hidden = false;
   }
 
   function api(path, options) {
@@ -59,6 +82,9 @@
   function renderJournal() {
     var list = document.getElementById("journal-list");
     list.textContent = "";
+    var published = state.posts.filter(function (post) { return post.status === "published"; }).length;
+    document.getElementById("home-journal").textContent = String(published + state.filePosts.length);
+    if (!state.filePosts.length && !state.posts.length) emptyRow(list, "No pieces yet.");
     state.filePosts.forEach(function (post) {
       var item = document.createElement("li");
       var link = document.createElement("a");
@@ -83,6 +109,7 @@
       var meta = document.createElement("span");
       meta.className = "meta";
       meta.textContent = post.status === "published" ? "On the site" : "Draft";
+      if (post.id === state.journalId) button.className = "is-current";
       button.appendChild(title);
       button.appendChild(meta);
       button.addEventListener("click", function () { editJournal(post); });
@@ -100,12 +127,16 @@
     document.getElementById("j-book").value = post && post.relatedBook ? post.relatedBook : "";
     document.getElementById("j-status").value = post ? post.status : "draft";
     document.getElementById("journal-delete").hidden = !post;
+    document.getElementById("j-slug").dataset.touched = post ? "1" : "";
+    publicLink("journal-public", post && post.status === "published" ? "/blog/posts/" + post.slug + ".html" : "", "Read it on the site");
     say("journal-error", "");
   }
 
   function renderSocial() {
     var list = document.getElementById("social-list");
     list.textContent = "";
+    document.getElementById("home-ready").textContent = String(state.pieces.filter(function (piece) { return piece.status === "ready"; }).length);
+    if (!state.pieces.length) emptyRow(list, "No captions yet.");
     state.pieces.forEach(function (piece) {
       var item = document.createElement("li");
       var button = document.createElement("button");
@@ -115,6 +146,7 @@
       var meta = document.createElement("span");
       meta.className = "meta";
       meta.textContent = piece.platform + " · " + piece.status;
+      if (piece.id === state.pieceId) button.className = "is-current";
       button.appendChild(title);
       button.appendChild(meta);
       button.addEventListener("click", function () {
@@ -133,6 +165,8 @@
   function renderProducts() {
     var list = document.getElementById("product-list");
     list.textContent = "";
+    document.getElementById("home-listed").textContent = String(state.products.filter(function (product) { return product.status === "listed"; }).length);
+    if (!state.products.length) emptyRow(list, "No products yet.");
     state.products.forEach(function (product) {
       var item = document.createElement("li");
       var button = document.createElement("button");
@@ -141,7 +175,8 @@
       title.textContent = product.name;
       var meta = document.createElement("span");
       meta.className = "meta";
-      meta.textContent = (product.status === "listed" ? "Listed" : "Draft") + " · " + dollars(product.priceCents);
+      meta.textContent = (product.status === "listed" ? "Listed" : "Draft") + " · $" + dollars(product.priceCents) + " · " + product.stock + " left";
+      if (product.id === state.productId) button.className = "is-current";
       button.appendChild(title);
       button.appendChild(meta);
       button.addEventListener("click", function () { editProduct(product); });
@@ -184,15 +219,23 @@
         });
         action.appendChild(done);
       } else {
-        action.textContent = order.status;
+        action.textContent = order.paid ? "Paid · " + order.status : order.status;
+      }
+      if (order.status === "new" && order.paid) {
+        var paid = document.createElement("span");
+        paid.className = "meta";
+        paid.textContent = "Paid";
+        action.insertBefore(paid, action.firstChild);
       }
       row.appendChild(action);
+      orders.appendChild(row);
+      var detail = [order.address, order.note].filter(Boolean).join(" — ");
+      if (!detail) return;
       var address = document.createElement("tr");
       var note = document.createElement("td");
       note.colSpan = 5;
-      note.textContent = order.address + (order.note ? " — " + order.note : "");
+      note.textContent = detail;
       address.appendChild(note);
-      orders.appendChild(row);
       orders.appendChild(address);
     });
   }
@@ -220,6 +263,7 @@
       document.getElementById("p-photo-label").textContent = "Add a photograph";
     }
     document.getElementById("product-delete").hidden = !product;
+    publicLink("product-public", product && product.status === "listed" ? "/merch/item/" + product.slug : "", "View it on the shop");
     say("shop-error", "");
   }
 
@@ -277,6 +321,8 @@
   function openDesk() {
     gate.hidden = true;
     app.hidden = false;
+    var hour = new Date().getHours();
+    document.querySelector('[data-panel="home"] h1').textContent = hour < 12 ? "Good morning." : hour < 17 ? "Good afternoon." : "Good evening.";
     Promise.all([
       fetch("/admin/catalog.json", { cache: "no-store" }).then(function (response) { return response.json(); }),
       api("/api/studio/posts"),
@@ -332,6 +378,12 @@
     button.addEventListener("click", function () { show(button.getAttribute("data-view")); });
   });
 
+  document.getElementById("j-title").addEventListener("input", function () {
+    var slug = document.getElementById("j-slug");
+    if (state.journalId || slug.dataset.touched) return;
+    slug.value = slugify(this.value);
+  });
+  document.getElementById("j-slug").addEventListener("input", function () { this.dataset.touched = "1"; });
   document.getElementById("journal-new").addEventListener("click", function () { editJournal(null); });
   document.getElementById("journal-form").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -346,7 +398,7 @@
     var path = state.journalId ? "/api/studio/posts/" + state.journalId : "/api/studio/posts";
     api(path, { method: state.journalId ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) })
       .then(function () { return api("/api/studio/posts"); })
-      .then(function (data) { state.posts = data.posts || []; renderJournal(); say("journal-error", "Saved. The journal updates as soon as a reader opens it."); })
+      .then(function (data) { state.posts = data.posts || []; renderJournal(); say("journal-error", "Saved. The journal updates as soon as a reader opens it.", true); })
       .catch(function (error) { say("journal-error", error.message); });
   });
   document.getElementById("journal-delete").addEventListener("click", function () {
@@ -368,7 +420,7 @@
         goodreads: document.getElementById("s-goodreads").value,
         amazonAuthor: document.getElementById("s-amazon").value,
       }),
-    }).then(function () { say("profile-error", "Saved. The footer picks these up on the next page view."); })
+    }).then(function () { say("profile-error", "Saved. The footer picks these up on the next page view.", true); })
       .catch(function (error) { say("profile-error", error.message); });
   });
 
@@ -378,7 +430,7 @@
   });
   document.getElementById("social-copy").addEventListener("click", function () {
     var caption = document.getElementById("c-caption").value;
-    if (navigator.clipboard) navigator.clipboard.writeText(caption);
+    if (navigator.clipboard && caption) navigator.clipboard.writeText(caption).then(function () { say("social-error", "Copied.", true); });
   });
   document.getElementById("social-form").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -392,7 +444,7 @@
     var path = state.pieceId ? "/api/studio/social/" + state.pieceId : "/api/studio/social";
     api(path, { method: state.pieceId ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) })
       .then(function () { return api("/api/studio/social"); })
-      .then(function (data) { state.pieces = data.pieces || []; renderSocial(); say("social-error", "Saved."); })
+      .then(function (data) { state.pieces = data.pieces || []; renderSocial(); say("social-error", "Saved.", true); })
       .catch(function (error) { say("social-error", error.message); });
   });
 
@@ -444,7 +496,7 @@
         });
       })
       .then(function () { return loadShop(); })
-      .then(function () { say("shop-error", "Saved. Listed products show on the Shop page."); })
+      .then(function () { say("shop-error", "Saved. Listed products show on the Shop page.", true); })
       .catch(function (error) { say("shop-error", error.message); });
   });
   document.getElementById("product-delete").addEventListener("click", function () {
