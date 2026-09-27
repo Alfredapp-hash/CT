@@ -31,4 +31,4 @@ npm run verify     # build, serve, request every inventoried URL, assert forms a
 npm run check-hero # hero markup and assets byte-identical to commit c0027e3
 ```
 
-Environment: `ANALYTICS_KEY` (Netlify env var) is untouched by the migration. Canonicals always point at production (`site.url` in `src/_data/site.json`), never at `DEPLOY_PRIME_URL`.
+Environment (Netlify env vars, never committed): `ANALYTICS_KEY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH`, `SESSION_SECRET`, `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`. The Stripe webhook endpoint is `/api/stripe/webhook`, event `checkout.session.completed`. Canonicals always point at production (`site.url` in `src/_data/site.json`), never at `DEPLOY_PRIME_URL`.

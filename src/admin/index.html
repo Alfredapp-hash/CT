@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>The desk — Courtney Thomas</title>
+  <link rel="stylesheet" href="/css/fonts.css?v=2026-09-25b" />
+  <link rel="stylesheet" href="/css/styles.css?v=2026-09-25b" />
+  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-27" />
+</head>
+<body>
+  <div class="gate-screen" id="gate">
+    <div class="gate-card">
+      <p class="eyebrow">Private</p>
+      <h1>The desk</h1>
+      <p class="lede-quiet">Courtney Thomas. Journal, shop, and the numbers, in one room.</p>
+      <form id="gate-form">
+        <label>Email <input type="email" id="email-input" autocomplete="username" required /></label>
+        <label>Password <input type="password" id="password-input" autocomplete="current-password" required /></label>
+        <button type="submit">Enter</button>
+        <p class="error" id="gate-error" hidden></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="desk" id="app" hidden>
+    <aside class="spine">
+      <div>
+        <a class="brand" href="/">Courtney Thomas</a>
+        <p class="spine-kicker">The desk</p>
+      </div>
+      <nav aria-label="Desk">
+        <button type="button" data-view="home" aria-current="page">Overview</button>
+        <button type="button" data-view="journal">Journal</button>
+        <button type="button" data-view="social">Social</button>
+        <button type="button" data-view="shop" id="shop-nav">Shop</button>
+        <button type="button" data-view="books">Books</button>
+        <button type="button" data-view="numbers">Numbers</button>
+      </nav>
+      <button type="button" class="sign-out" id="sign-out">Sign out</button>
+    </aside>
+
+    <main class="canvas">
+      <section data-panel="home">
+        <div class="canvas-head">
+          <p class="eyebrow">Today</p>
+          <h1>Good morning.</h1>
+          <p class="lede-quiet">What is on the desk, and what readers can already see.</p>
+        </div>
+        <dl class="figures">
+          <div><dt>Pageviews, 14 days</dt><dd id="home-views">—</dd></div>
+          <div><dt>Drafts</dt><dd id="home-drafts">—</dd></div>
+          <div><dt>New orders</dt><dd id="home-orders">—</dd></div>
+        </dl>
+        <p class="lede-quiet">List a product in the Shop with a photograph and a price, and it appears on the store. A journal piece marked “On the site” appears in the journal. Social links appear in the footer.</p>
+      </section>
+
+      <section data-panel="journal" hidden>
+        <div class="canvas-head">
+          <p class="eyebrow">Journal</p>
+          <h1>The manuscript</h1>
+        </div>
+        <div class="split">
+          <div>
+            <button type="button" class="quiet" id="journal-new">New piece</button>
+            <ul class="contents" id="journal-list"></ul>
+          </div>
+          <form class="stack manuscript" id="journal-form">
+            <input class="piece-title" id="j-title" placeholder="Title" required />
+            <label>Web address <input id="j-slug" placeholder="filled from the title" /></label>
+            <label>Description <input id="j-description" /></label>
+            <label>Related book <select id="j-book"><option value="">None</option></select></label>
+            <label>Status
+              <select id="j-status"><option value="draft">Draft</option><option value="published">On the site</option></select>
+            </label>
+            <label>Manuscript
+              <textarea class="body" id="j-body" placeholder="Blank line for a new paragraph. ## for a heading. *italics*."></textarea>
+            </label>
+            <div class="row-actions">
+              <button type="submit">Save piece</button>
+              <button type="button" class="quiet" id="journal-delete" hidden>Delete</button>
+            </div>
+            <p class="error" id="journal-error" hidden></p>
+          </form>
+        </div>
+      </section>
+
+      <section data-panel="social" hidden>
+        <div class="canvas-head">
+          <p class="eyebrow">Social studio</p>
+          <h1>Where the work goes next</h1>
+          <p class="lede-quiet">Profile links are placed on the site. Captions stay here until you copy them out.</p>
+        </div>
+        <form class="stack" id="profile-form">
+          <label>Instagram <input id="s-instagram" type="url" placeholder="https://" /></label>
+          <label>Facebook <input id="s-facebook" type="url" placeholder="https://" /></label>
+          <label>Goodreads <input id="s-goodreads" type="url" placeholder="https://" /></label>
+          <label>Amazon author page <input id="s-amazon" type="url" placeholder="https://" /></label>
+          <button type="submit">Put these on the site</button>
+          <p class="error" id="profile-error" hidden></p>
+        </form>
+        <div class="split" style="margin-top:2rem">
+          <ul class="contents" id="social-list"></ul>
+          <form class="stack" id="social-form">
+            <label>Platform
+              <select id="c-platform">
+                <option value="instagram">Instagram</option>
+                <option value="facebook">Facebook</option>
+                <option value="goodreads">Goodreads</option>
+                <option value="amazonAuthor">Amazon</option>
+              </select>
+            </label>
+            <label>Working title <input id="c-title" /></label>
+            <label>Caption <textarea id="c-caption" required></textarea></label>
+            <label>Book <select id="c-book"><option value="">None</option></select></label>
+            <label>Status
+              <select id="c-status">
+                <option value="idea">Idea</option>
+                <option value="drafting">Drafting</option>
+                <option value="ready">Ready to post</option>
+                <option value="posted">Posted</option>
+              </select>
+            </label>
+            <div class="row-actions">
+              <button type="submit">Save caption</button>
+              <button type="button" class="quiet" id="social-copy">Copy</button>
+              <button type="button" class="quiet" id="social-new">New</button>
+            </div>
+            <p class="error" id="social-error" hidden></p>
+          </form>
+        </div>
+      </section>
+
+      <section data-panel="shop" hidden>
+        <div class="canvas-head">
+          <p class="eyebrow">Shop</p>
+          <h1>The marketplace</h1>
+          <p class="lede-quiet">A listing needs a photograph, a price, and a short description. Buyers either use your checkout link or send an order to this desk.</p>
+        </div>
+        <div class="split">
+          <div>
+            <button type="button" class="quiet" id="product-new">New product</button>
+            <ul class="contents" id="product-list"></ul>
+          </div>
+          <form class="shop-editor" id="product-form">
+            <label class="photo-well">
+              <img id="p-preview" alt="" hidden />
+              <span id="p-photo-label">Add a photograph</span>
+              <input id="p-photo" type="file" accept="image/jpeg,image/png,image/webp" />
+            </label>
+            <div class="stack">
+              <input class="piece-title" id="p-name" placeholder="Product name" required />
+              <label>Price in dollars <input id="p-price" inputmode="decimal" placeholder="24.00" required /></label>
+              <label>Category
+                <select id="p-category">
+                  <option value="signed">Signed copies</option>
+                  <option value="apparel">Apparel</option>
+                  <option value="home">For the reading nook</option>
+                </select>
+              </label>
+              <label>Ready to ship <input id="p-stock" type="number" min="0" value="1" required /></label>
+              <label>Card description <input id="p-description" required /></label>
+              <label>Product page
+                <textarea id="p-details" placeholder="Blank line for a new paragraph."></textarea>
+              </label>
+              <label>Shipping note <input id="p-shipping" value="Ships from Courtney." /></label>
+              <label>Checkout link, if you already have one <input id="p-checkout" type="url" placeholder="https://" /></label>
+              <label>On the shop
+                <select id="p-status"><option value="draft">Draft</option><option value="listed">Listed</option></select>
+              </label>
+              <div class="row-actions">
+                <button type="submit">Save product</button>
+                <button type="button" class="quiet" id="product-delete" hidden>Delete</button>
+              </div>
+              <p class="error" id="shop-error" hidden></p>
+            </div>
+          </form>
+        </div>
+        <h2 style="font-family:var(--serif);font-weight:500;margin-top:2.5rem">Orders</h2>
+        <table class="ledger">
+          <thead><tr><th>When</th><th>Piece</th><th>Buyer</th><th>Qty</th><th></th></tr></thead>
+          <tbody id="order-list"></tbody>
+        </table>
+      </section>
+
+      <section data-panel="books" hidden>
+        <div class="canvas-head">
+          <p class="eyebrow">Shelf</p>
+          <h1>The books</h1>
+          <p class="lede-quiet">Attach one of these when you write or list a signed copy.</p>
+        </div>
+        <ul class="contents" id="book-list"></ul>
+      </section>
+
+      <section data-panel="numbers" hidden>
+        <div class="canvas-head">
+          <p class="eyebrow">Numbers</p>
+          <h1>Readers</h1>
+        </div>
+        <label>Range
+          <select id="days">
+            <option value="7">7 days</option>
+            <option value="14" selected>14 days</option>
+            <option value="30">30 days</option>
+          </select>
+        </label>
+        <dl class="figures">
+          <div><dt>Pageviews</dt><dd id="n-views">—</dd></div>
+          <div><dt>Pages</dt><dd id="n-pages">—</dd></div>
+          <div><dt>Events</dt><dd id="n-events">—</dd></div>
+        </dl>
+        <div class="chart" id="chart" role="img" aria-label="Daily pageviews"></div>
+        <p class="error" id="numbers-error" hidden></p>
+      </section>
+    </main>
+  </div>
+  <script src="/admin/studio.js?v=2026-09-27"></script>
+</body>
+</html>

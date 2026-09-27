@@ -10,33 +10,35 @@ one JSON object per day at `day/YYYY-MM-DD.json`.
 |---|---|
 | `js/analytics.js` | Client beacon. Fire-and-forget pageview POST, skips `/admin`. |
 | `netlify/functions/collect.ts` | `POST /api/analytics/collect` — increments the day rollup, returns 204. |
-| `netlify/functions/summary.ts` | `GET /api/analytics/summary?days=30` — key-protected JSON report. |
-| `admin/analytics.html` | Private dashboard at `/admin/analytics`, key held in `sessionStorage`. |
+| `netlify/functions/login.ts` | `POST /api/auth/login` — checks the author email and password, sets an HttpOnly session cookie. |
+| `netlify/functions/logout.ts` | `POST /api/auth/logout` — clears that cookie. |
+| `netlify/functions/summary.ts` | `GET /api/analytics/summary?days=30` — session- or key-protected JSON report. |
+| `admin/analytics.html` | Private dashboard at `/admin/analytics`. |
 
-## Setting the access key
+## Author login
 
-The summary endpoint and dashboard require `ANALYTICS_KEY`. It is a secret and must never be committed.
-Generate a long random value and set it on the Netlify site:
+The dashboard signs in with one author account. The password is never stored. Netlify holds:
 
-```bash
-openssl rand -base64 32
-netlify env:set ANALYTICS_KEY "<paste-the-generated-value>"
-```
+| Variable | Purpose |
+|---|---|
+| `ADMIN_EMAIL` | The author email allowed to sign in. |
+| `ADMIN_PASSWORD_HASH` | `scrypt:<salt>:<hash>` (base64url). |
+| `SESSION_SECRET` | HMAC secret for the 12-hour session cookie. |
 
-Redeploy afterwards so the functions pick it up:
+`ANALYTICS_KEY` still works as a header (`X-Analytics-Key`) for scripts. The dashboard itself uses the cookie.
+
+These values belong in Netlify env vars and in an untracked local `.env`. Do not commit them.
+After changing them, redeploy so the functions pick them up:
 
 ```bash
 netlify deploy --prod
 ```
 
-For local development, `netlify dev` pulls the same variable from the linked site. If you want a
-different local value, put it in an untracked `.env` file as `ANALYTICS_KEY=...`.
-
 ## Using the dashboard
 
-Open `/admin/analytics`, paste the key, and the dashboard loads totals, a daily bar chart, top pages,
-top referrers, and event counts. The key is stored in `sessionStorage` only, so it is cleared when the
-tab closes, and "Sign out" removes it immediately.
+Open `/admin/analytics`, sign in with the author email and password, and the dashboard loads totals,
+a daily bar chart, top pages, top referrers, and event counts. "Sign out" clears the cookie immediately.
+The cookie is HttpOnly, so page scripts cannot read it.
 
 ## Custom events
 

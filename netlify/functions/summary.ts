@@ -5,8 +5,8 @@
  *   netlify env:set ANALYTICS_KEY "<long-random-value>"
  * then redeploy. Callers must send the same value in the `X-Analytics-Key` request header.
  */
-import { getStore } from "@netlify/blobs";
-import type { Config } from "@netlify/functions";
+import { readJson } from "./_shared/photos";
+import { sessionFromRequest } from "./_shared/auth";
 
 type DayRollup = {
   date: string;
@@ -62,14 +62,17 @@ const json = (body: unknown, status: number) =>
     },
   });
 
-export default async (req: Request) => {
+function keyAccepted(req: Request): boolean {
   const expectedKey = process.env.ANALYTICS_KEY;
-  if (!expectedKey) {
-    return json({ error: "ANALYTICS_KEY is not configured on this site." }, 500);
-  }
-
+  if (!expectedKey) return false;
   const providedKey = req.headers.get("x-analytics-key");
-  if (!providedKey || !timingSafeEqual(providedKey, expectedKey)) {
+  if (!providedKey || providedKey.length !== expectedKey.length) return false;
+  return timingSafeEqual(providedKey, expectedKey);
+}
+
+export default async (req: Request) => {
+  const session = sessionFromRequest(req);
+  if (!session && !keyAccepted(req)) {
     return json({ error: "Unauthorized" }, 401);
   }
 
@@ -78,18 +81,10 @@ export default async (req: Request) => {
     ? Math.min(Math.floor(requestedDays), MAX_DAYS)
     : DEFAULT_DAYS;
 
-  const store = getStore({ name: "analytics", consistency: "strong" });
   const dates = dayKeys(days);
 
   const rollups = await Promise.all(
-    dates.map(async (date) => {
-      try {
-        return (await store.get(`day/${date}.json`, { type: "json" })) as DayRollup | null;
-      } catch (error) {
-        console.error(`analytics summary failed to read ${date}`, error);
-        return null;
-      }
-    }),
+    dates.map(async (date) => readJson<DayRollup>(`analytics/day/${date}.json`)),
   );
 
   const pages: Record<string, number> = {};
@@ -128,9 +123,4 @@ export default async (req: Request) => {
     },
     200,
   );
-};
-
-export const config: Config = {
-  path: "/api/analytics/summary",
-  method: ["GET"],
 };

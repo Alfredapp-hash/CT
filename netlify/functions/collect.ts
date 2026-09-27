@@ -1,5 +1,5 @@
-import { getStore } from "@netlify/blobs";
-import type { Config, Context } from "@netlify/functions";
+import { readJson, writeJson } from "./_shared/photos";
+import { PRODUCTION_ORIGIN } from "./_shared/stripe-env";
 
 type DayRollup = {
   date: string;
@@ -78,11 +78,10 @@ function corsHeaders(origin: string | null, allowed: boolean): HeadersInit {
   return headers;
 }
 
-export default async (req: Request, context: Context) => {
+export default async (req: Request) => {
   const requestOrigin = req.headers.get("origin");
   const siteOrigin = new URL(req.url).origin;
-  const knownOrigins = new Set([siteOrigin]);
-  if (context.site?.url) knownOrigins.add(new URL(context.site.url).origin);
+  const knownOrigins = new Set([siteOrigin, PRODUCTION_ORIGIN]);
   const sameOrigin = !requestOrigin || knownOrigins.has(requestOrigin);
   const cors = corsHeaders(requestOrigin, sameOrigin);
 
@@ -117,11 +116,10 @@ export default async (req: Request, context: Context) => {
   }
 
   const date = new Date().toISOString().slice(0, 10);
-  const key = `day/${date}.json`;
-  const store = getStore({ name: "analytics", consistency: "strong" });
+  const key = `analytics/day/${date}.json`;
 
   try {
-    const existing = (await store.get(key, { type: "json" })) as DayRollup | null;
+    const existing = await readJson<DayRollup>(key);
     const day: DayRollup = {
       ...emptyDay(date),
       ...(existing ?? {}),
@@ -140,15 +138,10 @@ export default async (req: Request, context: Context) => {
       if (host) increment(day.referrers, host);
     }
 
-    await store.setJSON(key, day);
+    await writeJson(key, day);
   } catch (error) {
     console.error("analytics collect failed", error);
   }
 
   return new Response(null, { status: 204, headers: cors });
-};
-
-export const config: Config = {
-  path: "/api/analytics/collect",
-  method: ["POST", "OPTIONS"],
 };

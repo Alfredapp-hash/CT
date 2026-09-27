@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/analytics", "destination": "/admin/index.html" },
+    { "source": "/thank-you", "destination": "/thank-you.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
+    { "source": "/accessibility", "destination": "/accessibility.html" },
+    { "source": "/books/:slug", "destination": "/books/:slug.html" },
+    { "source": "/blog/posts/:slug", "destination": "/blog/posts/:slug.html" },
+    { "source": "/merch/item/:slug", "destination": "/api/merch-item?slug=:slug" },
+    { "source": "/blog/posts/:slug.html", "destination": "/api/journal-post?slug=:slug" }
+  ],
+  "redirects": [
+    { "source": "/admin/analytics.html", "destination": "/admin", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
+}

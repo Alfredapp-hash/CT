@@ -62,3 +62,16 @@
   .product-card__body { padding: var(--space-3); }
   .product-card__desc { display: none; }
 }
+
+.product-page { padding: 2.5rem 0 3rem; }
+.product-page h1 { margin: 0.2rem 0 0.6rem; font-size: var(--step-4); font-weight: 500; line-height: 1; }
+.product-page__grid { display: grid; gap: 2rem; grid-template-columns: minmax(0, 28rem) minmax(0, 1fr); align-items: start; }
+.product-page__photo { background: var(--paper-sunk); aspect-ratio: 1 / 1; }
+.product-page__photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.product-page__price { margin: 0 0 0.8rem; font-family: var(--serif); font-size: var(--step-2); }
+.product-page__ship { color: var(--ink-soft); }
+.product-page__details { width: min(680px, 100%); margin: 2rem 0 0; padding-top: 0; }
+.order-form { display: grid; gap: 0.8rem; max-width: 28rem; margin-top: 1rem; }
+@media (max-width: 800px) {
+  .product-page__grid { grid-template-columns: 1fr; }
+}

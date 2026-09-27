@@ -10,7 +10,7 @@ const site = resolve(dirname(fileURLToPath(import.meta.url)), "..", "_site");
 const PORT = Number(process.argv[2] || 8080);
 const TYPES = { woff2: "font/woff2", html: "text/html; charset=utf-8", xml: "application/xml", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", jpg: "image/jpeg", webp: "image/webp", png: "image/png", txt: "text/plain; charset=utf-8", svg: "image/svg+xml", ico: "image/x-icon" };
 const REWRITES = [
-  [/^\/thank-you$/, "/thank-you.html"], [/^\/admin$/, "/admin/analytics.html"], [/^\/privacy$/, "/privacy.html"],
+  [/^\/thank-you$/, "/thank-you.html"], [/^\/admin$/, "/admin/index.html"], [/^\/privacy$/, "/privacy.html"],
   [/^\/accessibility$/, "/accessibility.html"], [/^\/books\/([^/.]+)$/, "/books/$1.html"], [/^\/blog\/posts\/([^/.]+)$/, "/blog/posts/$1.html"],
 ];
 http.createServer((req, res) => {

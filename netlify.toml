@@ -22,8 +22,18 @@
 
 [[redirects]]
   from = "/admin"
-  to = "/admin/analytics.html"
+  to = "/admin/index.html"
   status = 200
+
+[[redirects]]
+  from = "/admin/analytics"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/analytics.html"
+  to = "/admin/index.html"
+  status = 301
 
 # Retired: the journal post described Finding Drake's Feather as a children's book; it is a memoir.
 # The post is parked in src/_drafts until Courtney rewrites it.

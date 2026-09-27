@@ -1,0 +1,16 @@
+---
+permalink: /admin/catalog.json
+eleventyExcludeFromCollections: true
+---
+{
+  "books": [
+    {%- for b in books %}
+    {"slug": {{ b.slug | dump | safe }}, "title": {{ b.title | dump | safe }}, "year": {{ b.year | dump | safe }}}{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ],
+  "posts": [
+    {%- for post in collections.postsNewest %}
+    {"slug": {{ post.fileSlug | dump | safe }}, "title": {{ post.data.title | dump | safe }}, "date": {{ post.date | isoDate | dump | safe }}, "description": {{ post.data.description | dump | safe }}, "url": {{ post.url | dump | safe }}}{% if not loop.last %},{% endif %}
+    {%- endfor %}
+  ]
+}

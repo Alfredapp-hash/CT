@@ -59,7 +59,7 @@ urls.set("/blog/posts/surviving-into-story", "text/html");
 // Static server honouring netlify.toml's 200 rewrites
 const REWRITES = [
   [/^\/thank-you$/, "/thank-you.html"],
-  [/^\/admin$/, "/admin/analytics.html"],
+  [/^\/admin$/, "/admin/index.html"],
   [/^\/privacy$/, "/privacy.html"],
   [/^\/accessibility$/, "/accessibility.html"],
   [/^\/books\/([^/.]+)$/, "/books/$1.html"],

@@ -4,7 +4,7 @@
   "tagline": "Stories for the chapters we survive.",
   "description": "Courtney Thomas writes about faith, healing, loss, purpose, and finding yourself again. Novels, devotionals, and stories for hard seasons, in print worldwide through IngramSpark.",
   "ogDescription": "Stories for the chapters we survive. Novels, devotionals, and a journal on faith, healing, loss, and purpose.",
-  "url": "https://courtney-thomas-books.netlify.app",
+  "url": "https://www.booksbycourtney.site",
   "language": "en",
   "locale": "en_US",
   "distribution": "In print worldwide through IngramSpark",
@@ -123,7 +123,7 @@
   ],
   "social": {
     "instagram": null,
-    "facebook": null,
+    "facebook": "https://www.facebook.com/profile.php?id=61593191562395",
     "goodreads": null,
     "amazonAuthor": null
   },

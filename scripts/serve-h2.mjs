@@ -17,7 +17,7 @@ const key = join(certDir, "key.pem"), cert = join(certDir, "cert.pem");
 if (!existsSync(key)) execSync(`openssl req -x509 -newkey rsa:2048 -nodes -keyout ${key} -out ${cert} -days 30 -subj /CN=localhost`, { stdio: "ignore" });
 const TYPES = { woff2: "font/woff2", html: "text/html; charset=utf-8", xml: "application/xml", css: "text/css; charset=utf-8", js: "text/javascript; charset=utf-8", jpg: "image/jpeg", webp: "image/webp", png: "image/png", txt: "text/plain; charset=utf-8", svg: "image/svg+xml" };
 const REWRITES = [
-  [/^\/thank-you$/, "/thank-you.html"], [/^\/admin$/, "/admin/analytics.html"], [/^\/privacy$/, "/privacy.html"],
+  [/^\/thank-you$/, "/thank-you.html"], [/^\/admin$/, "/admin/index.html"], [/^\/privacy$/, "/privacy.html"],
   [/^\/accessibility$/, "/accessibility.html"], [/^\/books\/([^/.]+)$/, "/books/$1.html"], [/^\/blog\/posts\/([^/.]+)$/, "/blog/posts/$1.html"],
 ];
 const server = http2.createSecureServer({ key: readFileSync(key), cert: readFileSync(cert), allowHTTP1: true });
