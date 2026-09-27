@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
 import { neon, Pool } from "@neondatabase/serverless";
+import books from "../../../src/_data/books.json";
 
 export const PLATFORMS = ["instagram", "facebook", "goodreads", "amazonAuthor"] as const;
 export const PIECE_STATUSES = ["idea", "drafting", "ready", "posted"] as const;
@@ -23,18 +23,7 @@ export const FILE_SLUGS = new Set([
 
 type Book = { slug: string; title: string };
 
-function loadCatalog(): Book[] {
-  try {
-    const raw = readFileSync(new URL("../../../src/_data/books.json", import.meta.url), "utf8");
-    const parsed = JSON.parse(raw) as Book[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    console.error("book catalog unavailable", error);
-    return [];
-  }
-}
-
-const catalog = loadCatalog();
+const catalog = books as Book[];
 
 export function bookTitle(slug: string | null | undefined): string | null {
   if (!slug) return null;

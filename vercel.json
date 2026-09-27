@@ -7,8 +7,9 @@
     { "source": "/accessibility", "destination": "/accessibility.html" },
     { "source": "/books/:slug", "destination": "/books/:slug.html" },
     { "source": "/blog/posts/:slug", "destination": "/blog/posts/:slug.html" },
-    { "source": "/merch/item/:slug", "destination": "/api/merch-item?slug=:slug" },
-    { "source": "/blog/posts/:slug.html", "destination": "/api/journal-post?slug=:slug" }
+    { "source": "/merch/item/:slug", "destination": "/api?route=merch-item&slug=:slug" },
+    { "source": "/blog/posts/:slug.html", "destination": "/api?route=journal-post&slug=:slug" },
+    { "source": "/api/(.*)", "destination": "/api?route=$1" }
   ],
   "redirects": [
     { "source": "/admin/analytics.html", "destination": "/admin", "permanent": true }
