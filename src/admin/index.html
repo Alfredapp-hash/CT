@@ -7,7 +7,7 @@
   <title>The desk — Courtney Thomas</title>
   <link rel="stylesheet" href="/css/fonts.css?v=2026-09-25b" />
   <link rel="stylesheet" href="/css/styles.css?v=2026-09-25b" />
-  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-27c" />
+  <link rel="stylesheet" href="/admin/studio.css?v=2026-09-29a" />
 </head>
 <body>
   <div class="gate-screen" id="gate">
@@ -144,7 +144,7 @@
         <div class="canvas-head">
           <p class="eyebrow">Shop</p>
           <h1>The marketplace</h1>
-          <p class="lede-quiet">Shop pieces are paid through Stripe. Books stay on the retailer links already on each book page. A listing needs a photograph, a price, and a short description. <a href="/merch.html">Open the shop</a></p>
+          <p class="lede-quiet">Name the piece, add the photograph, and set the price. Then put it on the shop. Readers pay with a card. Books stay on the retailer links. <a href="/merch.html">Open the shop</a></p>
         </div>
         <div class="split">
           <div>
@@ -154,32 +154,38 @@
           <form class="shop-editor" id="product-form">
             <label class="photo-well">
               <img id="p-preview" alt="" hidden />
-              <span id="p-photo-label">Add a photograph</span>
+              <span id="p-photo-label">Add the photograph</span>
               <input id="p-photo" type="file" accept="image/jpeg,image/png,image/webp" />
             </label>
             <div class="stack">
-              <input class="piece-title" id="p-name" placeholder="Product name" required />
-              <label>Price in dollars <input id="p-price" inputmode="decimal" placeholder="24.00" required /></label>
-              <label>Category
+              <p class="listing-ready" id="listing-ready">A listing needs a name, a photograph, a price, and one line about it.</p>
+              <input class="piece-title" id="p-name" placeholder="What is it called?" required />
+              <label>Price
+                <span class="money-field"><span aria-hidden="true">$</span><input id="p-price" inputmode="decimal" placeholder="55" required /></span>
+              </label>
+              <label>Where it belongs
                 <select id="p-category">
                   <option value="signed">Signed copies</option>
                   <option value="apparel">Apparel</option>
                   <option value="home">For the reading nook</option>
                 </select>
               </label>
-              <label>Ready to ship <input id="p-stock" type="number" min="0" value="1" required /></label>
-              <label>Card description <input id="p-description" required /></label>
-              <label>Product page
-                <textarea id="p-details" placeholder="Blank line for a new paragraph."></textarea>
-              </label>
-              <label>Shipping note <input id="p-shipping" value="Ships from Courtney." /></label>
-              <label>Checkout link, if you already have one <input id="p-checkout" type="url" placeholder="https://" /></label>
-              <label>On the shop
-                <select id="p-status"><option value="draft">Draft</option><option value="listed">Listed</option></select>
-              </label>
+              <label>How many are ready <input id="p-stock" type="number" min="0" value="1" required /></label>
+              <label>One line for the shop <input id="p-description" placeholder="What the buyer is getting" required /></label>
+              <details class="more-fields">
+                <summary>More, if you want it</summary>
+                <label>Longer note on the product page
+                  <textarea id="p-details" placeholder="Blank line for a new paragraph."></textarea>
+                </label>
+                <label>Shipping note <input id="p-shipping" value="Ships from Courtney." /></label>
+                <label>A different checkout link
+                  <input id="p-checkout" type="url" placeholder="Leave empty to take the card payment here" />
+                </label>
+              </details>
               <div class="row-actions">
-                <button type="submit">Save product</button>
-                <button type="button" class="quiet" id="product-delete" hidden>Delete</button>
+                <button type="submit" id="product-list-btn" value="listed">Put it on the shop</button>
+                <button type="submit" class="quiet" id="product-draft-btn" value="draft">Save a draft</button>
+                <button type="button" class="quiet" id="product-delete" hidden>Remove</button>
               </div>
               <p class="lede-quiet" id="product-public" hidden></p>
               <p class="error" id="shop-error" hidden></p>
@@ -233,6 +239,6 @@
       </section>
     </main>
   </div>
-  <script src="/admin/studio.js?v=2026-09-27c"></script>
+  <script src="/admin/studio.js?v=2026-09-29a"></script>
 </body>
 </html>

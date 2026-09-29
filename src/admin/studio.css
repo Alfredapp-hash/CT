@@ -104,6 +104,26 @@
 .rooms strong { display: block; font-family: var(--serif); font-size: var(--step-3); font-weight: 500; line-height: 1; margin: 0.2rem 0; }
 .rooms span:last-child { color: var(--ink-soft); font-size: 0.9rem; }
 .contents button.is-current { background: var(--paper-sunk); }
+.contents button.product-row {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+.contents button.product-row img,
+.product-thumb {
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: cover;
+  background: var(--paper-sunk);
+}
+.money-field { display: flex; align-items: center; gap: 0.35rem; }
+.money-field span { color: var(--ink-soft); }
+.money-field input { flex: 1; }
+.listing-ready { margin: 0; color: var(--ink-soft); }
+.more-fields { border-top: 1px solid var(--line); padding-top: 0.8rem; }
+.more-fields summary { cursor: pointer; color: var(--ink-soft); margin-bottom: 0.8rem; }
+.more-fields[open] { display: grid; gap: 0.85rem; }
 .contents .empty { padding: 0.9rem 0.15rem; color: var(--ink-faint); }
 #letter-list li { padding: 0.9rem 0.15rem 1rem; border-bottom: 1px solid var(--line); }
 #letter-list strong { display: block; font-weight: 500; }

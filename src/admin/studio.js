@@ -58,6 +58,42 @@
     return ((centsValue || 0) / 100).toFixed(2);
   }
 
+  function moneyLabel(centsValue) {
+    return "$" + dollars(centsValue).replace(/\.00$/, "");
+  }
+
+  function listingGaps() {
+    var gaps = [];
+    var current = state.products.find(function (product) { return product.id === state.productId; });
+    var file = document.getElementById("p-photo").files[0];
+    if (!document.getElementById("p-name").value.trim()) gaps.push("a name");
+    if (!(current && current.hasImage) && !file) gaps.push("a photograph");
+    if (!cents(document.getElementById("p-price").value)) gaps.push("a price");
+    if (!document.getElementById("p-description").value.trim()) gaps.push("one line about it");
+    return gaps;
+  }
+
+  function refreshListing() {
+    var note = document.getElementById("listing-ready");
+    if (!note) return;
+    var gaps = listingGaps();
+    var stock = Number(document.getElementById("p-stock").value);
+    var checkout = document.getElementById("p-checkout").value.trim();
+    if (gaps.length) {
+      note.textContent = "Still needs " + gaps.join(", ").replace(/, ([^,]*)$/, " and $1") + ".";
+      return;
+    }
+    if (checkout) {
+      note.textContent = "Buyers will leave the shop for that checkout link.";
+      return;
+    }
+    if (!stock) {
+      note.textContent = "Ready, and it will show as sold out until you add some.";
+      return;
+    }
+    note.textContent = "Ready for the shop.";
+  }
+
   function show(view) {
     document.querySelectorAll("[data-panel]").forEach(function (panel) {
       panel.hidden = panel.getAttribute("data-panel") !== view;
@@ -171,14 +207,28 @@
       var item = document.createElement("li");
       var button = document.createElement("button");
       button.type = "button";
+      button.className = "product-row" + (product.id === state.productId ? " is-current" : "");
+      if (product.imageUrl) {
+        var photo = document.createElement("img");
+        photo.src = product.imageUrl;
+        photo.alt = "";
+        button.appendChild(photo);
+      } else {
+        var blank = document.createElement("span");
+        blank.className = "product-thumb";
+        button.appendChild(blank);
+      }
+      var copy = document.createElement("span");
       var title = document.createElement("strong");
       title.textContent = product.name;
       var meta = document.createElement("span");
       meta.className = "meta";
-      meta.textContent = (product.status === "listed" ? "Listed" : "Draft") + " · $" + dollars(product.priceCents) + " · " + product.stock + " left";
-      if (product.id === state.productId) button.className = "is-current";
-      button.appendChild(title);
-      button.appendChild(meta);
+      var place = product.status === "listed" ? "On the shop" : "Not on the shop";
+      var count = product.stock > 0 ? product.stock + " ready" : "None ready";
+      meta.textContent = place + " · " + moneyLabel(product.priceCents) + " · " + count;
+      copy.appendChild(title);
+      copy.appendChild(meta);
+      button.appendChild(copy);
       button.addEventListener("click", function () { editProduct(product); });
       item.appendChild(button);
       list.appendChild(item);
@@ -250,21 +300,24 @@
     document.getElementById("p-details").value = product ? product.details : "";
     document.getElementById("p-shipping").value = product && product.shippingNote ? product.shippingNote : "Ships from Courtney.";
     document.getElementById("p-checkout").value = product && product.checkoutUrl ? product.checkoutUrl : "";
-    document.getElementById("p-status").value = product ? product.status : "draft";
     document.getElementById("p-photo").value = "";
     var preview = document.getElementById("p-preview");
     if (product && product.imageUrl) {
       preview.hidden = false;
       preview.src = product.imageUrl;
-      document.getElementById("p-photo-label").textContent = "Replace photograph";
+      document.getElementById("p-photo-label").textContent = "Change the photograph";
     } else {
       preview.hidden = true;
       preview.removeAttribute("src");
-      document.getElementById("p-photo-label").textContent = "Add a photograph";
+      document.getElementById("p-photo-label").textContent = "Add the photograph";
     }
+    var onShop = product && product.status === "listed";
+    document.getElementById("product-list-btn").textContent = onShop ? "Update the listing" : "Put it on the shop";
+    document.getElementById("product-draft-btn").textContent = onShop ? "Take it off the shop" : "Save a draft";
     document.getElementById("product-delete").hidden = !product;
-    publicLink("product-public", product && product.status === "listed" ? "/merch/item/" + product.slug : "", "View it on the shop");
+    publicLink("product-public", onShop ? "/merch/item/" + product.slug : "", "View it on the shop");
     say("shop-error", "");
+    refreshListing();
   }
 
   function renderBooks() {
@@ -500,17 +553,28 @@
     var preview = document.getElementById("p-preview");
     preview.hidden = false;
     preview.src = URL.createObjectURL(file);
-    document.getElementById("p-photo-label").textContent = file.name;
+    document.getElementById("p-photo-label").textContent = "Change the photograph";
+    refreshListing();
   });
-  document.getElementById("product-new").addEventListener("click", function () { editProduct(null); });
+  ["p-name", "p-price", "p-description", "p-stock", "p-checkout"].forEach(function (id) {
+    document.getElementById(id).addEventListener("input", refreshListing);
+  });
+  document.getElementById("product-new").addEventListener("click", function () {
+    editProduct(null);
+    document.getElementById("p-name").focus();
+  });
   document.getElementById("product-form").addEventListener("submit", function (event) {
     event.preventDefault();
     var file = document.getElementById("p-photo").files[0];
     var current = state.products.find(function (product) { return product.id === state.productId; });
-    var status = document.getElementById("p-status").value;
-    if (status === "listed" && !(current && current.hasImage) && !file) {
-      say("shop-error", "Add a photograph before this can go on the shop.");
-      return;
+    var status = event.submitter && event.submitter.value === "draft" ? "draft" : "listed";
+    if (status === "listed") {
+      var gaps = listingGaps();
+      if (gaps.length) {
+        say("shop-error", "Add " + gaps.join(", ").replace(/, ([^,]*)$/, " and $1") + " before it can go on the shop.");
+        if (gaps.indexOf("a photograph") !== -1) document.getElementById("p-photo").focus();
+        return;
+      }
     }
     var payload = {
       name: document.getElementById("p-name").value,
@@ -521,12 +585,15 @@
       details: document.getElementById("p-details").value,
       shippingNote: document.getElementById("p-shipping").value,
       checkoutUrl: document.getElementById("p-checkout").value,
-      status: status === "listed" && !(current && current.hasImage) ? "draft" : status,
+      status: status === "listed" && !(current && current.hasImage) && !file ? "draft" : status,
     };
-    var path = state.productId ? "/api/studio/products/" + state.productId : "/api/studio/products";
-    api(path, { method: state.productId ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) })
+    if (current && current.slug) payload.slug = current.slug;
+    var savedId = state.productId;
+    var path = savedId ? "/api/studio/products/" + savedId : "/api/studio/products";
+    api(path, { method: savedId ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) })
       .then(function (data) {
         var product = data.product;
+        savedId = product.id;
         if (!file) return product;
         var body = new FormData();
         body.append("photo", file);
@@ -542,11 +609,18 @@
         });
       })
       .then(function () { return loadShop(); })
-      .then(function () { say("shop-error", "Saved. Listed products show on the Shop page.", true); })
+      .then(function () {
+        var saved = state.products.find(function (product) { return product.id === savedId; });
+        if (saved) editProduct(saved);
+        say("shop-error", status === "listed" ? "It's on the shop." : "Saved. It is not on the shop yet.", true);
+      })
       .catch(function (error) { say("shop-error", error.message); });
   });
   document.getElementById("product-delete").addEventListener("click", function () {
     if (!state.productId) return;
+    var current = state.products.find(function (product) { return product.id === state.productId; });
+    var name = current ? current.name : "this piece";
+    if (!window.confirm("Remove " + name + " from the desk? It leaves the shop.")) return;
     api("/api/studio/products/" + state.productId, { method: "DELETE" })
       .then(function () { editProduct(null); return loadShop(); })
       .catch(function (error) { say("shop-error", error.message); });
