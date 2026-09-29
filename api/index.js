@@ -1307,9 +1307,9 @@ var public_default = async (req) => {
     `);
     return json({
       categories: [
-        { key: "signed", label: "Signed copies", blurb: "Every title, signed by Courtney and shipped from her desk." },
-        { key: "apparel", label: "Apparel", blurb: "Shirts and sweatshirts with lines from the books." },
-        { key: "home", label: "For the reading nook", blurb: "Mugs, bookmarks, and totes." }
+        { key: "signed", label: "Signed copies", blurb: "Signed books, and the baskets sent from Courtney." },
+        { key: "apparel", label: "Apparel", blurb: "The Bookworm cap, and room for more." },
+        { key: "home", label: "For the reading nook", blurb: "Handmade pieces for the shelf." }
       ],
       products: rows.map((row) => {
         const updated = iso(row.updated_at);
