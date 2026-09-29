@@ -585,11 +585,14 @@
       details: document.getElementById("p-details").value,
       shippingNote: document.getElementById("p-shipping").value,
       checkoutUrl: document.getElementById("p-checkout").value,
-      status: status === "listed" && !(current && current.hasImage) && !file ? "draft" : status,
+      status: status === "listed" && !(current && current.hasImage) ? "draft" : status,
     };
     if (current && current.slug) payload.slug = current.slug;
     var savedId = state.productId;
     var path = savedId ? "/api/studio/products/" + savedId : "/api/studio/products";
+    var buttons = event.target.querySelectorAll("button");
+    buttons.forEach(function (button) { button.disabled = true; });
+    say("shop-error", "Saving…", true);
     api(path, { method: savedId ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) })
       .then(function (data) {
         var product = data.product;
@@ -612,9 +615,10 @@
       .then(function () {
         var saved = state.products.find(function (product) { return product.id === savedId; });
         if (saved) editProduct(saved);
-        say("shop-error", status === "listed" ? "It's on the shop." : "Saved. It is not on the shop yet.", true);
+        say("shop-error", status === "listed" ? "It's on the shop. Buyers pay with a card from that page." : "Saved. It is not on the shop yet.", true);
       })
-      .catch(function (error) { say("shop-error", error.message); });
+      .catch(function (error) { say("shop-error", error.message); })
+      .then(function () { buttons.forEach(function (button) { button.disabled = false; }); });
   });
   document.getElementById("product-delete").addEventListener("click", function () {
     if (!state.productId) return;
