@@ -11,6 +11,7 @@ import content from "../netlify/functions/public";
 import stripeWebhook from "../netlify/functions/stripe-webhook";
 import studio from "../netlify/functions/studio";
 import summary from "../netlify/functions/summary";
+import { PRODUCTION_ORIGIN } from "../netlify/functions/_shared/stripe-env";
 
 type NodeResponse = {
   statusCode: number;
@@ -26,7 +27,20 @@ type NodeRequest = AsyncIterable<Buffer> & {
 
 function redact(error: unknown): string {
   const raw = error instanceof Error ? error.message : "The desk could not answer.";
-  return raw.replace(/\b(?:sk|rk|pk|whsec)_[A-Za-z0-9]+/g, "[redacted]").slice(0, 180);
+  return raw
+    .replace(/\b(?:sk|rk|pk|whsec)_[A-Za-z0-9]+/g, "[redacted]")
+    .replace(/postgres(?:ql)?:\/\/\S+/gi, "[redacted]")
+    .slice(0, 180);
+}
+
+function publicOrigin(hostHeader: string, proto: string): string {
+  const host = hostHeader.split(",")[0]?.trim().toLowerCase() || "";
+  const hostname = host.replace(/:\d+$/, "");
+  if ((hostname === "localhost" || hostname === "127.0.0.1") && /^[a-z0-9.:-]+$/.test(host)) {
+    const safeProto = proto === "http" ? "http" : "https";
+    return `${safeProto}://${host}`;
+  }
+  return PRODUCTION_ORIGIN;
 }
 
 function pathnameOf(req: Request): string {
@@ -46,7 +60,7 @@ async function toRequest(req: Request | NodeRequest): Promise<Request> {
   }
   const hostHeader = headers.get("x-forwarded-host") || headers.get("host") || "www.booksbycourtney.site";
   const proto = headers.get("x-forwarded-proto") || "https";
-  const url = new URL(nodeReq.url || "/", `${proto}://${hostHeader}`);
+  const url = new URL(nodeReq.url || "/", publicOrigin(hostHeader, proto));
   const chunks: Buffer[] = [];
   if (nodeReq.method !== "GET" && nodeReq.method !== "HEAD") {
     for await (const chunk of nodeReq) chunks.push(chunk);
@@ -105,9 +119,9 @@ export default async function handler(req: Request | NodeRequest, res?: NodeResp
     return await finish(await dispatch(await toRequest(req)));
   } catch (error) {
     console.error(redact(error));
-    return finish(new Response(JSON.stringify({ error: redact(error) }), {
+    return finish(new Response(JSON.stringify({ error: "The desk could not answer." }), {
       status: 500,
-      headers: { "content-type": "application/json; charset=utf-8" },
+      headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" },
     }));
   }
 }

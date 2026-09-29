@@ -3,6 +3,7 @@
  * Journal, social captions, shop products, and orders live here.
  */
 import { sessionFromRequest } from "./_shared/auth";
+import { browserOriginAllowed } from "./_shared/stripe-env";
 import {
   CATEGORIES,
   FILE_SLUGS,
@@ -26,15 +27,17 @@ import { ensureMessages, listMessages } from "./messages";
 type Row = Record<string, unknown>;
 
 function gate(req: Request): Response | null {
+  if (!browserOriginAllowed(req)) return json({ error: "Unauthorized" }, 403);
   if (!sessionFromRequest(req)) return json({ error: "Unauthorized" }, 401);
   return null;
 }
 
 function fail(error: unknown): Response {
   if (error instanceof Error && !uniqueViolation(error)) {
-    if (error.message && !error.message.includes("connect") && error.message.length < 160) {
-      return json({ error: error.message }, 400);
-    }
+    const message = error.message || "";
+    const ownMessage = message.length > 0 && message.length < 160
+      && !/connect|postgres|secret|password|token|:\/\//i.test(message);
+    if (ownMessage) return json({ error: message }, 400);
   }
   if (uniqueViolation(error)) return json({ error: "That address is already in use." }, 409);
   console.error(error);

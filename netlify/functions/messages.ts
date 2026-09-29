@@ -1,5 +1,7 @@
 import { database, iso, query } from "./_shared/content";
 import { json, readJson, text } from "./_shared/http";
+import { blocked, recordAttempt } from "./_shared/limit";
+import { browserOriginAllowed, siteOrigin } from "./_shared/stripe-env";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -46,15 +48,18 @@ function finish(req: Request, ok: boolean, message: string): Response {
   if ((req.headers.get("accept") || "").includes("application/json")) {
     return json(ok ? { ok: true } : { error: message }, ok ? 200 : 400);
   }
-  if (ok) return Response.redirect(new URL("/thank-you.html", req.url), 303);
+  if (ok) return Response.redirect(`${siteOrigin(req)}/thank-you.html`, 303);
   return new Response(message, { status: 400, headers: { "content-type": "text/plain; charset=utf-8" } });
 }
 
 export default async function messages(req: Request): Promise<Response> {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+  if (!browserOriginAllowed(req)) return finish(req, false, "That could not be saved.");
+  if (await blocked(req, "letter", 8, 60 * 60)) return json({ error: "Try again in a little while." }, 429);
   try {
     const fields = await fieldsOf(req);
     if (text(fields["bot-field"], 200)) return finish(req, true, "");
+    if (await recordAttempt(req, "letter", 8, 60 * 60)) return json({ error: "Try again in a little while." }, 429);
     const formName = text(fields["form-name"], 40);
     const kind = formName === "notes" ? "note" : formName === "newsletter" ? "newsletter" : "";
     if (!kind) return finish(req, false, "That form was not recognized.");

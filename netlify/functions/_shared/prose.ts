@@ -12,7 +12,10 @@ export function escapeHtml(value: string): string {
 
 function inline(value: string): string {
   let text = escapeHtml(value.trim());
-  text = text.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)\s]+)\)/g, '<a href="$2">$1</a>');
+  text = text.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)\s]+)\)/g, (match, label: string, href: string) => {
+    if (href.startsWith("//") || href.includes("&quot;") || href.includes("<") || href.includes("javascript:")) return match;
+    return `<a href="${href}">${label}</a>`;
+  });
   text = text.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   text = text.replace(/\*([^*]+)\*/g, "<em>$1</em>");
   return text;

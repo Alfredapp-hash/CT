@@ -5,6 +5,7 @@
  *   netlify env:set ANALYTICS_KEY "<long-random-value>"
  * then redeploy. Callers must send the same value in the `X-Analytics-Key` request header.
  */
+import { createHash, timingSafeEqual as timingSafeEqualBytes } from "node:crypto";
 import { readJson } from "./_shared/photos";
 import { sessionFromRequest } from "./_shared/auth";
 
@@ -20,12 +21,9 @@ const DEFAULT_DAYS = 14;
 const MAX_DAYS = 365;
 
 function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return diff === 0;
+  const left = createHash("sha256").update(a).digest();
+  const right = createHash("sha256").update(b).digest();
+  return timingSafeEqualBytes(left, right);
 }
 
 function dayKeys(days: number): string[] {
@@ -65,8 +63,8 @@ const json = (body: unknown, status: number) =>
 function keyAccepted(req: Request): boolean {
   const expectedKey = process.env.ANALYTICS_KEY;
   if (!expectedKey) return false;
-  const providedKey = req.headers.get("x-analytics-key");
-  if (!providedKey || providedKey.length !== expectedKey.length) return false;
+  const providedKey = req.headers.get("x-analytics-key") || "";
+  if (!providedKey) return false;
   return timingSafeEqual(providedKey, expectedKey);
 }
 

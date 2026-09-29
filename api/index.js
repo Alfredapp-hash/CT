@@ -7,7 +7,7 @@ function photoKey(id) {
 }
 async function savePhoto(id, body, contentType) {
   await put(photoKey(id), body, {
-    access: "public",
+    access: "private",
     contentType,
     addRandomSuffix: false,
     allowOverwrite: true
@@ -16,29 +16,65 @@ async function savePhoto(id, body, contentType) {
 async function deletePhoto(id) {
   await del(photoKey(id));
 }
-async function readPhoto(id) {
+async function readBlob(pathname, access) {
   try {
-    const stored = await get(photoKey(id), { access: "public" });
-    if (!stored || stored.statusCode !== 200 || !stored.stream) return null;
-    const data = await new Response(stored.stream).arrayBuffer();
-    const contentType = stored.blob.contentType || "image/jpeg";
-    return { data, contentType };
+    const stored2 = await get(pathname, { access });
+    if (!stored2 || stored2.statusCode !== 200 || !stored2.stream) return null;
+    const data = await new Response(stored2.stream).arrayBuffer();
+    return { data, contentType: stored2.blob.contentType || "" };
+  } catch {
+    return null;
+  }
+}
+async function readPhoto(id) {
+  const key = photoKey(id);
+  let stored2 = await readBlob(key, "private");
+  if (!stored2) {
+    stored2 = await readBlob(key, "public");
+    if (stored2) {
+      const contentType2 = (stored2.contentType || "image/jpeg").split(";")[0].trim().toLowerCase();
+      if (PHOTO_TYPES.has(contentType2)) {
+        try {
+          await put(key, stored2.data, {
+            access: "private",
+            contentType: contentType2,
+            addRandomSuffix: false,
+            allowOverwrite: true
+          });
+        } catch {
+        }
+      }
+    }
+  }
+  if (!stored2) return null;
+  const contentType = (stored2.contentType || "image/jpeg").split(";")[0].trim().toLowerCase();
+  if (!PHOTO_TYPES.has(contentType)) return null;
+  return { data: stored2.data, contentType };
+}
+async function readStoredJson(pathname, access) {
+  const stored2 = await readBlob(pathname, access);
+  if (!stored2) return null;
+  try {
+    return JSON.parse(new TextDecoder().decode(stored2.data));
   } catch {
     return null;
   }
 }
 async function readJson(pathname) {
-  try {
-    const stored = await get(pathname, { access: "public" });
-    if (!stored || stored.statusCode !== 200 || !stored.stream) return null;
-    return await new Response(stored.stream).json();
-  } catch {
-    return null;
+  const privately = await readStoredJson(pathname, "private");
+  if (privately) return privately;
+  const publicly = await readStoredJson(pathname, "public");
+  if (publicly) {
+    try {
+      await writeJson(pathname, publicly);
+    } catch {
+    }
   }
+  return publicly;
 }
 async function writeJson(pathname, value) {
   await put(pathname, JSON.stringify(value), {
-    access: "public",
+    access: "private",
     contentType: "application/json",
     addRandomSuffix: false,
     allowOverwrite: true
@@ -56,11 +92,26 @@ function stripeConfigured() {
 function webhookSecret() {
   return process.env.STRIPE_WEBHOOK_SECRET?.trim() ?? "";
 }
+var LOCAL_HOSTS = /* @__PURE__ */ new Set(["localhost", "127.0.0.1"]);
 function checkoutOrigin(req) {
   const url = new URL(req.url);
-  if (url.hostname === "localhost" || url.hostname === "127.0.0.1" || url.origin === PRODUCTION_ORIGIN) {
-    return url.origin;
+  if (LOCAL_HOSTS.has(url.hostname) || url.origin === PRODUCTION_ORIGIN) return url.origin;
+  return PRODUCTION_ORIGIN;
+}
+function browserOriginAllowed(req) {
+  const origin = req.headers.get("origin");
+  if (!origin) return true;
+  try {
+    const url = new URL(origin);
+    if (url.protocol !== "https:" && !LOCAL_HOSTS.has(url.hostname)) return false;
+    return url.origin === PRODUCTION_ORIGIN || url.hostname === "booksbycourtney.site" || LOCAL_HOSTS.has(url.hostname);
+  } catch {
+    return false;
   }
+}
+function siteOrigin(req) {
+  const url = new URL(req.url);
+  if (LOCAL_HOSTS.has(url.hostname)) return url.origin;
   return PRODUCTION_ORIGIN;
 }
 
@@ -92,11 +143,11 @@ function cleanPath(value) {
   if (pathname.length > 1 && pathname.endsWith("/")) pathname = pathname.slice(0, -1);
   return pathname.slice(0, MAX_PATH_LENGTH);
 }
-function referrerHost(value, siteOrigin) {
+function referrerHost(value, siteOrigin2) {
   if (typeof value !== "string" || value.length === 0) return null;
   try {
     const url = new URL(value);
-    if (url.origin === siteOrigin) return null;
+    if (url.origin === siteOrigin2) return null;
     return url.hostname.slice(0, MAX_PATH_LENGTH);
   } catch {
     return null;
@@ -120,8 +171,8 @@ function corsHeaders(origin, allowed) {
 }
 var collect_default = async (req) => {
   const requestOrigin = req.headers.get("origin");
-  const siteOrigin = new URL(req.url).origin;
-  const knownOrigins = /* @__PURE__ */ new Set([siteOrigin, PRODUCTION_ORIGIN]);
+  const siteOrigin2 = new URL(req.url).origin;
+  const knownOrigins = /* @__PURE__ */ new Set([siteOrigin2, PRODUCTION_ORIGIN]);
   const sameOrigin = !requestOrigin || knownOrigins.has(requestOrigin);
   const cors = corsHeaders(requestOrigin, sameOrigin);
   if (req.method === "OPTIONS") {
@@ -167,7 +218,7 @@ var collect_default = async (req) => {
     } else if (path) {
       day.pageviews += 1;
       increment(day.pages, path);
-      const host = referrerHost(beacon.referrer, siteOrigin);
+      const host = referrerHost(beacon.referrer, siteOrigin2);
       if (host) increment(day.referrers, host);
     }
     await writeJson(key, day);
@@ -673,7 +724,10 @@ function escapeHtml(value) {
 }
 function inline(value) {
   let text2 = escapeHtml(value.trim());
-  text2 = text2.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)\s]+)\)/g, '<a href="$2">$1</a>');
+  text2 = text2.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/)[^)\s]+)\)/g, (match, label, href) => {
+    if (href.startsWith("//") || href.includes("&quot;") || href.includes("<") || href.includes("javascript:")) return match;
+    return `<a href="${href}">${label}</a>`;
+  });
   text2 = text2.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   text2 = text2.replace(/\*([^*]+)\*/g, "<em>$1</em>");
   return text2;
@@ -828,8 +882,8 @@ function emailsMatch(provided, expected) {
   const b = createHash("sha256").update(expected.trim().toLowerCase()).digest();
   return timingSafeEqual(a, b);
 }
-async function verifyPassword(password, stored) {
-  const parts = stored.split(":");
+async function verifyPassword(password, stored2) {
+  const parts = stored2.split(":");
   if (parts.length !== 3 || parts[0] !== "scrypt") return false;
   let salt;
   let expected;
@@ -915,6 +969,110 @@ function sessionCookie(token, req, maxAge = SESSION_TTL_SECONDS) {
   return parts.join("; ");
 }
 
+// netlify/functions/_shared/limit.ts
+import { createHash as createHash2 } from "node:crypto";
+var memory = /* @__PURE__ */ new Map();
+var ready = null;
+function ensure() {
+  if (!ready) {
+    ready = database().sql.query(`CREATE TABLE IF NOT EXISTS request_limits (
+      bucket varchar(64) PRIMARY KEY,
+      hits integer NOT NULL,
+      window_start timestamptz NOT NULL
+    )`).then(() => void 0).catch((error) => {
+      ready = null;
+      throw error;
+    });
+  }
+  return ready;
+}
+function clientAddress(req) {
+  const forwarded = req.headers.get("x-forwarded-for") || "";
+  const first = forwarded.split(",")[0]?.trim() || "";
+  if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(first) || /^[a-f0-9:]+$/i.test(first)) return first.slice(0, 80);
+  return "unknown";
+}
+function bucketFor(req, kind) {
+  return createHash2("sha256").update(`${kind}:${clientAddress(req)}`).digest("hex").slice(0, 40);
+}
+function cache(bucket, window) {
+  memory.set(bucket, window);
+  if (memory.size > 5e3) {
+    const oldest = memory.keys().next().value;
+    if (oldest) memory.delete(oldest);
+  }
+}
+function exceeded(window, max, windowMs) {
+  if (!window) return false;
+  if (Date.now() - window.start > windowMs) return false;
+  return window.hits > max;
+}
+async function stored(bucket) {
+  await ensure();
+  const rows = await query(database().sql`
+    SELECT hits, window_start FROM request_limits WHERE bucket = ${bucket} LIMIT 1
+  `);
+  const row = rows[0];
+  if (!row) return null;
+  const start = new Date(String(row.window_start)).getTime();
+  return { hits: Number(row.hits) || 0, start: Number.isFinite(start) ? start : 0 };
+}
+async function save(bucket, hits, start) {
+  const at = new Date(start).toISOString();
+  await database().sql`
+    INSERT INTO request_limits (bucket, hits, window_start)
+    VALUES (${bucket}, ${hits}, ${at})
+    ON CONFLICT (bucket) DO UPDATE SET hits = ${hits}, window_start = ${at}
+  `;
+}
+async function blocked(req, kind, max, windowSeconds) {
+  const bucket = bucketFor(req, kind);
+  const windowMs = windowSeconds * 1e3;
+  if (exceeded(memory.get(bucket), max, windowMs)) return true;
+  try {
+    const row = await stored(bucket);
+    if (row) cache(bucket, row);
+    return exceeded(row ?? void 0, max, windowMs);
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : "limit");
+    return exceeded(memory.get(bucket), max, windowMs);
+  }
+}
+async function recordAttempt(req, kind, max, windowSeconds) {
+  const bucket = bucketFor(req, kind);
+  const windowMs = windowSeconds * 1e3;
+  const now = Date.now();
+  let hits = 1;
+  let start = now;
+  try {
+    const row = await stored(bucket);
+    if (row && now - row.start <= windowMs) {
+      hits = row.hits + 1;
+      start = row.start;
+    }
+    await save(bucket, hits, start);
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : "limit");
+    const local = memory.get(bucket);
+    if (local && now - local.start <= windowMs) {
+      hits = local.hits + 1;
+      start = local.start;
+    }
+  }
+  cache(bucket, { hits, start });
+  return hits > max;
+}
+async function clearAttempts(req, kind) {
+  const bucket = bucketFor(req, kind);
+  memory.delete(bucket);
+  try {
+    await ensure();
+    await database().sql`DELETE FROM request_limits WHERE bucket = ${bucket}`;
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : "limit");
+  }
+}
+
 // netlify/functions/login.ts
 var json2 = (body, status, setCookie) => new Response(JSON.stringify(body), {
   status,
@@ -929,11 +1087,20 @@ var login_default = async (req) => {
   if (req.method !== "POST") {
     return json2({ error: "Method not allowed" }, 405);
   }
+  if (!browserOriginAllowed(req)) {
+    return json2({ error: "Email or password was not accepted." }, 403);
+  }
+  if (await blocked(req, "login", 12, 15 * 60)) {
+    return json2({ error: "Try again in a little while." }, 429);
+  }
   if (!authConfigured()) {
     return json2({ error: "Admin login is not configured on this site." }, 500);
   }
   const raw = await req.text();
   if (raw.length > 2048) {
+    if (await recordAttempt(req, "login", 12, 15 * 60)) {
+      return json2({ error: "Try again in a little while." }, 429);
+    }
     return json2({ error: "Email or password was not accepted." }, 401);
   }
   let email = "";
@@ -943,12 +1110,19 @@ var login_default = async (req) => {
     email = typeof body.email === "string" ? body.email : "";
     password = typeof body.password === "string" ? body.password : "";
   } catch {
+    if (await recordAttempt(req, "login", 12, 15 * 60)) {
+      return json2({ error: "Try again in a little while." }, 429);
+    }
     return json2({ error: "Email or password was not accepted." }, 401);
   }
   const accepted = await credentialsMatch(email, password);
   if (!accepted) {
+    if (await recordAttempt(req, "login", 12, 15 * 60)) {
+      return json2({ error: "Try again in a little while." }, 429);
+    }
     return json2({ error: "Email or password was not accepted." }, 401);
   }
+  await clearAttempts(req, "login");
   const token = createSession(email);
   if (!token) {
     return json2({ error: "Admin login is not configured on this site." }, 500);
@@ -971,10 +1145,10 @@ var logout_default = async (req) => {
 
 // netlify/functions/messages.ts
 var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-var ready = null;
+var ready2 = null;
 function ensureMessages() {
-  if (!ready) {
-    ready = database().sql.query(`CREATE TABLE IF NOT EXISTS messages (
+  if (!ready2) {
+    ready2 = database().sql.query(`CREATE TABLE IF NOT EXISTS messages (
       id serial PRIMARY KEY,
       kind varchar(20) NOT NULL,
       name varchar(160) NOT NULL DEFAULT '',
@@ -984,11 +1158,11 @@ function ensureMessages() {
       created_at timestamptz NOT NULL DEFAULT now(),
       CONSTRAINT messages_kind_check CHECK (kind IN ('newsletter', 'note'))
     )`).then(() => void 0).catch((error) => {
-      ready = null;
+      ready2 = null;
       throw error;
     });
   }
-  return ready;
+  return ready2;
 }
 async function fieldsOf(req) {
   const type = req.headers.get("content-type") || "";
@@ -1011,14 +1185,17 @@ function finish(req, ok, message) {
   if ((req.headers.get("accept") || "").includes("application/json")) {
     return json(ok ? { ok: true } : { error: message }, ok ? 200 : 400);
   }
-  if (ok) return Response.redirect(new URL("/thank-you.html", req.url), 303);
+  if (ok) return Response.redirect(`${siteOrigin(req)}/thank-you.html`, 303);
   return new Response(message, { status: 400, headers: { "content-type": "text/plain; charset=utf-8" } });
 }
 async function messages(req) {
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+  if (!browserOriginAllowed(req)) return finish(req, false, "That could not be saved.");
+  if (await blocked(req, "letter", 8, 60 * 60)) return json({ error: "Try again in a little while." }, 429);
   try {
     const fields = await fieldsOf(req);
     if (text(fields["bot-field"], 200)) return finish(req, true, "");
+    if (await recordAttempt(req, "letter", 8, 60 * 60)) return json({ error: "Try again in a little while." }, 429);
     const formName = text(fields["form-name"], 40);
     const kind = formName === "notes" ? "note" : formName === "newsletter" ? "newsletter" : "";
     if (!kind) return finish(req, false, "That form was not recognized.");
@@ -1060,11 +1237,11 @@ async function listMessages() {
 var media_default = async (req) => {
   const id = new URL(req.url).pathname.split("/").filter(Boolean).pop() || "";
   if (!/^\d+$/.test(id)) return new Response("Not found", { status: 404 });
-  const stored = await readPhoto(Number(id));
-  if (!stored) return new Response("Not found", { status: 404 });
-  return new Response(stored.data, {
+  const stored2 = await readPhoto(Number(id));
+  if (!stored2) return new Response("Not found", { status: 404 });
+  return new Response(stored2.data, {
     headers: {
-      "content-type": stored.contentType,
+      "content-type": stored2.contentType,
       "cache-control": "public, max-age=86400",
       "x-content-type-options": "nosniff"
     }
@@ -1427,14 +1604,15 @@ var stripe_webhook_default = async (req) => {
 
 // netlify/functions/studio.ts
 function gate(req) {
+  if (!browserOriginAllowed(req)) return json({ error: "Unauthorized" }, 403);
   if (!sessionFromRequest(req)) return json({ error: "Unauthorized" }, 401);
   return null;
 }
 function fail(error) {
   if (error instanceof Error && !uniqueViolation(error)) {
-    if (error.message && !error.message.includes("connect") && error.message.length < 160) {
-      return json({ error: error.message }, 400);
-    }
+    const message = error.message || "";
+    const ownMessage = message.length > 0 && message.length < 160 && !/connect|postgres|secret|password|token|:\/\//i.test(message);
+    if (ownMessage) return json({ error: message }, 400);
   }
   if (uniqueViolation(error)) return json({ error: "That address is already in use." }, 409);
   console.error(error);
@@ -1758,15 +1936,13 @@ var studio_default = async (req) => {
 };
 
 // netlify/functions/summary.ts
+import { createHash as createHash3, timingSafeEqual as timingSafeEqualBytes } from "node:crypto";
 var DEFAULT_DAYS = 14;
 var MAX_DAYS = 365;
 function timingSafeEqual2(a, b) {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return diff === 0;
+  const left = createHash3("sha256").update(a).digest();
+  const right = createHash3("sha256").update(b).digest();
+  return timingSafeEqualBytes(left, right);
 }
 function dayKeys(days) {
   const keys = [];
@@ -1798,8 +1974,8 @@ var json3 = (body, status) => new Response(JSON.stringify(body), {
 function keyAccepted(req) {
   const expectedKey = process.env.ANALYTICS_KEY;
   if (!expectedKey) return false;
-  const providedKey = req.headers.get("x-analytics-key");
-  if (!providedKey || providedKey.length !== expectedKey.length) return false;
+  const providedKey = req.headers.get("x-analytics-key") || "";
+  if (!providedKey) return false;
   return timingSafeEqual2(providedKey, expectedKey);
 }
 var summary_default = async (req) => {
@@ -1851,7 +2027,16 @@ var summary_default = async (req) => {
 // server/gateway.ts
 function redact(error) {
   const raw = error instanceof Error ? error.message : "The desk could not answer.";
-  return raw.replace(/\b(?:sk|rk|pk|whsec)_[A-Za-z0-9]+/g, "[redacted]").slice(0, 180);
+  return raw.replace(/\b(?:sk|rk|pk|whsec)_[A-Za-z0-9]+/g, "[redacted]").replace(/postgres(?:ql)?:\/\/\S+/gi, "[redacted]").slice(0, 180);
+}
+function publicOrigin(hostHeader, proto) {
+  const host = hostHeader.split(",")[0]?.trim().toLowerCase() || "";
+  const hostname = host.replace(/:\d+$/, "");
+  if ((hostname === "localhost" || hostname === "127.0.0.1") && /^[a-z0-9.:-]+$/.test(host)) {
+    const safeProto = proto === "http" ? "http" : "https";
+    return `${safeProto}://${host}`;
+  }
+  return PRODUCTION_ORIGIN;
 }
 function pathnameOf(req) {
   const url = new URL(req.url);
@@ -1869,7 +2054,7 @@ async function toRequest(req) {
   }
   const hostHeader = headers.get("x-forwarded-host") || headers.get("host") || "www.booksbycourtney.site";
   const proto = headers.get("x-forwarded-proto") || "https";
-  const url = new URL(nodeReq.url || "/", `${proto}://${hostHeader}`);
+  const url = new URL(nodeReq.url || "/", publicOrigin(hostHeader, proto));
   const chunks = [];
   if (nodeReq.method !== "GET" && nodeReq.method !== "HEAD") {
     for await (const chunk of nodeReq) chunks.push(chunk);
@@ -1925,9 +2110,9 @@ async function handler(req, res) {
     return await finish2(await dispatch(await toRequest(req)));
   } catch (error) {
     console.error(redact(error));
-    return finish2(new Response(JSON.stringify({ error: redact(error) }), {
+    return finish2(new Response(JSON.stringify({ error: "The desk could not answer." }), {
       status: 500,
-      headers: { "content-type": "application/json; charset=utf-8" }
+      headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" }
     }));
   }
 }
